@@ -8,9 +8,9 @@ def login_usuario(request):
     global ex
     data = {}
     if request.method == 'POST':
-        if 'action' in request.POST:
-            action = request.POST['action']
-            if action == 'login_usuario':
+        if 'peticion' in request.POST:
+            peticion = request.POST['peticion']
+            if peticion == 'login_usuario':
                 try:
                     return JsonResponse({"respuesta": True}, safe=False)
                 except Exception as ex:
@@ -19,8 +19,8 @@ def login_usuario(request):
 
         return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
-        if 'action' in request.GET:
-            action = request.GET['action']
+        if 'peticion' in request.GET:
+            peticion = request.GET['peticion']
         else:
             pass
     return render(request, "registration/login.html", data)
