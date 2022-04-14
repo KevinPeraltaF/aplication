@@ -6,8 +6,10 @@ from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 
-
 # Create your views here.
+from aplication import settings
+
+
 @transaction.atomic()
 def login_usuario(request):
     global ex
@@ -22,14 +24,14 @@ def login_usuario(request):
                     if usuario is not None:
                         if usuario.is_active:
                             login(request, usuario)
+                            request.session['persona'] = 'persona'
+                            return JsonResponse({"respuesta": True,"url":settings.LOGIN_REDIRECT_URL, "sesion_id": request.session.session_key})
                         else:
                             return JsonResponse(
                                 {"result": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
                     else:
                         return JsonResponse(
-                            {"result": False, 'mensaje': u'Inicio de sesiión incorrecto, usuario incorrecto.'})
-
-                    return JsonResponse({"respuesta": True}, safe=False)
+                            {"result": False, 'mensaje': u'Inicio de sesión incorrecto, usuario incorrecto.'})
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse(
@@ -48,7 +50,10 @@ def login_usuario(request):
 
         else:
             try:
+                if 'persona' in request.session:
+                    return HttpResponseRedirect("/")
                 data['titulo'] = 'Inicio de sesión'
+                data['request'] = request
                 return render(request, "registration/login.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

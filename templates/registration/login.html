@@ -1,4 +1,4 @@
-{% extends 'baseapp.html' %}
+{% extends 'baseloginapp.html' %}
 {% load static %}
 {% block head %}
 
@@ -21,12 +21,12 @@
                         {% csrf_token %}
                         <div class="input-group input-group-outline mb-3">
                             <label class="form-label">Usuario</label>
-                            <input type="text" id="id_usuario" class="form-control">
+                            <input type="text" id="id_usuario" autocomplete="off" class="form-control">
                         </div>
 
                         <div class="input-group input-group-outline mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" id="id_clave" class="form-control">
+                            <input type="password" autocomplete="off" id="id_clave" class="form-control">
                         </div>
 
                         <div class="text-center">
@@ -51,6 +51,15 @@
             login_usuario = function () {
                 var usuario = $("#id_usuario").val();
                 var clave = $("#id_clave").val();
+                if (usuario.length == 0) {
+                    $("#id_usuario").focus();
+                    return false;
+                }
+                if (clave.length == 0) {
+                    $("#id_clave").focus();
+                    return false;
+                }
+
                 $.ajax({
                     url: '{{request.path}}',
                     type: 'POST',
@@ -63,7 +72,7 @@
                     },
                     success: function (data) {
                         if (data.respuesta === true) {
-                             window.location = '/';
+                             window.location = data.url;
                         }else{
                             alert(data.mensaje);
                         }
@@ -78,6 +87,11 @@
             };
             $("#id_login_usuario").click(function () {
                 login_usuario();
+            });
+            $('#id_usuario, #id_clave').keyup(function (e) {
+                if (e.keyCode == 13) {
+                    login_usuario();
+                }
             });
         });
 
