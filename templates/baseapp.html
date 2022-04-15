@@ -44,7 +44,7 @@
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
 
-                <h6 class="font-weight-bolder mb-0">Software Consultorio Dental</h6>
+                <h6 class="font-weight-bolder mb-0">Consultorio Dental</h6>
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <ul class="navbar-nav ms-md-auto justify-content-end">
@@ -104,8 +104,8 @@
                         <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                             aria-labelledby="dropdownMenuButton">
 
-                            <div  class="text-center">
-                                <a href="logout"  class ="logout"><i class="fa fa-power-off"></i> Cerrar Sesión</a>
+                            <div class="text-center">
+                                <a href="logout" class="logout"><i class="fa fa-power-off"></i> Cerrar Sesión</a>
 
                             </div>
 
@@ -120,7 +120,19 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid ">
-        <div class="row">
+        <div class="content">
+            <div class="row mb-2 mt-2 ">
+
+                <!-- /.col -->
+                <div class="col-sm-12">
+                    <ol class="breadcrumb float-sm-right ">
+                        <li class="breadcrumb-item "><a href="{% url 'dashboard' %} ">Inicio</a></li>
+                        <li class="breadcrumb-item active ">Menú</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
             {% block contenido %}
 
             {% endblock %}
@@ -145,7 +157,6 @@
 </script>
 
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="{% static 'js/materialize.min.js' %}"></script>
 <script src="{% static 'js/material-dashboard.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 {% block script %}{% endblock %}
