@@ -11,4 +11,3 @@
 /.vscode/**
 /Pipfile.lock
 /odontologico/migrations/__init__.py
-/db.sqlite3
