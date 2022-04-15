@@ -1,6 +1,6 @@
 import sys
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
@@ -25,7 +25,8 @@ def login_usuario(request):
                         if usuario.is_active:
                             login(request, usuario)
                             request.session['persona'] = 'persona'
-                            return JsonResponse({"respuesta": True,"url":settings.LOGIN_REDIRECT_URL, "sesion_id": request.session.session_key})
+                            return JsonResponse({"respuesta": True, "url": settings.LOGIN_REDIRECT_URL,
+                                                 "sesion_id": request.session.session_key})
                         else:
                             return JsonResponse(
                                 {"result": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
@@ -59,7 +60,9 @@ def login_usuario(request):
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
 
 
-
+def logout_usuario(request):
+    logout(request)
+    return HttpResponseRedirect("/login")
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -88,10 +91,7 @@ def dashboard(request):
 
         else:
             try:
-                data['titulo'] = 'Dashboard'
+                data['titulo'] = 'Menú principal'
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
-
-
-
