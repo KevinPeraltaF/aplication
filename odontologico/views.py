@@ -75,10 +75,6 @@ def dashboard(request):
             peticion = request.POST['peticion']
 
             return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
-        else:
-            if 'peticion' in request.GET:
-                peticion = request.GET['peticion']
-
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']

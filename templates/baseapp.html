@@ -122,7 +122,6 @@
     <div class="container-fluid ">
         <div class="content">
             <div class="row mb-2 mt-2 ">
-
                 <!-- /.col -->
                 <div class="col-sm-12">
                     <ol class="breadcrumb float-sm-right ">
@@ -133,9 +132,11 @@
                 <!-- /.col -->
             </div>
             <!-- /.row -->
-            {% block contenido %}
+            <div class="container">
+                {% block contenido %}
 
-            {% endblock %}
+                {% endblock %}
+            </div>
 
         </div>
     </div>

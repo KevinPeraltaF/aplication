@@ -43,16 +43,11 @@
         }
 
         .icono.hovered {
-            /*background: #999;*/
-            background: #9cb539;
-            background: #13c2c2;
-            background: #00CFDD;
             background: rgba(90, 141, 238, .15);
             color: white;
             color: #5A8DEE;
             cursor: pointer;
-            /*border: 2.5px solid #859a2f;*/
-            /*background-image: linear-gradient(to bottom, #038fde , #20C997);*/
+
         }
 
         .icono .icononombre {
@@ -85,21 +80,27 @@
 {% block contenido %}
     <div class="row">
 
-      <div class="contenidoitem">
+       <div class="col">
+            <div class="contenidoitem">
             <div class="icono " onclick="location.href= '{{ dato.url }}'">
-            <div class="iconoimagen">
-                <div class="padding">
-                    <img src="{% static 'img/casa.png' %}" alt="Card image cap">
+                <div class="iconoimagen">
+                    <div class="padding">
+                        <img src="{% static 'img/casa.png' %}" alt="Card image cap">
+                    </div>
                 </div>
-            </div>
-            <div class="icononombre">
-                <div class="padding">
-                    <h4 class="tituloicono">Administración del sistema</h4>
-                    <span class="iconodescripcion">Configuración general para todos los sistemas </span>
+                <div class="icononombre">
+                    <div class="padding">
+                        <h4 class="tituloicono">Administración del sistema</h4>
+                        <span class="iconodescripcion">Configuración general para todos los sistemas </span>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
+
+       </div>
+
+
+
 
     </div>
 {% endblock %}
