@@ -9,6 +9,7 @@ from django.shortcuts import render
 # Create your views here.
 from aplication import settings
 from odontologico.funciones import add_data_aplication
+from odontologico.models import Modulo
 
 
 @transaction.atomic()
@@ -83,6 +84,7 @@ def dashboard(request):
         else:
             try:
                 data['titulo'] = 'Menú principal'
+                data['modulos'] = modulos = Modulo.objects.filter(status=True ,activo=True)
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

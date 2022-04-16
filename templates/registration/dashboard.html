@@ -80,26 +80,24 @@
 {% block contenido %}
     <div class="row">
 
-       <div class="col">
+    <div class="col">
+        {% for modulo in modulos %}
             <div class="contenidoitem">
-            <div class="icono " onclick="location.href= {% url 'conf_sistema' %}">
+            <div class="icono " onclick="location.href= '{{ modulo.ruta }}'">
                 <div class="iconoimagen">
                     <div class="padding">
-                        <img src="{% static 'img/casa.png' %}" alt="Card image cap">
+                        <img src="{{ modulo.icono.url }}" alt="Card image cap">
                     </div>
                 </div>
                 <div class="icononombre">
                     <div class="padding">
-                        <h4 class="tituloicono">Administración del sistema</h4>
-                        <span class="iconodescripcion">Configuración general para todos los sistemas </span>
+                        <h4 class="tituloicono">{{ modulo.nombre }}</h4>
+                        <span class="iconodescripcion">{{ modulo.descripcion }} </span>
                     </div>
                 </div>
             </div>
+        {% endfor %}
         </div>
-
-       </div>
-
-
 
 
     </div>

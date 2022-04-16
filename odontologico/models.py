@@ -3,8 +3,8 @@ from odontologico.funciones import ModeloBase
 
 class Modulo(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre del módulo",max_length=100,unique=True)
-    descripcion= models.CharField(verbose_name="Descripción", default='',null=True,blank=True,max_length=200)
-    icono = models.ImageField(verbose_name="Icono", blank=True, null=True, upload_to='icono/')
+    descripcion= models.CharField(verbose_name="Descripción", default='',max_length=200)
+    icono = models.ImageField(verbose_name="Icono", upload_to='icono/')
     ruta = models.CharField(default='', max_length=200, verbose_name='Ruta')
     activo = models.BooleanField(verbose_name="¿Módulo activo?",default=True)
 

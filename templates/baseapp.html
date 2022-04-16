@@ -9,6 +9,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
     <title>{% block titulo %}{{ titulo }}{% endblock %}</title>
+
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
@@ -21,6 +22,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="{% static 'css/material-dashboard.min.css' %}" rel="stylesheet"/>
+
 
     <style>
 
@@ -47,11 +49,11 @@
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <ul class="navbar-nav ms-md-auto justify-content-end">
-                    <a href="/admin_2022_knfp" class="nav-link text-body p-0 " target="_blank">
+                    <a href="/admin_2022_knfp" class="  p-0 " target="_blank">
                         <i class="fa fa-cog me-sm-1"></i>
                     </a>
                     <li class="nav-item px-3 dropdown pe-2 d-flex align-items-center">
-                        <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
+                        <a href="javascript:;" class=" p-0" id="dropdownMenuButton"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa fa-bell cursor-pointer" aria-hidden="true"></i>
                         </a>
@@ -99,7 +101,7 @@
                     </li>
 
                     <li class="nav-item px-3 dropdown pe-2 d-flex align-items-center">
-                        <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
+                        <a href="javascript:;" class=" p-0" id="dropdownMenuButton"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa fa-user me-sm-1"></i>
                         </a>
@@ -127,9 +129,11 @@
             <div class="row mb-2 mt-2 ">
                 <!-- /.col -->
                 <div class="col-sm-12">
-                    <ol class="breadcrumb float-sm-right ">
+                    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5 ">
                         {% for ruta in lista_url_ruta %}
-                            <li class="breadcrumb-item "><a href="{{ ruta.0 }}">{{ ruta.1 }}</a></li>
+                            <li class="breadcrumb-item  {% if ruta.0 == request.path %} text-dark active {% else %}text-dark opacity-5{% endif %}"
+                                aria-current="page">
+                                <a href="{{ ruta.0 }}">{{ ruta.1 }}</a></li>
                         {% endfor %}
                     </ol>
                 </div>
