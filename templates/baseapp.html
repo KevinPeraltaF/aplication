@@ -23,12 +23,11 @@
     <link id="pagestyle" href="{% static 'css/material-dashboard.min.css' %}" rel="stylesheet"/>
 
     <style>
-        /* ---------------------------------- Footer ----------------------------------------------*/
-        footer {
-            border-top: 1px solid rgba(50, 50, 50, 0.3);
-            width: 100%;
-            position: fixed;
-            bottom: 0; /* NUEVO */
+
+        .botones.hovered {
+            background: red;
+            cursor: pointer;
+
         }
 
     </style>
@@ -48,7 +47,7 @@
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <ul class="navbar-nav ms-md-auto justify-content-end">
-                    <a href="/admin_2022_knfp" class="nav-link text-body p-0" >
+                    <a href="/admin_2022_knfp" class="nav-link text-body p-0 " target="_blank">
                         <i class="fa fa-cog me-sm-1"></i>
                     </a>
                     <li class="nav-item px-3 dropdown pe-2 d-flex align-items-center">
@@ -108,7 +107,8 @@
                             aria-labelledby="dropdownMenuButton">
 
                             <div class="text-center">
-                                <a href="logout" class="logout"><i class="fa fa-power-off"></i> Cerrar Sesión</a>
+                                <a href="{% url 'logout_usuario' %}" class="logout"><i class="fa fa-power-off"></i>
+                                    Cerrar Sesión</a>
 
                             </div>
 
@@ -128,14 +128,16 @@
                 <!-- /.col -->
                 <div class="col-sm-12">
                     <ol class="breadcrumb float-sm-right ">
-                        <li class="breadcrumb-item "><a href="{% url 'dashboard' %} ">Inicio</a></li>
-                        <li class="breadcrumb-item active ">Menú</li>
+                        {% for ruta in lista_url_ruta %}
+                            <li class="breadcrumb-item "><a href="{{ ruta.0 }}">{{ ruta.1 }}</a></li>
+                        {% endfor %}
                     </ol>
                 </div>
                 <!-- /.col -->
+
             </div>
             <!-- /.row -->
-            <div class="container">
+            <div class="container-fluid">
                 {% block contenido %}
 
                 {% endblock %}

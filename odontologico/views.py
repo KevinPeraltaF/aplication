@@ -8,12 +8,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from aplication import settings
+from odontologico.funciones import add_data_aplication
 
 
 @transaction.atomic()
 def login_usuario(request):
     global ex
     data = {}
+    add_data_aplication(request, data)
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -37,18 +39,10 @@ def login_usuario(request):
                     transaction.set_rollback(True)
                     return JsonResponse(
                         {"respuesta": False, "mensaje": "Error al iniciar sesión, intentelo más tarde."})
-
         return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'peticion':
-                try:
-                    pass
-                except Exception as ex:
-                    transaction.set_rollback(True)
-                    pass
-
         else:
             try:
                 if 'persona' in request.session:
@@ -70,6 +64,7 @@ def logout_usuario(request):
 def dashboard(request):
     global ex
     data = {}
+    add_data_aplication(request, data)
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']

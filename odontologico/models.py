@@ -20,7 +20,6 @@ class Modulo(ModeloBase):
         self.nombre= self.nombre.strip()
         self.descripcion = self.descripcion.strip()
         self.ruta = self.ruta.strip()
-        self.icono=self.icono.strip()
         return super(Modulo, self).save(*args, **kwargs)
 
 
