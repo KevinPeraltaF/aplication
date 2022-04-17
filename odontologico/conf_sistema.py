@@ -10,7 +10,7 @@ from odontologico.models import Modulo
 
 @login_required(redirect_field_name='next', login_url='/login')
 @transaction.atomic()
-def view(request):
+def view_conf_sistema(request):
     global ex
     data = {}
     add_data_aplication(request, data)
@@ -32,20 +32,28 @@ def view(request):
                 data['titulo'] = 'Configuración del sistema'
                 modulos_administracion_sistema = [
                     {'nombre': 'Grupos',
-                     'descripcion': 'Configuración y administración de grupos de sistemas',
-                     'icono': '/media/icono/groups_people_people_1715.png',
-                     'ruta': 'conf_grupos/'},
+                     'descripcion': 'Configuración y administración de grupos del sistemas',
+                     'icono': '/media/icono/grupos.png',
+                     'ruta': 'conf_sistemas/grupos/'
+                     },
+                    {'nombre': 'Modulos',
+                     'descripcion': 'Configuración y administración de modulos del sistema',
+                     'icono': '/media/icono/modulos.png',
+                     'ruta': 'conf_sistemas/modulos/'
+                     },
                     {'nombre': 'Personas',
-                     'descripcion': 'Configuración y administración de grupos de sistemas',
-                     'icono': '/media/icono/persona.png',
-                     'ruta': 'conf_grupos/'},
+                     'descripcion': 'Configuración y administración de personas del sistemas',
+                     'icono': '/media/icono/personas.png',
+                     'ruta': 'conf_sistemas/personas/'
+                     },
                     {'nombre': 'Usuarios',
                      'descripcion': 'Configuración y administración de usuarios del sistema',
-                     'icono': '/media/icono/rotation_102346.png',
-                     'ruta': 'conf_usuarios/'}
+                     'icono': '/media/icono/usuarios.png',
+                     'ruta': 'conf_sistemas/usuarios/'
+                     }
 
                 ]
-                data['modulos'] =modulos_administracion_sistema
+                data['modulos'] = modulos_administracion_sistema
                 return render(request, "conf_sistema/view.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

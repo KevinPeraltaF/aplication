@@ -34,4 +34,6 @@ def add_data_aplication(request,data):
                 else:
                     lista_url_ruta.append(ruta)
             request.session['lista_url_ruta'] = lista_url_ruta
+        else:
+            pass
     data["lista_url_ruta"] = lista_url_ruta
