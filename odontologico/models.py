@@ -7,7 +7,7 @@ class Modulo(ModeloBase):
     icono = models.ImageField(verbose_name="Icono", upload_to='icono/')
     ruta = models.CharField(default='', max_length=200, verbose_name='Ruta')
     activo = models.BooleanField(verbose_name="¿Módulo activo?",default=True)
-
+    modulo_padre = models.ForeignKey('self',verbose_name="Módulo Padre", null=True, blank=True, on_delete=models.CASCADE)
     class Meta:
         verbose_name="Módulo del sistema"
         verbose_name_plural = "Módulos del sistema"
@@ -22,5 +22,7 @@ class Modulo(ModeloBase):
         self.ruta = self.ruta.strip()
         return super(Modulo, self).save(*args, **kwargs)
 
-
+    def tiene_submodulo(self):
+        existe = Modulo.objects.filter(status=True,activo=True,modulo_padre=self.pk).exists()
+        return existe
 

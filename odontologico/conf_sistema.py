@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from odontologico.funciones import add_data_aplication
+from odontologico.models import Modulo
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -28,7 +29,10 @@ def view(request):
                     pass
         else:
             try:
-                data['titulo'] = 'Configuraciòn del sistema'
+                data['titulo'] = 'Configuración del sistema'
+                if 'id' in request.GET:
+                    data['modulos'] = modulos = Modulo.objects.filter(status=True, activo=True,
+                                                                      modulo_padre_id=request.GET["id"])
                 return render(request, "conf_sistema/view.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))

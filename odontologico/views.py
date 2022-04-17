@@ -84,7 +84,7 @@ def dashboard(request):
         else:
             try:
                 data['titulo'] = 'Menú principal'
-                data['modulos'] = modulos = Modulo.objects.filter(status=True ,activo=True)
+                data['modulos'] = modulos = Modulo.objects.filter(status=True ,activo=True, modulo_padre__isnull=True)
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
