@@ -85,10 +85,10 @@
             {% for modulo in modulos %}
                 <div class="contenidoitem">
                     <div class="icono "
-                         url="{{ modulo.ruta }}{% if modulo.tiene_submodulo %}?id={{ modulo.pk }}{% endif %}">
+                         url="{{ modulo.ruta }}">
                         <div class="iconoimagen">
                             <div class="padding">
-                                <img src="{{ modulo.icono.url }}" alt="Card image cap">
+                                <img src="{{ modulo.icono }}" alt="Card image cap">
                             </div>
                         </div>
                         <div class="icononombre">

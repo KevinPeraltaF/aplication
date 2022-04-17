@@ -8,5 +8,5 @@ urlpatterns = [
     path(r'login/', login_usuario, name='login_usuario'),
     path(r'logout/', logout_usuario, name='logout_usuario'),
     path(r'', dashboard, name='dashboard'),
-    path(r'conf_sistema/', view, name='conf_sistema'),
+    path(r'conf_sistemas/', view, name='conf_sistema'),
 ]
