@@ -8,7 +8,7 @@ from odontologico.funciones import add_data_aplication
 
 @login_required(redirect_field_name='next', login_url='/login')
 @transaction.atomic()
-def view_modulo(request):
+def view_grupo(request):
     global ex
     data = {}
     add_data_aplication(request, data)
@@ -27,8 +27,8 @@ def view_modulo(request):
                     pass
         else:
             try:
-                data['titulo'] = 'Configuración de Módulos'
+                data['titulo'] = 'Configuración de grupos'
 
-                return render(request, "conf_sistema/view_modulo.html", data)
+                return render(request, "conf_sistema/view_grupo.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
