@@ -4,6 +4,7 @@ from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
 from odontologico.funciones import add_data_aplication
+from odontologico.models import Modulo
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -28,7 +29,9 @@ def view_modulo(request):
         else:
             try:
                 data['titulo'] = 'Configuración de Módulos'
-
+                data['titulo_tabla'] = 'Lista  de Módulos'
+                modulos = Modulo.objects.filter(status=True)
+                data['modulos'] = modulos
                 return render(request, "conf_sistema/view_modulo.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
