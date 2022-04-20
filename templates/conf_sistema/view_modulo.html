@@ -58,19 +58,30 @@
                                             <span class="text-xs">{{ modulo.ruta }}</span>
 
                                         </td>
-                                        <td data-title="¿Activo?" style="text-align: center" >
+                                        <td class="text-xs" data-title="¿Activo?" style="text-align: center">
                                             {% if modulo.activo %}
                                                 <span class="badge badge-sm bg-gradient-success">Activo</span>
                                             {% else %}
-                                                <span class="badge badge-sm bg-gradient-success">Activo</span>
+                                                <span class="badge badge-sm bg-gradient-danger">Non Activo</span>
                                             {% endif %}
 
                                         </td>
                                         <td data-title="" style="text-align: center">
-                                            <button class="btn btn-link text-secondary mb-0" aria-haspopup="true"
-                                                    aria-expanded="false">
+                                            <a class="cursor-pointer btn btn-link text-secondary mb-0"
+                                               id="dropdownTable" data-bs-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-ellipsis-v text-xs"></i>
-                                            </button>
+                                            </a>
+                                            <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
+                                                aria-labelledby="dropdownTable" style="">
+                                                <li><a class="text-xs dropdown-item border-radius-md" href="javascript:;">Editar
+                                                </a>
+                                                </li>
+                                                <li><a class="text-xs dropdown-item border-radius-md" href="javascript:;">Eliminar
+                                                </a>
+                                                </li>
+                                            </ul>
+
                                         </td>
 
 
