@@ -14,7 +14,7 @@
                 <h5 class="font-weight-bolder">{% block titulo %}{% endblock %}</h5>
                 <hr class="dropdown-divider">
                 <div class="mt-3">
-                    <form class="" method="POST" enctype="multipart/form-data" >
+                    <form class="" method="POST" id="formulario_data_enviar" enctype="multipart/form-data" >
                         {% block inputs_extras %}{% endblock %}
                         {% csrf_token %}
 
@@ -44,6 +44,20 @@
 
 {% endblock %}
 
+
 {% block script %}
+
+    <script>
+        $(function () {
+            $("#submit").click(function () {
+
+
+            });
+        });
+    </script>
+
+    {% block js %}
+
+    {% endblock %}
 
 {% endblock %}
