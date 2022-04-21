@@ -20,9 +20,11 @@ def view_modulo(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'peticion':
+            if peticion == 'add_modulo':
                 try:
-                    pass
+                    data['titulo'] = 'Agregar nuevo módulo'
+                    data['titulo_formulario'] = 'Formulario de registro de Módulo'
+                    return render(request, "conf_sistema/add_modulo.html", data)
                 except Exception as ex:
                     transaction.set_rollback(True)
                     pass
