@@ -32,10 +32,10 @@ def login_usuario(request):
                                                  "sesion_id": request.session.session_key})
                         else:
                             return JsonResponse(
-                                {"result": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
+                                {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
                     else:
                         return JsonResponse(
-                            {"result": False, 'mensaje': u'Inicio de sesión incorrecto, usuario incorrecto.'})
+                            {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario incorrecto.'})
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse(
@@ -69,7 +69,6 @@ def dashboard(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
-
             return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:
@@ -80,7 +79,6 @@ def dashboard(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     pass
-
         else:
             try:
                 data['titulo'] = 'Menú principal'
