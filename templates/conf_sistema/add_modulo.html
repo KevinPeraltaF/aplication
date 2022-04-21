@@ -3,17 +3,15 @@
 {% block head %}
     <link id="pagestyle" href="{% static 'css/dropify.min.css' %}" rel="stylesheet"/>
 {% endblock %}
-
 {% block titulo %}{{ titulo_formulario }}{% endblock %}
+{% block class_extra_card_formulario %}{% endblock %}
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}">
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'js/dropify.min.js' %}"></script>
-
     <script>
-
         $(function () {
             $('.dropify').dropify({
                 messages: {
