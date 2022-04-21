@@ -36,7 +36,7 @@ def view_modulo(request):
 
                 except Exception as ex:
                     transaction.set_rollback(True)
-                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente más tarde."})
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
         return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta.."})
     else:
@@ -46,6 +46,7 @@ def view_modulo(request):
                 try:
                     data['titulo'] = 'Agregar nuevo módulo'
                     data['titulo_formulario'] = 'Formulario de registro de Módulo'
+                    data['peticion'] = 'add_modulo'
                     data['form'] = ModuloForm()
                     return render(request, "conf_sistema/add_modulo.html", data)
                 except Exception as ex:

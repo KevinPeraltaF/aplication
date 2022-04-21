@@ -1,49 +1,12 @@
-{% extends 'baseapp.html' %}
+{% extends 'formularioBase.html' %}
 {% load static %}
 {% block head %}
-
     <link id="pagestyle" href="{% static 'css/dropify.min.css' %}" rel="stylesheet"/>
 {% endblock %}
-{% block contenido %}
-    <div class="container ">
 
-        <div class="card mt-2  ">
-            <div class="card-body ">
-                <h5 class="font-weight-bolder">{{ titulo_formulario }}</h5>
-                <hr class="dropdown-divider">
-                <div class="">
-                    <form class="" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="hidden" name="peticion" value="add_modulo">
-                        {% for field in form %}
-
-
-                            <div class="input-group input-group-static my-3  ">
-                                {{ field.errors }} {{ field.label_tag }} {{ field }} {% if field.help_text %}
-                                <small id="help" class="form-text text-muted">{{ field.help_text|safe }}</small> {% endif %}
-                            </div>
-
-
-                        {% endfor %}
-
-
-
-
-                        <div class="d-flex justify-content-end mt-4">
-                            <a href="{% url 'conf_modulo' %}" name="button" class="btn btn-light m-0">Cancelar</a>
-                            <button type="submit" class="btn bg-gradient-dark m-0 ms-2">Guardar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
+{% block titulo %}{{ titulo_formulario }}{% endblock %}
+{% block inputs_extras %}
+    <input type="hidden" name="peticion" value="{{ peticion }}">
 {% endblock %}
 
 {% block script %}
