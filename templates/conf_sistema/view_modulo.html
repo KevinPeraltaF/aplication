@@ -6,10 +6,10 @@
 {% endblock %}
 {% block contenido %}
 
-    <div class="col-md-12 mb-lg-0 mb-4">
-        <div class="card mt-2">
-            <div class="card-header pb-0 p-3">
-                <div class="row">
+    <div class="col-md-12 mb-lg-0 mb-4  ">
+        <div class="card mt-2 bg-gray-100 ">
+            <div class="card-header pb-0 p-3 bg-gray-100">
+                <div class="row ">
                     <div class="col-6 d-flex align-items-center">
                         <h6 class="mb-0">{{ titulo_tabla }}</h6>
                     </div>
@@ -26,17 +26,18 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Icono /
-                                        Nombre del módulo / Descripción
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
+                                        Icono / Nombre del módulo / Descripción
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
                                         Ruta(url)
                                     </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    <th class=" text-uppercase text-secondary text-xxs font-weight-bolder">
                                         ¿Activo?
                                     </th>
-                                    <th></th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
+                                        Acciones
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,11 +55,11 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td data-title=" Ruta(url)" style="text-align: center">
+                                        <td data-title=" Ruta(url)">
                                             <span class="text-xs">{{ modulo.ruta }}</span>
 
                                         </td>
-                                        <td class="text-xs" data-title="¿Activo?" style="text-align: center">
+                                        <td class="text-xs" data-title="¿Activo?">
                                             {% if modulo.activo %}
                                                 <span class="badge badge-sm bg-gradient-success">Activo</span>
                                             {% else %}
@@ -66,22 +67,19 @@
                                             {% endif %}
 
                                         </td>
-                                        <td data-title="" style="text-align: center">
-                                            <a class="cursor-pointer btn btn-link text-secondary mb-0"
-                                               id="dropdownTable" data-bs-toggle="dropdown"
-                                               aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-v text-xs"></i>
+                                        <td class="text-sm">
+                                            <a href="javascript:;" data-bs-toggle="tooltip"
+                                               data-bs-original-title="Preview product">
+                                                <i class="material-icons text-secondary position-relative text-lg">visibility</i>
                                             </a>
-                                            <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
-                                                aria-labelledby="dropdownTable" style="">
-                                                <li><a class="text-xs dropdown-item border-radius-md" href="javascript:;">Editar
-                                                </a>
-                                                </li>
-                                                <li><a class="text-xs dropdown-item border-radius-md" href="javascript:;">Eliminar
-                                                </a>
-                                                </li>
-                                            </ul>
-
+                                            <a href="javascript:;" class="mx-3" data-bs-toggle="tooltip"
+                                               data-bs-original-title="Edit product">
+                                                <i class="material-icons text-secondary position-relative text-lg">drive_file_rename_outline</i>
+                                            </a>
+                                            <a href="javascript:;" data-bs-toggle="tooltip"
+                                               data-bs-original-title="Delete product">
+                                                <i class="material-icons text-secondary position-relative text-lg">delete</i>
+                                            </a>
                                         </td>
 
 
@@ -101,9 +99,45 @@
                 </div>
 
             </div>
+        <div class="card-footer d-flex justify-content-end mb-3 ">
+            <div class="pagination-container justify-content-center">
+            <ul class="pagination pagination-secondary">
+                <li class="page-item">
+                    <a class="page-link" href="javascript:;" aria-label="Previous"><span aria-hidden="true"><span
+                            class="material-icons">keyboard_arrow_left</span></span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:;">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:;">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:;">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:;">4</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="javascript:;">5</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:;" aria-label="Next"> <span aria-hidden="true"><span
+                            class="material-icons">keyboard_arrow_right</span></span>
+                    </a>
+                </li>
+            </ul>
         </div>
+        </div>
+        </div>
+
+
     </div>
     </div>
+
+
+
 
 {% endblock %}
 
