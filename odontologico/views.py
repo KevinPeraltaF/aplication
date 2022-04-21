@@ -34,8 +34,7 @@ def login_usuario(request):
                             return JsonResponse(
                                 {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
                     else:
-                        return JsonResponse(
-                            {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario incorrecto.'})
+                        return JsonResponse( {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario o clave no coinciden.'})
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse(

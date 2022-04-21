@@ -80,9 +80,23 @@
                     },
                     success: function (data) {
                         if (data.respuesta === true) {
-                            window.location = data.url;
+
+                            Swal.fire(
+                                'Login exitoso!',
+                                'Bienvenido.',
+                                'success'
+                            ).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    window.location = data.url;
+                                } else if (result.isDenied) {
+                                    Swal.fire('Changes are not saved', '', 'info')
+                                }
+                            });
+
+
                         } else {
-                            alert(data.mensaje);
+                            mensaje_error(data.mensaje, 'Login Fallido.');
                         }
 
                     },
