@@ -9,26 +9,27 @@
         <div class="card mt-2  ">
             <div class="card-body ">
                 <h5 class="font-weight-bolder">{{ titulo_formulario }}</h5>
+                <hr class="dropdown-divider">
                 <div class="">
                     <form class="">
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-static my-3  ">
                             <label class="form-label">Text</label>
                             <input type="text" class="form-control">
                         </div>
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-static my-3">
                             <label class="form-label">Search</label>
                             <input type="text" class="form-control">
                         </div>
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-static my-3">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control">
                         </div>
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-static my-3">
                             <label class="form-label">Url</label>
                             <input type="url" class="form-control">
                         </div>
 
-                        <div class="input-group input-group-outline my-3">
+                        <div class="input-group input-group-static my-3">
                             <label class="form-label">Number</label>
                             <input type="number" class="form-control">
                         </div>
@@ -39,7 +40,7 @@
 
 
                         <div class="d-flex justify-content-end mt-4">
-                            <a  href="{% url 'conf_modulo' %}" name="button" class="btn btn-light m-0">Cancelar</a>
+                            <a href="{% url 'conf_modulo' %}" name="button" class="btn btn-light m-0">Cancelar</a>
                             <button type="button" name="button" class="btn bg-gradient-dark m-0 ms-2">Guardar
                             </button>
                         </div>

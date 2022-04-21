@@ -11,8 +11,8 @@ urlpatterns = [
     path(r'', dashboard, name='dashboard'),
     path(r'login/', login_usuario, name='login_usuario'),
     path(r'logout/', logout_usuario, name='logout_usuario'),
-    path(r'conf_sistemas/grupos/', view_grupo, name='conf_modulo'),
+    path(r'conf_sistemas/grupos/', view_grupo, name='conf_grupo'),
     path(r'conf_sistemas/modulos/', view_modulo, name='conf_modulo'),
-    path(r'conf_sistemas/personas/', view_persona, name='conf_modulo'),
-    path(r'conf_sistemas/usuarios/', view_usuario, name='conf_modulo'),
+    path(r'conf_sistemas/personas/', view_persona, name='conf_persona'),
+    path(r'conf_sistemas/usuarios/', view_usuario, name='conf_usuario'),
 ]
