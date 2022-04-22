@@ -1,5 +1,6 @@
 import sys
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -65,7 +66,11 @@ def view_modulo(request):
             try:
                 data['titulo'] = 'Configuración de Módulos'
                 data['titulo_tabla'] = 'Lista  de Módulos'
-                data['modulos'] = modulos = Modulo.objects.filter(status=True)
+                lista_modulos = Modulo.objects.filter(status=True)
+                paginator = Paginator(lista_modulos, 1)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                data['modulos'] = page_obj
                 return render(request, "conf_sistema/view_modulo.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
