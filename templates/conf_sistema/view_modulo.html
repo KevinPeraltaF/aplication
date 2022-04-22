@@ -73,7 +73,7 @@
                                            data-bs-original-title="Editar">
                                             <i class="material-icons text-secondary position-relative text-lg">drive_file_rename_outline</i>
                                         </a>
-                                        <a href="javascript:;" data-bs-toggle="tooltip"
+                                        <a href="javascript:;" onclick="eliminar_registro('eliminar_modulo','{{ modulo }}','{{ modulo.pk }}')" data-bs-toggle="tooltip"
                                            data-bs-original-title="Eliminar">
                                             <i class="material-icons text-secondary position-relative text-lg">delete</i>
                                         </a>
@@ -138,6 +138,9 @@
 
 {% block script %}
     <script>
+
+
+
     </script>
 
 {% endblock %}

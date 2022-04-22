@@ -29,7 +29,7 @@ def view_modulo(request):
                             activo=form.cleaned_data['activo']
                         )
                         modulo.save()
-                        return JsonResponse({"respuesta": True, "mensaje": "Datos guardados correctamente."})
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro guardado correctamente."})
 
                     else:
                         return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error al enviar los datos."})
@@ -37,8 +37,18 @@ def view_modulo(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+            if peticion == 'eliminar_modulo':
+                try:
+                    with transaction.atomic():
+                        registro = Modulo.objects.get(pk=request.POST['id'])
+                        registro.status = False
+                        registro.save()
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
 
-        return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta.."})
+                except Exception as ex:
+                    pass
+
+        return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta."})
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
