@@ -14,22 +14,24 @@
                 <h5 class="font-weight-bolder">{% block titulo %}{% endblock %}</h5>
                 <hr class="dropdown-divider">
                 <div class="mt-3">
-                    <form class="" method="POST" id="formulario_data_enviar" enctype="multipart/form-data" >
+                    <form class="" method="POST" id="formulario_data_enviar" enctype="multipart/form-data">
                         {% block inputs_extras %}{% endblock %}
                         {% csrf_token %}
 
                         {% for field in form %}
                             <div class="input-group input-group-static my-3  ">
                                 {{ field.errors }} {{ field.label_tag }} {{ field }} {% if field.help_text %}
-                                <small id="help" class="form-text text-muted">{{ field.help_text|safe }}</small> {% endif %}
+                                <small id="help"
+                                       class="form-text text-muted">{{ field.help_text|safe }}</small> {% endif %}
                             </div>
 
                         {% endfor %}
 
                         <div class="d-flex justify-content-end mt-4">
                             <a href="javascript:history.back()" name="button" class="btn btn-light m-0">Cancelar</a>
-                            <button type="submit" id="submit" class="btn bg-gradient-dark m-0 ms-2">{% block nombre_boton_submit %}{% endblock %}</button>
-                           {% block botones_extras %}
+                            <a id="submit" class="btn bg-gradient-dark m-0 ms-2">
+                                {% block nombre_boton_submit %}{% endblock %}</a>
+                            {% block botones_extras %}
                             {% endblock %}
                         </div>
                     </form>
@@ -50,9 +52,64 @@
     <script>
         $(function () {
             $("#submit").click(function () {
+                var form = $('#formulario_data_enviar')[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '{{request.path}}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.respuesta === true) {
+                            Swal.fire(
+                                'Envio de Datos',
+                                'Registro guardado correctamente.',
+                                'success'
+                            ).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    location.href = "{% block location_href_destino %}/{% endblock %}" + ((data.id)?data.id:"");
+                                }
+                            });
+
+                        } else {
+                            alert("Ha ocurrido un error");
+                        }
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                            $.unblockUI();
+                            {#smoke.alert("Error de conexión.");#}
+                            var msg = '';
+                            if (jqXHR.status === 0) {
+                                msg='Not connect: Verify Network.';
+                            } else if (jqXHR.status == 404) {
+                                msg='Requested page not found [404]';
+                            } else if (jqXHR.status == 500) {
+                                msg='Internal Server Error [500].';
+                            } else if (textStatus === 'parsererror') {
+                                msg='Requested JSON parse failed.';
+                            } else if (textStatus === 'timeout') {
+                                msg='Time out error.';
+                            } else if (textStatus === 'abort') {
+                                msg='Ajax request aborted.';
+                            } else {
+                                msg='Uncaught Error: ' + jqXHR.responseText;
+                            }
+                            //smoke.alert("Error al enviar los datos: " + msg);
+                            alert("Error al enviar los datos: " + msg);
+                        },
+
+                });
 
 
             });
+
+            $("select").select2({minimumResultsForSearch: 20 });
         });
     </script>
 
