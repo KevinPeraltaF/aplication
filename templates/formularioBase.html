@@ -29,8 +29,8 @@
 
                         <div class="d-flex justify-content-end mt-4">
                             <a href="javascript:history.back()" name="button" class="btn btn-light m-0">Cancelar</a>
-                            <a id="submit" class="btn bg-gradient-dark m-0 ms-2">
-                                {% block nombre_boton_submit %}{% endblock %}</a>
+                            <button id="submit" type="submit" class="btn bg-gradient-dark m-0 ms-2">
+                                {% block nombre_boton_submit %}{% endblock %}</button>
                             {% block botones_extras %}
                             {% endblock %}
                         </div>
@@ -50,10 +50,13 @@
 {% block script %}
 
     <script>
-        $(function () {
-            $("#submit").click(function () {
-                var form = $('#formulario_data_enviar')[0];
-                var formData = new FormData(form);
+        $('#formulario_data_enviar').submit(function (e) {
+            e.preventDefault();
+            var $form = $(this);
+            // check if the input is valid using a 'valid' property
+            if (!$form.valid){
+                var forms = $('#formulario_data_enviar')[0];
+                var formData = new FormData(forms);
 
                 $.ajax({
                     url: '{{request.path}}',
@@ -106,10 +109,16 @@
 
                 });
 
+            }else{
+                alert("no valido")
+                return false;
+            }
 
-            });
 
-            $("select").select2({minimumResultsForSearch: 20 });
+
+
+
+           alert("si")
         });
     </script>
 
