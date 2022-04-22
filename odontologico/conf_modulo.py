@@ -62,6 +62,18 @@ def view_modulo(request):
                     return render(request, "conf_sistema/add_modulo.html", data)
                 except Exception as ex:
                     pass
+
+
+            if peticion == 'edit_modulo':
+                try:
+                    data['titulo'] = 'Editar módulo'
+                    data['titulo_formulario'] = 'Formulario de editar Módulo'
+                    data['peticion'] = 'edit_modulo'
+                    data['form'] = ModuloForm()
+                    return render(request, "conf_sistema/add_modulo.html", data)
+                except Exception as ex:
+                    pass
+
         else:
             try:
                 data['titulo'] = 'Configuración de Módulos'
