@@ -68,15 +68,19 @@
                                         {% endif %}
 
                                     </td>
-                                    <td class="text-sm">
-                                        <a href="javascript:;" class="mx-3" data-bs-toggle="tooltip"
-                                           data-bs-original-title="Editar">
-                                            <i class="material-icons text-secondary position-relative text-lg">drive_file_rename_outline</i>
-                                        </a>
-                                        <a href="javascript:;" onclick="eliminar_registro('eliminar_modulo','{{ modulo }}','{{ modulo.pk }}')" data-bs-toggle="tooltip"
-                                           data-bs-original-title="Eliminar">
-                                            <i class="material-icons text-secondary position-relative text-lg">delete</i>
-                                        </a>
+                                    <td class="text-secondary text-sm font-weight-bolder text-center">
+                                        <div class="dropstart">
+                                            <a href="javascript:;" class="text-secondary" id="dropdownMarketingCard" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="material-icons text-xl">more_vert</i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3" aria-labelledby="dropdownMarketingCard" style="">
+                                                <li><a class="dropdown-item border-radius-md" href="javascript:;">Editar</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item border-radius-md text-danger" href="javascript:;" onclick="eliminar_registro('eliminar_modulo','{{ modulo }}','{{ modulo.pk }}')" >Eliminar</a></li>
+                                            </ul>
+                                        </div>
                                     </td>
 
 
@@ -94,7 +98,7 @@
                     </div>
                 </div>
             </div>
-                {% include 'paginador.html' %}
+            {% include 'paginador.html' %}
         </div>
 
 
