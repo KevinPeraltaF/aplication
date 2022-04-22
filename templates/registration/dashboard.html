@@ -98,17 +98,25 @@
 
 {% block script %}
     <script>
+
         $(".icono").hover(function () {
+
             $(this).addClass("hovered");
         }, function () {
             $(this).removeClass("hovered");
+
         }).click(function () {
+
             var url = $(this).attr('url');
+
             if (url[0] == '/') {
+
                 location.href = url;
             } else {
+
                 location.href = "/" + url;
             }
+
         });
     </script>
 

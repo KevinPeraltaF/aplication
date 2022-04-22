@@ -85,26 +85,24 @@
 
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                            $.unblockUI();
-                            {#smoke.alert("Error de conexión.");#}
-                            var msg = '';
+                            var mensaje = '';
                             if (jqXHR.status === 0) {
-                                msg='Not connect: Verify Network.';
+                                mensaje='Not connect: Verify Network.';
                             } else if (jqXHR.status == 404) {
-                                msg='Requested page not found [404]';
+                                mensaje='Requested page not found [404]';
                             } else if (jqXHR.status == 500) {
-                                msg='Internal Server Error [500].';
+                                mensaje='Internal Server Error [500].';
                             } else if (textStatus === 'parsererror') {
-                                msg='Requested JSON parse failed.';
+                                mensaje='Requested JSON parse failed.';
                             } else if (textStatus === 'timeout') {
-                                msg='Time out error.';
+                                mensaje='Time out error.';
                             } else if (textStatus === 'abort') {
-                                msg='Ajax request aborted.';
+                                mensaje='Ajax request aborted.';
                             } else {
-                                msg='Uncaught Error: ' + jqXHR.responseText;
+                                mensaje='Uncaught Error: ' + jqXHR.responseText;
                             }
                             //smoke.alert("Error al enviar los datos: " + msg);
-                            alert("Error al enviar los datos: " + msg);
+                            alert("Error al enviar los datos: " + mensaje);
                         },
 
                 });
