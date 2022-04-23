@@ -2,8 +2,11 @@ import sys
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import transaction
+from django.forms import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render
+
+from aplication.settings import MEDIA_URL
 from odontologico.forms import ModuloForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Modulo
@@ -46,6 +49,36 @@ def view_modulo(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'edit_modulo':
+                try:
+                    form = ModuloForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        campos_repetidos = list()
+                        if Modulo.objects.values('id').filter(nombre=form.cleaned_data['nombre']).exclude(pk=request.POST['id']).exists():
+                            campos_repetidos.append(form['nombre'].name)
+                        if Modulo.objects.values('id').filter(ruta=form.cleaned_data['ruta']).exclude(pk=request.POST['id']).exists():
+                            campos_repetidos.append(form['ruta'].name)
+                            if campos_repetidos:
+                                return JsonResponse({"respuesta": False, "mensaje": "registro ya existe.",
+                                                     'repetidos': campos_repetidos})
+                        modulo = Modulo.objects.get(pk=request.POST['id'])
+                        modulo.nombre = form.cleaned_data['nombre']
+                        modulo.descripcion = form.cleaned_data['descripcion']
+                        modulo.icono = form.cleaned_data['icono']
+                        modulo.ruta = form.cleaned_data['ruta']
+                        modulo.activo = form.cleaned_data['activo']
+                        modulo.save()
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
+
+                    else:
+                        return JsonResponse(
+                            {"respuesta": False, "mensaje": "Ha ocurrido un error al enviar los datos."})
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
             if peticion == 'eliminar_modulo':
                 try:
                     with transaction.atomic():
@@ -77,8 +110,11 @@ def view_modulo(request):
                     data['titulo'] = 'Editar módulo'
                     data['titulo_formulario'] = 'Formulario de editar Módulo'
                     data['peticion'] = 'edit_modulo'
-                    data['form'] = ModuloForm()
-                    return render(request, "conf_sistema/add_modulo.html", data)
+                    data['MEDIA_URL'] = MEDIA_URL
+                    data['modulo'] = modulo = Modulo.objects.get(pk=request.GET['id'])
+                    data['form'] = ModuloForm(initial=model_to_dict(modulo))
+
+                    return render(request, "conf_sistema/edit_modulo.html", data)
                 except Exception as ex:
                     pass
 

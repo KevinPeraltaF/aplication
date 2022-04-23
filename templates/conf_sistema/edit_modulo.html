@@ -7,7 +7,8 @@
 {% block class_extra_card_formulario %}{% endblock %}
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}">
-    <input type="hidden" name="id" value="{{ id }}">
+    <input type="hidden" name="id" value="{{ modulo.id }}">
+
 {% endblock %}
 {% block nombre_boton_submit %}Modificar{% endblock %}
 {% block location_href_destino %}{% url 'conf_modulo'%}{% endblock %}
@@ -25,7 +26,8 @@
                     'replace': 'Drag and drop or click to replace',
                     'remove': 'Remove',
                     'error': 'Ooops, something wrong happended.'
-                }
+                },
+                defaultFile:'{{ MEDIA_URL }}{{ form.icono.value }}'
             });
         });
     </script>
