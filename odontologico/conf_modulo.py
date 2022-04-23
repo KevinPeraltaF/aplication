@@ -22,6 +22,14 @@ def view_modulo(request):
                 try:
                     form = ModuloForm(request.POST, request.FILES)
                     if form.is_valid():
+                        campos_repetidos = list()
+
+                        if Modulo.objects.values('id').filter(nombre=form.cleaned_data['nombre']).exists():
+                            campos_repetidos.append(form['nombre'].name)
+                        if Modulo.objects.values('id').filter(ruta=form.cleaned_data['ruta']).exists():
+                            campos_repetidos.append(form['ruta'].name)
+                            if campos_repetidos:
+                                return JsonResponse({"respuesta": False, "mensaje": "registro ya existe.",'repetidos':campos_repetidos})
                         modulo = Modulo(
                             nombre=form.cleaned_data['nombre'],
                             descripcion=form.cleaned_data['descripcion'],

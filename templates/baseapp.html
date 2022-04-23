@@ -22,7 +22,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="{% static 'css/material-dashboard.min.css' %}" rel="stylesheet"/>
-    <link id="pagestyle" href="{% static 'css/sweetalert2.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/sweetalert2.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/jquery.toast.min.css' %}" rel="stylesheet"/>
     {% block head %}{% endblock %}
 </head>
 
@@ -160,6 +161,7 @@
 <script src="{% static 'js/sweetalert2..min.js' %}"></script>
 <script src="{% static 'js/componentes.js' %}"></script>
 <script src="{% static 'js/jquery.blockUI.js' %}"></script>
+<script src="{% static 'js/jquery.toast.min.js' %}"></script>
 <script>
 
 
@@ -230,8 +232,8 @@
     }
 
     $(document).ready(function () {
-       Block_UI();
-       setTimeout($.unblockUI, 1000);
+        Block_UI();
+        setTimeout($.unblockUI, 1000);
 
     });
 </script>

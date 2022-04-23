@@ -39,6 +39,50 @@ function mensaje_alerta(mensaje, titulo) {
     })
 }
 
+function toast_warning(titulo,mensaje) {
+    $.toast({
+        heading: titulo,
+        text: mensaje,
+        showHideTransition: 'slide',
+        icon: 'warning',
+        position: 'top-right',
+        stack: false
+    })
+}
+
+function toast_information(mensaje) {
+    $.toast({
+        heading: 'Information',
+        text: mensaje,
+        showHideTransition: 'slide',
+        icon: 'info',
+        position: 'top-right',
+        stack: false
+    })
+}
+
+function toast_success(mensaje) {
+    $.toast({
+        heading: 'Success',
+        text: mensaje,
+        showHideTransition: 'slide',
+        icon: 'success',
+        position: 'top-right',
+        stack: false
+    })
+}
+
+function toast_simple(mensaje) {
+    $.toast(
+        {
+            text: mensaje,
+            position: 'top-right',
+            stack: false
+        }
+    )
+
+}
+
 
 
 

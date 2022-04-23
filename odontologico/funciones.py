@@ -23,8 +23,8 @@ def add_data_aplication(request,data):
         request.session['lista_url_ruta'] = [['/', 'Inicio']]
     lista_url_ruta = request.session['lista_url_ruta']
     if request.method == 'GET' and request.path:
-        if Modulo.objects.values("id").filter(ruta=request.path[1:]).exists():
-            modulo = Modulo.objects.values("ruta", "nombre").filter(ruta=request.path[1:])[0]
+        if Modulo.objects.values("id").filter(ruta=request.path[1:],status=True).exists():
+            modulo = Modulo.objects.values("ruta", "nombre").filter(status=True,ruta=request.path[1:])[0]
             ruta = ['/' + modulo['ruta'], modulo['nombre']]
             if lista_url_ruta.count(ruta) <= 0:
                 if lista_url_ruta.__len__() >= 7:
