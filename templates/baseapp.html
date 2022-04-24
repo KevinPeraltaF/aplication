@@ -132,9 +132,12 @@
 
     <div class="container-fluid ">
         <div class="content">
-            <!-- /.row -->
-            <div class="mt-3">
 
+            <!-- /.row -->
+            <div class="">
+                  <div class="span12 text-end mt-2">
+            <a class="btn btn-sm   btn-outline-secondary" href="{% if request.path == '/' %} /  {% else %}javascript:history.back(){% endif %}"><span class="fa fa-arrow-left"></span> Atrás</a>
+        </div>
                 {% block contenido %}
                 {% endblock %}
 
