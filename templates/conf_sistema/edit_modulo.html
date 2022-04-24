@@ -8,7 +8,7 @@
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}">
     <input type="hidden" name="id" value="{{ modulo.id }}">
-
+     <input type="hidden" name="imagen_ruta" id="imagen_ruta" value="{{ form.icono.value }}">
 {% endblock %}
 {% block nombre_boton_submit %}Modificar{% endblock %}
 {% block location_href_destino %}{% url 'conf_modulo'%}{% endblock %}
@@ -30,6 +30,7 @@
                 defaultFile:'{{ MEDIA_URL }}{{ form.icono.value }}'
             });
         });
+        $("#id_icono").val('{{ form.icono.value }}');
     </script>
 
 {% endblock %}
