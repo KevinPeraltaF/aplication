@@ -9,7 +9,42 @@
     <input type="hidden" name="peticion" value="{{ peticion }}">
 {% endblock %}
 {% block news_inputs_form %}
+    <div class="mt-3">
+    <div class="input-group input-group-static mb-4">
+        <label class="form-label">Nombre</label>
+        <input type="text" autocomplete="off" id="id_nombre" class="form-control">
+    </div>
+    <input type="email" id="id_nombre" class="form-control " aria-describedby="emailHelp">
 
+
+    <div class="row">
+        <div id="table-responsive">
+        <table class="table align-items-center mb-0">
+            <thead>
+            <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolde text-center"><input type="checkbox"
+                                                                                                        id="todos"></th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">C&oacute;digo</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">Campos</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">Tipo</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">Identificador</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for campo in campos %}
+
+            {% empty %}
+                <tr>
+                    <td colspan="10" class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">No
+                        existen registro
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
 {% endblock %}
 {% block nombre_boton_submit %}Guardar{% endblock %}
 {% block location_href_destino %}{% url 'conf_grupo' %}{% endblock %}
