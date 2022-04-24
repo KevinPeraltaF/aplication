@@ -41,27 +41,27 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for modulo in page_obj %}
+                            {% for fila in page_obj %}
                                 <tr>
                                     <td class="text-uppercase text-secondary text-xxs font-weight-bolder text-center">{{ forloop.counter }}</td>
                                     <td data-title="Icono / Nombre del módulo / Descripción">
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="{{ modulo.icono.url }}"
+                                                <img src="{{ fila.icono.url }}"
                                                      class="avatar avatar-sm me-3">
                                             </div>
                                             <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-xs">{{ modulo.nombre }}</h6>
-                                                <p class="text-xs text-secondary mb-0">{{ modulo.descripcion }}</p>
+                                                <h6 class="mb-0 text-xs">{{ fila.nombre }}</h6>
+                                                <p class="text-xs text-secondary mb-0">{{ fila.descripcion }}</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td data-title=" Ruta(url)">
-                                        <span class="text-xs">{{ modulo.ruta }}</span>
+                                        <span class="text-xs">{{ fila.ruta }}</span>
 
                                     </td>
                                     <td class="text-xs" data-title="¿Activo?">
-                                        {% if modulo.activo %}
+                                        {% if fila.activo %}
                                             <span class="badge badge-sm bg-gradient-success">Activo</span>
                                         {% else %}
                                             <span class="badge badge-sm bg-gradient-danger">No Activo</span>
@@ -74,11 +74,11 @@
                                                 <i class="material-icons text-xl">more_vert</i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3" aria-labelledby="dropdownMarketingCard" style="">
-                                                <li><a class="dropdown-item border-radius-md"  href="?peticion=edit_modulo&id={{ modulo.pk }}">Editar</a></li>
+                                                <li><a class="dropdown-item border-radius-md"  href="?peticion=edit_modulo&id={{ fila.pk }}">Editar</a></li>
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
-                                                <li><a class="dropdown-item border-radius-md text-danger" href="javascript:;" onclick="eliminar_registro('eliminar_modulo','{{ modulo }}','{{ modulo.pk }}')" >Eliminar</a></li>
+                                                <li><a class="dropdown-item border-radius-md text-danger" href="javascript:;" onclick="eliminar_registro('eliminar_modulo','{{ fila }}','{{ fila.pk }}')" >Eliminar</a></li>
                                             </ul>
                                         </div>
                                     </td>
@@ -86,8 +86,8 @@
 
                                 </tr>
                             {% empty %}
-                                <tr>
-                                    <p class="text-xs font-weight-bold mb-0">No existen registro</p>
+                                   <tr>
+                                    <td class="text-center"><p class="text-xs font-weight-bold mb-0">No existen registro</p></td>
                                 </tr>
 
                             {% endfor %}

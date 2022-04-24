@@ -128,8 +128,8 @@ def view_modulo(request):
             try:
                 data['titulo'] = 'Configuración de Módulos'
                 data['titulo_tabla'] = 'Lista  de Módulos'
-                lista_modulos = Modulo.objects.filter(status=True)
-                paginator = Paginator(lista_modulos, 15)
+                lista = Modulo.objects.filter(status=True).order_by('id')
+                paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
                 data['page_obj'] = page_obj
