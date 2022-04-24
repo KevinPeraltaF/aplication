@@ -10,6 +10,9 @@
     <input type="hidden" name="id" value="{{ modulo.id }}">
      <input type="hidden" name="imagen_ruta" id="imagen_ruta" value="{{ form.icono.value }}">
 {% endblock %}
+{% block news_inputs_form %}
+
+{% endblock %}
 {% block nombre_boton_submit %}Modificar{% endblock %}
 {% block location_href_destino %}{% url 'conf_modulo'%}{% endblock %}
 {% block botones_extras %}{% endblock %}

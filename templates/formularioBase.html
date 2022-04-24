@@ -26,6 +26,9 @@
                             </div>
 
                         {% endfor %}
+                    {% block news_inputs_form %}
+                    
+                    {% endblock %}
 
                         <div class="d-flex justify-content-end ">
                             <a href="javascript:history.back()" name="button" class="btn btn-light m-0">Cancelar</a>
@@ -75,12 +78,21 @@
                             ).then((result) => {
                                 /* Read more about isConfirmed, isDenied below */
                                 if (result.isConfirmed) {
-                                    location.href = "{% block location_href_destino %}/{% endblock %}" + ((data.id)?data.id:"");
+                                    location.href = "{% block location_href_destino %}
+                                        /{% endblock %}" + ((data.id) ? data.id : "");
                                 }
                             });
 
                         } else {
-                            if (data.repetidos.length>0) {
+                            $.toast({
+                                heading: "error",
+                                text: data.mensaje,
+                                showHideTransition: 'slide',
+                                icon: 'danger',
+                                position: 'top-right',
+                                stack: false
+                            });
+                            if (data.repetidos.length > 0) {
                                 repetidos = data.repetidos;
                                 $.toast({
                                     heading: data.mensaje,
@@ -89,7 +101,7 @@
                                     icon: 'info',
                                     position: 'top-right',
                                     stack: false
-                                })
+                                });
 
                             }
 
