@@ -26,29 +26,20 @@ def view_grupo(request):
 
                 except Exception as ex:
                     pass
-        return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
+        return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta."})
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'peticion':
+            if peticion == 'add_grupo':
                 try:
-                    pass
+                    data['titulo'] = 'Agregar nuevo grupo'
+                    data['titulo_formulario'] = 'Formulario de registro de grupos'
+                    data['peticion'] = 'edit_grupo'
+
+                    return render(request, "conf_sistema/add_grupo.html", data)
                 except Exception as ex:
-                    transaction.set_rollback(True)
                     pass
         else:
-            if 'peticion' in request.GET:
-                peticion = request.GET['peticion']
-                if peticion == 'add_modulo':
-                    try:
-                        data['titulo'] = 'Agregar nuevo grupo'
-                        data['titulo_formulario'] = 'Formulario de registro de grupos'
-                        data['peticion'] = 'edit_grupo'
-
-                        return render(request, "conf_sistema/add_grupo.html", data)
-                    except Exception as ex:
-                        pass
-
             try:
                 data['titulo'] = 'Configuración de grupos'
                 data['titulo_tabla'] = 'Lista  de Grupos'
