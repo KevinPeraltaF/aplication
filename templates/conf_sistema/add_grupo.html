@@ -10,58 +10,59 @@
 {% endblock %}
 {% block news_inputs_form %}
     <div class="mt-3">
-    <div class="input-group input-group-static mb-4">
-        <label class="form-label">Nombre</label>
-        <input type="text" autocomplete="off" id="id_nombre" class="form-control">
-    </div>
-    <input type="email" id="id_nombre" class="form-control " aria-describedby="emailHelp">
+        <div class="input-group input-group-static mb-4">
+            <label class="form-label">Nombre</label>
+            <input type="text" autocomplete="off" id="id_nombre" class="form-control">
+        </div>
+        <input type="email" id="id_nombre" class="form-control " aria-describedby="emailHelp">
 
-    <div class="row">
-        <div class="table-responsive">
-            <table class="table align-items-center mb-0">
-                <thead>
-                <tr>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                    <tr>
 
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
-                        Permiso
-                    </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
-                        Modelo
-                    </th>
-                    <th class=" text-uppercase text-secondary text-xxs font-weight-bolder">
-                        Tipo
-                    </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
-                        Acciones
-                    </th>
-                </tr>
-                </thead>
-                <tbody class="datosTabla" id="id_datos_body_table">
-                <tr>
-                    <td colspan="10" class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">No ha
-                        seleccionado ninguno
-                    </td>
-                </tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
+                            Permiso
+                        </th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
+                            Modelo
+                        </th>
+                        <th class=" text-uppercase text-secondary text-xxs font-weight-bolder">
+                            Tipo
+                        </th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
+                            Acciones
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="datosTabla" id="id_datos_body_table">
+                    <tr>
+                        <td colspan="10" class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">No
+                            ha
+                            seleccionado ninguno
+                        </td>
+                    </tr>
 
 
-                </tbody>
+                    </tbody>
 
-                <tfoot class="table align-items-center  ">
-                <tr>
-                    <td colspan="10">
+                    <tfoot class="table align-items-center  ">
+                    <tr>
+                        <td colspan="10">
 
-                        <a href="javascript:;" class="btn bg-gradient-dark  btn-sm btn-icon mb-0 " id="add"
-                           data-toggle="modal" data-target="#new-board-modal">
-                            <i class="material-icons text-lg">add</i>
-                        </a>
-                    </td>
-                </tr>
-                </tfoot>
+                            <a href="javascript:;" class="btn bg-gradient-dark  btn-sm btn-icon mb-0 " id="add"
+                               data-toggle="modal" data-target="#new-board-modal">
+                                <i class="material-icons text-lg">add</i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tfoot>
 
-            </table>
+                </table>
+            </div>
         </div>
     </div>
-
 {% endblock %}
 {% block nombre_boton_submit %}Guardar{% endblock %}
 {% block location_href_destino %}{% url 'conf_grupo' %}{% endblock %}
