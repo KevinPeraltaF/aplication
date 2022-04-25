@@ -8,11 +8,14 @@
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}">
 {% endblock %}
+{% block contenido_extra %}
+
+{% endblock %}
 {% block news_inputs_form %}
 
 {% endblock %}
 {% block nombre_boton_submit %}Guardar{% endblock %}
-{% block location_href_destino %}{% url 'conf_modulo'%}{% endblock %}
+{% block location_href_destino %}{% url 'conf_modulo' %}{% endblock %}
 {% block botones_extras %}{% endblock %}
 
 

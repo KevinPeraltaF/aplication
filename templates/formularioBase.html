@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block contenido %}
+    {% block contenido_extra %}
 
+    {% endblock %}
 
     <div class="mx-auto {% block class_extra_card_formulario %}{% endblock %} ">
 
@@ -83,6 +85,7 @@
                             });
 
                         } else {
+                            console.log(data.repetidos)
                             var myToast = $.toast({
                                 heading: "error",
                                 text: data.mensaje,
