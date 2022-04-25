@@ -78,8 +78,7 @@
                             ).then((result) => {
                                 /* Read more about isConfirmed, isDenied below */
                                 if (result.isConfirmed) {
-                                    location.href = "{% block location_href_destino %}
-                                        /{% endblock %}" + ((data.id) ? data.id : "");
+                                    location.href = "{% block location_href_destino %} /{% endblock %}" + ((data.id) ? data.id : "");
                                 }
                             });
 

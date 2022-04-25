@@ -19,12 +19,12 @@
 
                             {% csrf_token %}
                             <div class="input-group input-group-static mb-4">
-                                <label class="form-label">Usuario</label>
+                                <label class="form-label"  for="id_usuario">Usuario</label>
                                 <input type="text" id="id_usuario" autocomplete="off" class="form-control">
                             </div>
 
                             <div class="input-group input-group-static mb-4">
-                                <label class="form-label">Contraseña</label>
+                                <label class="form-label" for="id_clave">Contraseña</label>
                                 <input type="password" autocomplete="off" id="id_clave" class="form-control">
                             </div>
 
@@ -45,12 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-    </div>
-    <div class="ps__rail-y" style="top: 0px; right: 0px;">
-        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-    </div>
+
 {% endblock %}
 
 {% block script %}
