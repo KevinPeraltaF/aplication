@@ -83,7 +83,7 @@
                             });
 
                         } else {
-                            $.toast({
+                            var myToast = $.toast({
                                 heading: "error",
                                 text: data.mensaje,
                                 showHideTransition: 'slide',
@@ -91,7 +91,9 @@
                                 position: 'top-right',
                                 stack: false
                             });
+
                             if (data.repetidos.length > 0) {
+                                myToast.reset('all')
                                 repetidos = data.repetidos;
                                 $.toast({
                                     heading: data.mensaje,
