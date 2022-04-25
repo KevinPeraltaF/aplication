@@ -52,7 +52,29 @@ def view_modulo(request):
 
             if peticion == 'edit_modulo':
                 try:
-                    pass
+                    form = ModuloForm(request.POST, request.FILES)
+                    form.editar()
+                    if form.is_valid():
+                        campos_repetidos = list()
+                        if Modulo.objects.values('id').filter(nombre=form.cleaned_data['nombre']).exclude(pk=request.POST['id']).exists():
+                            campos_repetidos.append(form['nombre'].name)
+                        if Modulo.objects.values('id').filter(ruta=form.cleaned_data['ruta']).exclude(pk=request.POST['id']).exists():
+                            campos_repetidos.append(form['ruta'].name)
+                        if campos_repetidos:
+                            return JsonResponse({"respuesta": False, "mensaje": "registro ya existe.",
+                                                     'repetidos': campos_repetidos})
+                        modulo = Modulo.objects.get(pk=request.POST['id'])
+                        modulo.nombre = form.cleaned_data['nombre']
+                        modulo.descripcion = form.cleaned_data['descripcion']
+                        if form.cleaned_data['icono']:
+                            modulo.icono = form.cleaned_data['icono']
+                        else:
+                            modulo.icono = request.POST['imagen_ruta']
+                        modulo.ruta = form.cleaned_data['ruta']
+                        modulo.activo = form.cleaned_data['activo']
+                        modulo.save()
+
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
 
 
                 except Exception as ex:
