@@ -1,6 +1,6 @@
 import sys
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse
@@ -35,6 +35,7 @@ def view_grupo(request):
                     data['titulo'] = 'Agregar nuevo grupo'
                     data['titulo_formulario'] = 'Formulario de registro de grupos'
                     data['peticion'] = 'edit_grupo'
+                    data['permisos'] =Permission.objects.all()
 
                     return render(request, "conf_sistema/add_grupo.html", data)
                 except Exception as ex:

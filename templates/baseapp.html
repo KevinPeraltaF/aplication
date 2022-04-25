@@ -135,10 +135,14 @@
 
             <!-- /.row -->
             <div class="">
-                  <div class="span12 text-end mt-2">
-            <a class="btn btn-sm btn-icon  btn-2 btn-outline-dark" href="{% if request.path == '/' %} /  {% else %}javascript:history.back(){% endif %}"><span class="fa fa-arrow-left"></span> </a>
-        </div>
+                <div class="span12 text-end mt-2">
+                    <a class="btn btn-sm btn-icon  btn-2 btn-outline-dark"
+                       href="{% if request.path == '/' %} /  {% else %}javascript:history.back(){% endif %}"><span
+                            class="fa fa-arrow-left"></span> </a>
+                </div>
                 {% block contenido %}
+                {% endblock %}
+                {% block modals %}
                 {% endblock %}
 
 
@@ -165,6 +169,7 @@
 <script src="{% static 'js/componentes.js' %}"></script>
 <script src="{% static 'js/jquery.blockUI.js' %}"></script>
 <script src="{% static 'js/jquery.toast.min.js' %}"></script>
+<script src="{% static 'js/jquery.modal.js' %}"></script>
 <script>
 
 
