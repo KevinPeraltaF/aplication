@@ -1,3 +1,4 @@
+import json
 import sys
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, Permission
@@ -26,6 +27,12 @@ def view_grupo(request):
 
                 except Exception as ex:
                     pass
+            if peticion == 'add_grupo':
+                try:
+                    items = json.loads(request.POST['items'])
+
+                except Exception as ex:
+                    pass
         return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta."})
     else:
         if 'peticion' in request.GET:
@@ -34,7 +41,7 @@ def view_grupo(request):
                 try:
                     data['titulo'] = 'Agregar nuevo grupo'
                     data['titulo_formulario'] = 'Formulario de registro de grupos'
-                    data['peticion'] = 'edit_grupo'
+                    data['peticion'] = 'add_grupo'
                     data['permisos'] =Permission.objects.all()
 
                     return render(request, "conf_sistema/add_grupo.html", data)

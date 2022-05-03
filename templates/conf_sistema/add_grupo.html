@@ -68,7 +68,7 @@
         <div class="modal-dialog modal-fullscreen ">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title text-uppercase">Seleccione los permisos que desea agregar</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -102,7 +102,7 @@
                                 <td class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">{{ fila.content_type.model }}</td>
                                 <td class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">{{ fila.codename }}</td>
                                 <td class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">
-                                    <input type='checkbox' class="items"
+                                    <input type='checkbox' class="itemsseleccionados"
                                            id={{ fila.pk }}
                                                    name='{{ fila.name }}'
                                            app_label='{{ fila.content_type.app_label }}'
@@ -140,6 +140,7 @@
     <script>
         var items = [];
         $('#add').click(function () {
+            $(".itemsseleccionados").prop('checked', false);
             $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
         });
 
@@ -173,26 +174,29 @@
                 $("#bodyItems").empty();
             }
 
-            $(".items").each(function () {
+            $(".itemsseleccionados").each(function () {
                 if ($(this).is(":checked")) {
                     var _id = $(this).attr("id");
                     var _name = $(this).attr("name");
                     var _app_label = $(this).attr("app_label");
                     var _model = $(this).attr("model");
                     var _codename = $(this).attr("codename");
+                    if ($("#item_" + _id).length == 0) {
+                        $("#bodyItems").append(
+                            "<tr id='item_" + _id + "'>" +
+                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center' >" + _name + "</td>" +
+                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _app_label + "</td>" +
+                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _model + "</td>" +
+                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _codename + "</td>" +
+                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" +
+                            "<a  href='javascript:;' class='eliminar_fila' ta-bs-toggle='tooltip' data-bs-original-title='Eliminar Item' id='" + _id + "'>" +
+                            "<i class='material-icons '>delete</i>" +
+                            "</a>" +
+                            "</td>" +
+                            "</tr>");
 
-                    $("#bodyItems").append(
-                        "<tr id='item_" + _id + "'>" +
-                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center' >" + _name + "</td>" +
-                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _app_label + "</td>" +
-                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _model + "</td>" +
-                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _codename + "</td>" +
-                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" +
-                        "<a  href='javascript:;' class='eliminar_fila' ta-bs-toggle='tooltip' data-bs-original-title='Eliminar Item' id='" + _id + "'>" +
-                        "<i class='material-icons '>delete</i>" +
-                        "</a>" +
-                        "</td>" +
-                        "</tr>");
+
+                    }
 
 
                 }

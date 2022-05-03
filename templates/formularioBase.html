@@ -28,9 +28,9 @@
                             </div>
 
                         {% endfor %}
-                    {% block news_inputs_form %}
-                    
-                    {% endblock %}
+                        {% block news_inputs_form %}
+
+                        {% endblock %}
 
                         <div class="d-flex justify-content-end ">
                             <a href="javascript:history.back()" name="button" class="btn btn-light m-0">Cancelar</a>
@@ -63,6 +63,12 @@
                 var forms = $('#formulario_data_enviar')[0];
                 var formData = new FormData(forms);
 
+                try {
+                    formData.append('items', JSON.stringify(items))
+                } catch (e) {
+                    console.log(e.message);
+                }
+
                 $.ajax({
                     url: '{{request.path}}',
                     type: 'POST',
@@ -80,12 +86,12 @@
                             ).then((result) => {
                                 /* Read more about isConfirmed, isDenied below */
                                 if (result.isConfirmed) {
-                                    location.href = "{% block location_href_destino %} /{% endblock %}" + ((data.id) ? data.id : "");
+                                    location.href = "{% block location_href_destino %}
+                                         /{% endblock %}" + ((data.id) ? data.id : "");
                                 }
                             });
 
                         } else {
-                            console.log(data.repetidos)
                             var myToast = $.toast({
                                 heading: "error",
                                 text: data.mensaje,
@@ -94,19 +100,20 @@
                                 position: 'top-right',
                                 stack: false
                             });
-                            console.log(data.repetidos)
-                            if (data.repetidos.length > 0) {
-                                myToast.reset('all')
-                                repetidos = data.repetidos;
-                                $.toast({
-                                    heading: data.mensaje,
-                                    text: repetidos,
-                                    showHideTransition: 'slide',
-                                    icon: 'info',
-                                    position: 'top-right',
-                                    stack: false
-                                });
+                            if (data.repetidos) {
+                                if (data.repetidos.length > 0) {
+                                    myToast.reset('all')
+                                    repetidos = data.repetidos;
+                                    $.toast({
+                                        heading: data.mensaje,
+                                        text: repetidos,
+                                        showHideTransition: 'slide',
+                                        icon: 'info',
+                                        position: 'top-right',
+                                        stack: false
+                                    });
 
+                                }
                             }
 
                         }
