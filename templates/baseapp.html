@@ -38,6 +38,7 @@
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 mt-3 border-radius-xl bg-white">
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
+
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     {% for ruta in lista_url_ruta %}
                         <li class="breadcrumb-item  {% if ruta.0 == request.path %} text-dark active {% else %}text-dark opacity-5{% endif %}"
@@ -45,6 +46,7 @@
                             <a href="{{ ruta.0 }}">{{ ruta.1 }}</a></li>
                     {% endfor %}
                 </ol>
+
                 <h6 class="font-weight-bolder mb-0">{{ titulo }}</h6>
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4">
@@ -63,7 +65,7 @@
                     <li class="nav-item px-3 d-flex align-items-center">
                         <a href="javascript:;" class=" p-0" id="dropdownMenuButton"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-bell cursor-pointer" aria-hidden="true"></i>
+                            <i class="fa fa-bell cursor-pointer"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notificaciones" data-container="body" data-animation="true"aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                             aria-labelledby="dropdownMenuButton">
@@ -110,19 +112,25 @@
                     <li class="nav-item dropdown pe-2 d-flex align-items-center">
                         <a href="javascript:;" class=" p-0" id="dropdownMenuButton"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user me-sm-1"></i>
+                            <i class="fa fa-user me-sm-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Usuario" data-container="body" data-animation="true"></i>
                         </a>
                         <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                             aria-labelledby="dropdownMenuButton">
 
 
-                             <ol> <a href="{% url 'logout_usuario' %}" class="logout"><i class="fa fa-power-off"></i>
+                             <ol> <a href="{% url 'logout_usuario' %}" class="logout"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar Sesión" data-container="body" data-animation="true"><i class="fa fa-power-off"></i>
                                     Cerrar Sesión</a></ol>
 
 
 
 
                         </ul>
+
+                    </li>
+                    <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                         <a class="  me-sm-1 btn-tooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Atrás" data-container="body" data-animation="true"
+                           href="{% if request.path == '/' %} /  {% else %}javascript:history.back(){% endif %}"><span
+                                class="fa fa-arrow-left"></span></a>
                     </li>
                 </ul>
             </div>
@@ -136,9 +144,7 @@
             <!-- /.row -->
             <div class="">
                 <div class="span12 text-end mt-2">
-                    <a class="btn btn-sm btn-icon  btn-2 btn-outline-dark"
-                       href="{% if request.path == '/' %} /  {% else %}javascript:history.back(){% endif %}"><span
-                            class="fa fa-arrow-left"></span> </a>
+                    <br>
                 </div>
                 {% block contenido %}
                 {% endblock %}
