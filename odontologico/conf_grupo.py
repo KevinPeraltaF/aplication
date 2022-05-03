@@ -6,6 +6,8 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import get_template
+
 from odontologico.funciones import add_data_aplication
 
 
@@ -54,6 +56,15 @@ def view_grupo(request):
                     data['permisos'] =Permission.objects.all()
 
                     return render(request, "conf_sistema/add_grupo.html", data)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'ver_permisos':
+                try:
+                    grupo =Group.objects.get(pk=request.GET['pk'])
+                    data['grupo'] = grupo
+                    template = get_template("conf_sistema/modal/ver_permisos_grupo.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
         else:
