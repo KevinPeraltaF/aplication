@@ -37,10 +37,10 @@
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
                             TIPO
                         </th>
-                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder"></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder"></th>
                     </tr>
                     </thead>
-                    <tbody class="datosTabla" id="id_datos_body_table">
+                    <tbody class="" id="bodyItems">
                     <tr>
                         <td colspan="10" class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">No
                             ha seleccionado ninguno
@@ -51,8 +51,8 @@
 
 
                 </table>
-                <div><a class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" href="javascript:;" id="add" type="button"
-                       title="Next">Adicionar</a></div>
+                <div><a class="btn bg-gradient-dark btn-sm" href="javascript:;" id="add" type="button"
+                        title="Next">Adicionar</a></div>
             </div>
         </div>
     </div>
@@ -102,10 +102,12 @@
                                 <td class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">{{ fila.content_type.model }}</td>
                                 <td class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">{{ fila.codename }}</td>
                                 <td class="text-uppercase text-secondary text-xxs font-weight-bolde text-center">
-                                    <input type='checkbox' id='{{ fila.name }}'
-                                           mat='{{ fila.content_type.app_label }}'
-                                           mat='{{ fila.content_type.model }}'
-                                           prop='{{ fila.codename }}'
+                                    <input type='checkbox' class="items"
+                                           id={{ fila.pk }}
+                                                   name='{{ fila.name }}'
+                                           app_label='{{ fila.content_type.app_label }}'
+                                           model='{{ fila.content_type.model }}'
+                                           codename='{{ fila.codename }}'
 
                                            class='seleccionado'>
                                 </td>
@@ -123,7 +125,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-primary" id="agregar">Agregar</button>
                 </div>
             </div>
         </div>
@@ -136,9 +138,71 @@
 {% block js %}
 
     <script>
+        var items = [];
         $('#add').click(function () {
             $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
         });
+
+        actualizar_items = function () {
+            items = [];
+            $(".eliminar_fila").each(function () {
+                id = $(this).attr("id");
+                var item = {
+                    id:id
+                };
+                items.push(item);
+            });
+        };
+
+        eliminar_items = function () {
+                $(".eliminar_fila").unbind();
+                $(".eliminar_fila").click(function () {
+                    var _id = $(this).attr('id');
+                    $('#item_' + _id).delete();
+                    actualizar_items();
+                    if ($(".eliminar_fila").length == 0) {
+                        $("#bodyItems").append(" <tr><td colspan='10' class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>No ha seleccionado ninguno</td> </tr>");
+                    }
+                });
+            };
+
+
+        $("#agregar").click(function () {
+            $(".items").each(function () {
+
+                if ($(".eliminar_fila").length == 0) {
+                    $("#bodyItems").empty();
+                }
+
+                if ($(this).is(":checked")) {
+                    var _id = $(this).attr("id");
+                    var _name = $(this).attr("name");
+                    var _app_label = $(this).attr("app_label");
+                    var _model = $(this).attr("model");
+                    var _codename = $(this).attr("codename");
+
+                    $("#bodyItems").append(
+                        "<tr id='item_" + _id + "'>" +
+                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center' >" + _name + "</td>" +
+                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _app_label + "</td>" +
+                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _model + "</td>" +
+                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _codename + "</td>" +
+                        "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" +
+                        "<a  href='javascript:;' class='eliminar_fila' ta-bs-toggle='tooltip' data-bs-original-title='Eliminar Item' id='" + _id + "'>" +
+                        "<i class='material-icons '>delete</i>" +
+                        "</a>" +
+                        "</td>" +
+                        "</tr>");
+
+
+
+
+                }
+            });
+            actualizar_items();
+            $("#modalGeneric").modal('hide');
+        });
+
     </script>
 
 {% endblock %}
