@@ -6,16 +6,24 @@
 {% block contenido_extra %}
 
 {% endblock %}
+{% block lista_de_items_many_to_many %}
+    try {
+    formData.append('items', JSON.stringify(items))
+    } catch (e) {
+    console.log(e.message);
+    }
+{% endblock %}
 {% block titulo %}{{ titulo_formulario }}{% endblock %}
 {% block class_extra_card_formulario %}col-lg-8 col-md-10{% endblock %}
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}">
 {% endblock %}
+
 {% block news_inputs_form %}
     <div class="mt-3">
         <div class="input-group input-group-static mb-4">
             <label class="form-label" for="id_nombre">Nombre</label>
-            <input type="text" autocomplete="off" id="id_nombre" class="form-control">
+            <input type="text" autocomplete="off" id="id_nombre" class="form-control" required>
         </div>
         <input type="email" id="id_nombre" class="form-control " aria-describedby="emailHelp">
 
@@ -63,7 +71,7 @@
 
 {% block modals %}
     <!-- Modal -->
-    <div class="modal fade" id="modalGeneric" >
+    <div class="modal fade" id="modalGeneric">
 
         <div class="modal-dialog modal-fullscreen ">
             <div class="modal-content">
@@ -149,23 +157,23 @@
             $(".eliminar_fila").each(function () {
                 id = $(this).attr("id");
                 var item = {
-                    id:id
+                    id: id
                 };
                 items.push(item);
             });
         };
 
         eliminar_items = function () {
-                $(".eliminar_fila").unbind();
-                $(".eliminar_fila").click(function () {
-                    var _id = $(this).attr('id');
-                    $('#item_' + _id).remove();
-                    actualizar_items();
-                    if ($(".eliminar_fila").length == 0) {
-                        $("#bodyItems").append(" <tr><td colspan='10' class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>No ha seleccionado ninguno</td> </tr>");
-                    }
-                });
-            };
+            $(".eliminar_fila").unbind();
+            $(".eliminar_fila").click(function () {
+                var _id = $(this).attr('id');
+                $('#item_' + _id).remove();
+                actualizar_items();
+                if ($(".eliminar_fila").length == 0) {
+                    $("#bodyItems").append(" <tr><td colspan='10' class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>No ha seleccionado ninguno</td> </tr>");
+                }
+            });
+        };
 
 
         $("#agregar").click(function () {

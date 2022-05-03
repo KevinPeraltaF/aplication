@@ -62,12 +62,9 @@
             if (!$form.valid) {
                 var forms = $('#formulario_data_enviar')[0];
                 var formData = new FormData(forms);
+                {% block lista_de_items_many_to_many %}
 
-                try {
-                    formData.append('items', JSON.stringify(items))
-                } catch (e) {
-                    console.log(e.message);
-                }
+                {% endblock %}
 
                 $.ajax({
                     url: '{{request.path}}',
@@ -86,8 +83,7 @@
                             ).then((result) => {
                                 /* Read more about isConfirmed, isDenied below */
                                 if (result.isConfirmed) {
-                                    location.href = "{% block location_href_destino %}
-                                         /{% endblock %}" + ((data.id) ? data.id : "");
+                                    location.href = "{% block location_href_destino %}/{% endblock %}" + ((data.id) ? data.id : "");
                                 }
                             });
 
