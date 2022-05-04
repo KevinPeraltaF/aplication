@@ -17,7 +17,7 @@
 {% block class_extra_card_formulario %}col-lg-8 col-md-10{% endblock %}
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}">
-     <input type="hidden" name="id" value="{{ grupo.pk }}">
+    <input type="hidden" name="id" value="{{ grupo.pk }}">
 {% endblock %}
 
 {% block news_inputs_form %}
@@ -117,7 +117,7 @@
                             <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">Modelo
                             </th>
                             <th class="text-uppercase text-secondary text-center text-xxs font-weight-bolder">Tipo</th>
-                            <th></th>
+                            <th class="text-center"><input type="checkbox" id="todos"></th>
                         </tr>
                         </thead>
                         <tbody id="">
@@ -166,6 +166,17 @@
 
     <script>
         var items = [];
+
+
+        $("#todos").click(function () {
+            if ($(this).is(":checked")) {
+                $(".itemsseleccionados").prop('checked', true);
+            } else {
+                $(".itemsseleccionados").prop('checked', false);
+            }
+
+        });
+
         $('#add').click(function () {
             $(".itemsseleccionados").prop('checked', false);
             $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
