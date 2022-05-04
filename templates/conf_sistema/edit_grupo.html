@@ -105,9 +105,9 @@
                         <label for="" class="form-label">Buscador</label>
                         <input type="search"
                                class="form-control"
-                               id="FilterTextBox" name="FilterTextBox">
+                                id="buscador_tabla" name="buscador_tabla">
                     </div>
-                    <table class="table align-items-center mb-0">
+                    <table class="table align-items-center mb-0"  id="tabla_lista">
                         <thead>
                         <tr>
 
@@ -167,81 +167,112 @@
     <script>
         var items = [];
 
-
-        $("#todos").click(function () {
-            if ($(this).is(":checked")) {
-                $(".itemsseleccionados").prop('checked', true);
-            } else {
-                $(".itemsseleccionados").prop('checked', false);
-            }
-
-        });
-
-        $('#add').click(function () {
-            $(".itemsseleccionados").prop('checked', false);
-            $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
-        });
-
-        actualizar_items = function () {
-            items = [];
-            $(".eliminar_fila").each(function () {
-                var item = {
-                    id: $(this).attr("id")
-                };
-                items.push(item);
-            });
-        };
-
-        eliminar_items = function () {
-            $(".eliminar_fila").unbind();
-            $(".eliminar_fila").click(function () {
-                var _id = $(this).attr('id');
-                $('#item_' + _id).remove();
-                actualizar_items();
-                if ($(".eliminar_fila").length == 0) {
-                    $("#bodyItems").append(" <tr><td colspan='10' class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>No ha seleccionado ninguno</td> </tr>");
-                }
-            });
-        };
-
-        $("#agregar").click(function () {
-
-            if ($(".eliminar_fila").length == 0) {
-                $("#bodyItems").empty();
-            }
-
-            $(".itemsseleccionados").each(function () {
+        $(function () {
+            $("#todos").click(function () {
                 if ($(this).is(":checked")) {
-                    var _id = $(this).attr("id");
-                    var _name = $(this).attr("name");
-                    var _app_label = $(this).attr("app_label");
-                    var _model = $(this).attr("model");
-                    var _codename = $(this).attr("codename");
-                    if ($("#item_" + _id).length == 0) {
-                        $("#bodyItems").append(
-                            "<tr id='item_" + _id + "'>" +
-                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center' >" + _name + "</td>" +
-                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _app_label + "</td>" +
-                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _model + "</td>" +
-                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _codename + "</td>" +
-                            "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" +
-                            "<a  href='javascript:;' class='eliminar_fila' ta-bs-toggle='tooltip' data-bs-original-title='Eliminar Item' id='" + _id + "'>" +
-                            "<i class='material-icons '>delete</i>" +
-                            "</a>" +
-                            "</td>" +
-                            "</tr>");
+                    $(".itemsseleccionados").prop('checked', true);
+                } else {
+                    $(".itemsseleccionados").prop('checked', false);
+                }
+
+            });
+
+            $('#add').click(function () {
+                $(".itemsseleccionados").prop('checked', false);
+                 $('#buscador_tabla').val('');
+                 $("#todos").prop('checked', false);
+                $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+            });
+
+            actualizar_items = function () {
+                items = [];
+                $(".eliminar_fila").each(function () {
+                    var item = {
+                        id: $(this).attr("id")
+                    };
+                    items.push(item);
+                });
+            };
+
+            eliminar_items = function () {
+                $(".eliminar_fila").unbind();
+                $(".eliminar_fila").click(function () {
+                    var _id = $(this).attr('id');
+                    $('#item_' + _id).remove();
+                    actualizar_items();
+                    if ($(".eliminar_fila").length == 0) {
+                        $("#bodyItems").append(" <tr><td colspan='10' class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>No ha seleccionado ninguno</td> </tr>");
+                    }
+                });
+            };
+
+            $("#agregar").click(function () {
+
+                if ($(".eliminar_fila").length == 0) {
+                    $("#bodyItems").empty();
+                }
+
+                $(".itemsseleccionados").each(function () {
+                    if ($(this).is(":checked")) {
+                        var _id = $(this).attr("id");
+                        var _name = $(this).attr("name");
+                        var _app_label = $(this).attr("app_label");
+                        var _model = $(this).attr("model");
+                        var _codename = $(this).attr("codename");
+                        if ($("#item_" + _id).length == 0) {
+                            $("#bodyItems").append(
+                                "<tr id='item_" + _id + "'>" +
+                                "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center' >" + _name + "</td>" +
+                                "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _app_label + "</td>" +
+                                "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _model + "</td>" +
+                                "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" + _codename + "</td>" +
+                                "<td class='text-uppercase text-secondary text-xxs font-weight-bolde text-center'>" +
+                                "<a  href='javascript:;' class='eliminar_fila' ta-bs-toggle='tooltip' data-bs-original-title='Eliminar Item' id='" + _id + "'>" +
+                                "<i class='material-icons '>delete</i>" +
+                                "</a>" +
+                                "</td>" +
+                                "</tr>");
+
+                        }
+
 
                     }
-
-
-                }
+                });
+                eliminar_items();
+                actualizar_items();
+                $("#modalGeneric").modal('hide');
             });
             eliminar_items();
             actualizar_items();
-            $("#modalGeneric").modal('hide');
+
+            $('#buscador_tabla').keyup(function () {
+
+                var tabla = document.getElementById('tabla_lista');
+                var busqueda = document.getElementById('buscador_tabla').value.toLowerCase();
+                var cellsOfRow = "";
+                var found = false;
+                var compareWith = "";
+                for (var i = 1; i < tabla.rows.length; i++) {
+                    cellsOfRow = tabla.rows[i].getElementsByTagName('td');
+                    found = false;
+                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
+                        compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                        if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1)) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tabla.rows[i].style.display = '';
+                    } else {
+                        tabla.rows[i].style.display = 'none';
+                    }
+                }
+
+
+            });
+
+
         });
-        eliminar_items();
-        actualizar_items();
 
     </script>
 
