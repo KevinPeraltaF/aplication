@@ -31,15 +31,40 @@ def view_grupo(request):
                     pass
             if peticion == 'add_grupo':
                 try:
+                    campos_repetidos = list()
                     items = json.loads(request.POST['items'])
                     nombre = request.POST['nombre']
+                    if Group.objects.values('id').filter(name=nombre).exists():
+                        campos_repetidos.append(nombre)
+                        return JsonResponse( {"respuesta": False, "mensaje": "registro ya existe.", 'repetidos': campos_repetidos})
+
                     registro = Group(
                         name=nombre
                     )
                     registro.save()
-                    for item in items:
-                        registro.permissions.add(item['id'])
+                    if not len(items) == 0:
+                        for item in items:
+                            registro.permissions.add(item['id'])
                     return JsonResponse({"respuesta": True, "mensaje": "Registro guardado correctamente."})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'edit_grupo':
+                try:
+                    campos_repetidos = list()
+                    items = json.loads(request.POST['items'])
+                    nombre = request.POST['nombre']
+                    if Group.objects.values('id').filter(name=nombre).exclude(pk=request.POST['id']).exists():
+                        campos_repetidos.append(nombre)
+                        return JsonResponse( {"respuesta": False, "mensaje": "registro ya existe.", 'repetidos': campos_repetidos})
+
+                    grupo = Group.objects.get(pk=request.POST['id'])
+                    grupo.name = nombre
+                    grupo.save()
+                    grupo.permissions.clear()
+                    for item in items:
+                        grupo.permissions.add(item['id'])
+                    return JsonResponse({"respuesta": True, "mensaje": "Registro modificado correctamente."})
                 except Exception as ex:
                     pass
 
@@ -52,7 +77,7 @@ def view_grupo(request):
                     data['titulo'] = 'Agregar nuevo grupo'
                     data['titulo_formulario'] = 'Formulario de registro de grupos'
                     data['peticion'] = 'add_grupo'
-                    data['permisos'] =Permission.objects.all()
+                    data['permisos'] = Permission.objects.all()
 
                     return render(request, "conf_sistema/add_grupo.html", data)
                 except Exception as ex:
@@ -60,7 +85,7 @@ def view_grupo(request):
 
             if peticion == 'ver_permisos':
                 try:
-                    grupo =Group.objects.get(pk=request.GET['id'])
+                    grupo = Group.objects.get(pk=request.GET['id'])
                     data['grupo'] = grupo
                     template = get_template("conf_sistema/modal/ver_permisos_grupo.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
