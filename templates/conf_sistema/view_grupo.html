@@ -53,8 +53,7 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
                                             aria-labelledby="dropdownMarketingCard" style="">
-                                            <li><a class="dropdown-item border-radius-md"
-                                                   href="?peticion=edit_modulo&id={{ fila.pk }}">Editar</a></li>
+                                            <li><a class="dropdown-item border-radius-md"  href="?peticion=edit_grupo&id={{ fila.pk }}">Editar</a></li>
                                             <li><a class="dropdown-item border-radius-md"
                                                    href="javascript:;" onclick="ventana_modal('ver_permisos','{{ fila.pk }}','Lista de permisos disponibles')">Ver Permisos</a></li>
                                             <li>
@@ -132,7 +131,7 @@
                 dataType: "json",
                 data: {
                     'peticion': peticion,
-                    'pk': pk,
+                    'id': pk,
                 },
                 success: function (data) {
                     if (data.respuesta === true) {

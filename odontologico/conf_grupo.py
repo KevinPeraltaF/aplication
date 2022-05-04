@@ -60,12 +60,24 @@ def view_grupo(request):
 
             if peticion == 'ver_permisos':
                 try:
-                    grupo =Group.objects.get(pk=request.GET['pk'])
+                    grupo =Group.objects.get(pk=request.GET['id'])
                     data['grupo'] = grupo
                     template = get_template("conf_sistema/modal/ver_permisos_grupo.html")
                     return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
+
+            if peticion == 'edit_grupo':
+                try:
+                    data['titulo'] = 'Editar Grupo'
+                    data['grupo'] = Group.objects.get(pk=request.GET['id'])
+                    data['permisos'] = Permission.objects.all()
+                    data['titulo_formulario'] = 'Formulario de editar Grupo'
+                    data['peticion'] = 'edit_grupo'
+                    return render(request, "conf_sistema/edit_grupo.html", data)
+                except Exception as ex:
+                    pass
+
         else:
             try:
                 data['titulo'] = 'Configuración de grupos'
