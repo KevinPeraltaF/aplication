@@ -34,16 +34,15 @@ def view_grupo(request):
                     items = json.loads(request.POST['items'])
                     nombre = request.POST['nombre']
                     registro = Group(
-                        name= nombre
+                        name=nombre
                     )
                     registro.save()
                     for item in items:
                         registro.permissions.add(item['id'])
                     return JsonResponse({"respuesta": True, "mensaje": "Registro guardado correctamente."})
-
-
                 except Exception as ex:
                     pass
+
         return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta."})
     else:
         if 'peticion' in request.GET:
