@@ -179,7 +179,6 @@
 
             $('#add').click(function () {
                 $(".itemsseleccionados").prop('checked', false);
-                 $('#buscador_tabla').val('');
                  $("#todos").prop('checked', false);
                 $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
             });
@@ -245,29 +244,26 @@
             eliminar_items();
             actualizar_items();
 
-            $('#buscador_tabla').keyup(function () {
+             $('input[type=search]').on('search', function () {
+                // Declare variables
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("buscador_tabla");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("tabla_lista");
+                tr = table.getElementsByTagName("tr");
 
-                var tabla = document.getElementById('tabla_lista');
-                var busqueda = document.getElementById('buscador_tabla').value.toLowerCase();
-                var cellsOfRow = "";
-                var found = false;
-                var compareWith = "";
-                for (var i = 1; i < tabla.rows.length; i++) {
-                    cellsOfRow = tabla.rows[i].getElementsByTagName('td');
-                    found = false;
-                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
-                        compareWith = cellsOfRow[j].innerHTML.toLowerCase();
-                        if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1)) {
-                            found = true;
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
                         }
                     }
-                    if (found) {
-                        tabla.rows[i].style.display = '';
-                    } else {
-                        tabla.rows[i].style.display = 'none';
-                    }
                 }
-
 
             });
 

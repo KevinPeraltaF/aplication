@@ -83,7 +83,7 @@
                 <div class="modal-body">
                     <div class="input-group input-group-outline mb-3">
                         <label for="" class="form-label">Buscador</label>
-                        <input type="search"
+                        <input type="search" accesskey="k"
                                class="form-control"
                                id="buscador_tabla" name="buscador_tabla">
                     </div>
@@ -164,7 +164,8 @@
             $('#add').click(function () {
                 $(".itemsseleccionados").prop('checked', false);
                 $("#todos").prop('checked', false);
-                $('#buscador_tabla').val('')
+                $('#buscador_tabla').find('input[type=search]').val('');
+
                 $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
             });
 
@@ -231,31 +232,30 @@
                 $("#modalGeneric").modal('hide');
             });
 
-            $('#buscador_tabla').keyup(function () {
 
-                var tabla = document.getElementById('tabla_lista');
-                var busqueda = document.getElementById('buscador_tabla').value.toLowerCase();
-                var cellsOfRow = "";
-                var found = false;
-                var compareWith = "";
-                for (var i = 1; i < tabla.rows.length; i++) {
-                    cellsOfRow = tabla.rows[i].getElementsByTagName('td');
-                    found = false;
-                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
-                        compareWith = cellsOfRow[j].innerHTML.toLowerCase();
-                        if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1)) {
-                            found = true;
+            $('input[type=search]').on('search', function () {
+                // Declare variables
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("buscador_tabla");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("tabla_lista");
+                tr = table.getElementsByTagName("tr");
+
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
                         }
-                    }
-                    if (found) {
-                        tabla.rows[i].style.display = '';
-                    } else {
-                        tabla.rows[i].style.display = 'none';
                     }
                 }
 
-
             });
+
 
         });
 
