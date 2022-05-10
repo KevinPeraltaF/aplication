@@ -58,6 +58,11 @@ def logout_usuario(request):
     logout(request)
     return HttpResponseRedirect("/login")
 
+def registrate(request):
+    global ex
+    data = {}
+
+    return render(request, "registration/registrate.html", data)
 
 @login_required(redirect_field_name='next', login_url='/login')
 @transaction.atomic()
