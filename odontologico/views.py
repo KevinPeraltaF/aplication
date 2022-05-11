@@ -8,6 +8,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from aplication import settings
+from odontologico.forms import RegistroUsuarioForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Modulo
 
@@ -61,6 +62,7 @@ def logout_usuario(request):
 def registrate(request):
     global ex
     data = {}
+    data['form']= RegistroUsuarioForm()
 
     return render(request, "registration/registrate.html", data)
 

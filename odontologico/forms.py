@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 def deshabilitar_campo(form, campo):
@@ -21,6 +23,34 @@ def habilitar_campo(form, campo):
 
 def campo_solo_lectura(form, campo):
     form.fields[campo].widget.attrs['readonly'] = True
+
+
+class RegistroUsuarioForm(UserCreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(RegistroUsuarioForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            self.fields['password1'].widget.attrs['class'] = "form-control"
+            self.fields['password2'].widget.attrs['class'] = "form-control"
+
+    email = forms.EmailField(label="Email", widget=forms.TextInput(attrs={'class': 'form-control', }))
+    nombre1 = forms.CharField(label="1er. Nombre", widget=forms.TextInput(attrs={'class': 'form-control', }))
+    nombre2 = forms.CharField(label="2do. Nombre", widget=forms.TextInput(attrs={'class': 'form-control', }))
+    apellido1 = forms.CharField(label="Apellido paterno", widget=forms.TextInput(attrs={'class': 'form-control', }))
+    apellido2 = forms.CharField(label="Apellido materno", widget=forms.TextInput(attrs={'class': 'form-control', }))
+
+    class Meta:
+        model = User
+        fields = ("username", "email",)
+
+        widgets = {
+            'username': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+
+                }
+            ),
+        }
 
 
 class ModuloForm(forms.Form):
