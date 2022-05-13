@@ -105,17 +105,17 @@
 
 {% block script %}
     <script>
-        $("#formularioaenviar").submit(function (ev) {
+        $("#formularioenviar").submit(function (ev) {
+            ev.preventDefault();
             $.ajax({
                 type: "POST",
                 url: {{ request.path }},
-                data: $('#formularioaenviar').serialize(),
+                data: $('#formularioenviar').serialize(),
                 dataType: 'json',
                 success: function (data) {
-                    alert('Datos enviados !!!');
                     if (data.respuesta === true) {
                         Swal.fire(
-                            'Envio de Datos',
+                            'Registro exitoso.',
                             data.mensaje,
                             'success'
                         ).then((result) => {

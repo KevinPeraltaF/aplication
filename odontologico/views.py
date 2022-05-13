@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 # Create your views here.
 from aplication import settings
@@ -98,10 +98,10 @@ def registrate(request):
                     persona=persona
                 )
                 paciente.save()
-                return redirect('/login/')
+                return JsonResponse({"respuesta": True, "mensaje": "A continuación ingrese con sus credenciales de acceso."})
 
             else:
-                return render(request, "registration/registrate.html", {'form': form,'data':data,})
+                return render(request, "registration/registrate.html", {'form': form})
         except Exception as ex:
             transaction.set_rollback(True)
             return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
