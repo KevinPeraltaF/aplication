@@ -15,22 +15,22 @@
                         </div>
                     </div>
                     <div class="card-body pb-3">
-                        <form role="form">
-
+                        <form method="POST" id="formularioenviar">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group input-group-static my-3  ">
-                                        {{ form.nombre1.errors }} {{ form.nombre1.label_tag }} {{ form.nombre1 }}
+                                        {{ form.nombre1.label_tag }} {{ form.nombre1 }}{{ form.nombre1.errors }}
                                         {% if form.nombre1.help_text %}
                                             <small id="help"
                                                    class="form-text text-muted">{{ form.nombre1.help_text|safe }}</small> {% endif %}
+
                                     </div>
                                 </div>
 
                                 <div class="col">
                                     <div class="input-group input-group-static my-3  ">
-                                        {{ form.nombre2.errors }} {{ form.nombre2.label_tag }} {{ form.nombre2 }}
+                                        {{ form.nombre2.label_tag }} {{ form.nombre2 }}{{ form.nombre2.errors }}
                                         {% if form.nombre2.help_text %}
                                             <small id="help"
                                                    class="form-text text-muted">{{ form.nombre2.help_text|safe }}</small> {% endif %}
@@ -40,7 +40,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group input-group-static my-3  ">
-                                        {{ form.apellido1.errors }} {{ form.apellido1.label_tag }} {{ form.apellido1 }}
+                                        {{ form.apellido1.label_tag }} {{ form.apellido1 }}{{ form.apellido1.errors }}
                                         {% if form.apellido1.help_text %}
                                             <small id="help"
                                                    class="form-text text-muted">{{ form.apellido1.help_text|safe }}</small> {% endif %}
@@ -49,7 +49,7 @@
 
                                 <div class="col">
                                     <div class="input-group input-group-static my-3  ">
-                                        {{ form.apellido2.errors }} {{ form.apellido2.label_tag }} {{ form.apellido2 }}
+                                        {{ form.apellido2.label_tag }} {{ form.apellido2 }}{{ form.apellido2.errors }}
                                         {% if form.apellido2.help_text %}
                                             <small id="help"
                                                    class="form-text text-muted">{{ form.apellido2.help_text|safe }}</small> {% endif %}
@@ -57,34 +57,34 @@
                                 </div>
                             </div>
                             <div class="input-group input-group-static my-3  ">
-                                {{ form.username.errors }} {{ form.username.label_tag }} {{ form.username }}
+                                {{ form.username.label_tag }} {{ form.username }}{{ form.username.errors }}
                                 {% if form.username.help_text %}
                                     <small id="help"
                                            class="form-text text-muted">{{ form.username.help_text|safe }}</small> {% endif %}
                             </div>
                             <div class="input-group input-group-static my-3  ">
-                                {{ form.email.errors }} {{ form.email.label_tag }} {{ form.email }}
+                                {{ form.email.label_tag }} {{ form.email }}{{ form.email.errors }}
                                 {% if form.email.help_text %}
                                     <small id="help"
                                            class="form-text text-muted">{{ form.email.help_text|safe }}</small> {% endif %}
                             </div>
                             <div class="input-group input-group-static my-3  ">
-                                {{ form.password1.errors }} {{ form.password1.label_tag }} {{ form.password1 }}
+                                {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
                                 {% if form.password1.help_text %}
                                     <small id="help"
                                            class="form-text text-muted">{{ form.password1.help_text|safe }}</small> {% endif %}
                             </div>
                             <div class="input-group input-group-static my-3  ">
-                                {{ form.password2.errors }} {{ form.password2.label_tag }} {{ form.password2 }}
+                                {{ form.password2.label_tag }} {{ form.password2 }}{{ form.password2.errors }}
                                 {% if form.password2.help_text %}
                                     <small id="help"
                                            class="form-text text-muted">{{ form.password2.help_text|safe }}</small> {% endif %}
                             </div>
 
-                         <div class="text-center">
-                                <a href="javascript:;" id="id_login_usuario"
-                                   class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Crear cuenta
-                                </a>
+                            <div class="text-center">
+                                <button id="enviar_registro_usuario" type="submit"
+                                        class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Crear cuenta
+                                </button>
                             </div>
 
                         </form>
@@ -105,6 +105,36 @@
 
 {% block script %}
     <script>
+        $("#formularioaenviar").submit(function (ev) {
+            $.ajax({
+                type: "POST",
+                url: {{ request.path }},
+                data: $('#formularioaenviar').serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    alert('Datos enviados !!!');
+                    if (data.respuesta === true) {
+                        Swal.fire(
+                            'Envio de Datos',
+                            data.mensaje,
+                            'success'
+                        ).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                location.href = "/login";
+                            }
+                        });
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+
+                    alert("Error al obtener los datos.");
+                },
+            });
+            ev.preventDefault();
+        });
 
 
     </script>

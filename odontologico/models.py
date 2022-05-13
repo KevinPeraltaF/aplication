@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from odontologico.funciones import ModeloBase
 
@@ -23,3 +24,26 @@ class Modulo(ModeloBase):
         self.descripcion = self.descripcion.strip().capitalize()
         self.ruta = self.ruta.strip().capitalize()
         return super(Modulo, self).save(*args, **kwargs)
+
+
+class Genero(ModeloBase):
+    nombre = models.CharField(max_length=100, verbose_name=u'Género')
+
+
+class Persona(ModeloBase):
+    usuario = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    nombre1 = models.CharField(max_length=100, verbose_name=u'1er Nombre')
+    nombre2 = models.CharField(max_length=100, verbose_name=u'2do Nombre')
+    apellido1 = models.CharField(max_length=100, verbose_name=u"1er Apellido")
+    apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
+    email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico personal")
+
+    def __str__(self):
+        return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre1)
+
+
+class Paciente(ModeloBase):
+    persona = models.ForeignKey(Persona, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return u'%s' % self.persona
