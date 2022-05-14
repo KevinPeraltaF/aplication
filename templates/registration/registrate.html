@@ -56,18 +56,47 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="input-group input-group-static my-3  ">
-                                {{ form.username.label_tag }} {{ form.username }}{{ form.username.errors }}
-                                {% if form.username.help_text %}
-                                    <small id="help"
-                                           class="form-text text-muted">{{ form.username.help_text|safe }}</small> {% endif %}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group input-group-static my-3  ">
+                                        {{ form.username.label_tag }} {{ form.username }}{{ form.username.errors }}
+                                        {% if form.username.help_text %}
+                                            <small id="help"
+                                                   class="form-text text-muted">{{ form.username.help_text|safe }}</small> {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group input-group-static my-3  ">
+                                        {{ form.email.label_tag }} {{ form.email }}{{ form.email.errors }}
+                                        {% if form.email.help_text %}
+                                            <small id="help"
+                                                   class="form-text text-muted">{{ form.email.help_text|safe }}</small> {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="input-group input-group-static my-3  ">
-                                {{ form.email.label_tag }} {{ form.email }}{{ form.email.errors }}
-                                {% if form.email.help_text %}
-                                    <small id="help"
-                                           class="form-text text-muted">{{ form.email.help_text|safe }}</small> {% endif %}
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group input-group-static my-3  ">
+                                        {{ form.telefono_movil.label_tag }}
+                                        {{ form.telefono_movil }}{{ form.telefono_movil.errors }}
+                                        {% if form.telefono_movil.help_text %}
+                                            <small id="help"
+                                                   class="form-text text-muted">{{ form.telefono_movil.help_text|safe }}</small> {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group input-group-static my-3  ">
+                                        {{ form.telefono_convencional.label_tag }}
+                                        {{ form.telefono_convencional }}{{ form.telefono_convencional.errors }}
+                                        {% if form.telefono_convencional.help_text %}
+                                            <small id="help"
+                                                   class="form-text text-muted">{{ form.telefono_convencional.help_text|safe }}</small> {% endif %}
+                                    </div>
+                                </div>
                             </div>
+
+
                             <div class="input-group input-group-static my-3  ">
                                 {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
                                 {% if form.password1.help_text %}
@@ -105,7 +134,6 @@
 
 {% block script %}
     <script>
-
 
 
     </script>

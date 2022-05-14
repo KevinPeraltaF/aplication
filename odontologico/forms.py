@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from odontologico.models import Genero
+
 
 def deshabilitar_campo(form, campo):
     form.fields[campo].widget.attrs['readonly'] = True
@@ -39,6 +41,15 @@ class RegistroUsuarioForm(UserCreationForm):
     nombre2 = forms.CharField(label="2do. Nombre", widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido1 = forms.CharField(label="Apellido paterno", widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido2 = forms.CharField(label="Apellido materno", widget=forms.TextInput(attrs={'class': 'form-control', }))
+    cedula = forms.CharField(label=u"Cédula", max_length=10, required=False,
+                             widget=forms.TextInput(attrs={'class': 'form-control', }))
+    genero = forms.ModelChoiceField(label=u"Género", queryset=Genero.objects.all(),
+                                    widget=forms.Select(attrs={'class': 'form-control', }))
+    telefono_movil = forms.CharField(label=u"Teléfono móvil", max_length=50,
+                                     widget=forms.TextInput(attrs={'class': 'form-control', }))
+    telefono_convencional = forms.CharField(label=u"Teléfono Convencional", max_length=50, required=False,
+                                            widget=forms.TextInput(attrs={'class': 'form-control', }))
+
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()

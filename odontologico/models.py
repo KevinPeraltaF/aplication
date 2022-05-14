@@ -36,8 +36,11 @@ class Persona(ModeloBase):
     nombre2 = models.CharField(max_length=100, verbose_name=u'2do Nombre')
     apellido1 = models.CharField(max_length=100, verbose_name=u"1er Apellido")
     apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
-    email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico personal")
-
+    email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico personal", unique=True)
+    cedula = models.CharField( max_length=10, verbose_name=u'Cédula', unique=True)
+    telefono_movil = models.CharField(max_length=12, verbose_name=u"Teléfono móvil")
+    telefono_convencional = models.CharField(max_length=10, verbose_name=u"Teléfono móvil", null=True, blank=True)
+    genero = models.ForeignKey(Genero, null=True, on_delete=models.CASCADE)
     def __str__(self):
         return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre1)
 
