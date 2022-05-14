@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from aplication import settings
@@ -98,7 +98,7 @@ def registrate(request):
                     persona=persona
                 )
                 paciente.save()
-                return JsonResponse({"respuesta": True, "mensaje": "A continuación ingrese con sus credenciales de acceso."})
+                return redirect('/login/')
 
             else:
                 return render(request, "registration/registrate.html", {'form': form})

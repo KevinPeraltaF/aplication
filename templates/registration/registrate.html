@@ -105,36 +105,7 @@
 
 {% block script %}
     <script>
-        $("#formularioenviar").submit(function (ev) {
-            ev.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: {{ request.path }},
-                data: $('#formularioenviar').serialize(),
-                dataType: 'json',
-                success: function (data) {
-                    if (data.respuesta === true) {
-                        Swal.fire(
-                            'Registro exitoso.',
-                            data.mensaje,
-                            'success'
-                        ).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                location.href = "/login";
-                            }
-                        });
-                    } else {
-                        alert(data.mensaje);
-                    }
-                },
-                error: function () {
 
-                    alert("Error al obtener los datos.");
-                },
-            });
-            ev.preventDefault();
-        });
 
 
     </script>
