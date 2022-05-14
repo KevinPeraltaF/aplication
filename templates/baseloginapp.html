@@ -10,18 +10,17 @@
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
     <title>{% block titulo %}{{ titulo }}{% endblock %}</title>
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
+    <link href="{% static 'fonts/robotofontfamily.css' %}" rel="stylesheet"/>
     <!-- Nucleo Icons -->
     <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet"/>
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/fontawesome.js' %}"></script>
     <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="{% static 'css/icon.css' %}" rel="stylesheet"/>
     <!-- CSS Files -->
     <link id="pagestyle" href="{% static 'css/material-dashboard.min.css' %}" rel="stylesheet"/>
-      <link id="pagestyle" href="{% static 'css/sweetalert2.min.css' %}" rel="stylesheet"/>
+    <link id="pagestyle" href="{% static 'css/sweetalert2.min.css' %}" rel="stylesheet"/>
 
     {% block head %}{% endblock %}
 
@@ -56,6 +55,7 @@
 <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
 <script src="{% static 'js/sweetalert2.min.js' %}"></script>
 <script src="{% static 'js/componentes.js' %}"></script>
+<script src="{% static 'js/imask.js' %}"></script>
 {% block script %}{% endblock %}
 </body>
 
