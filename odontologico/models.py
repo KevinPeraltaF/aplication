@@ -13,7 +13,7 @@ class Modulo(ModeloBase):
     class Meta:
         verbose_name = "Módulo del sistema"
         verbose_name_plural = "Módulos del sistema"
-        ordering = ['nombre']
+        ordering = ['id']
         unique_together = ('ruta',)
 
     def __str__(self):
@@ -28,6 +28,12 @@ class Modulo(ModeloBase):
 
 class Genero(ModeloBase):
     nombre = models.CharField(max_length=100, verbose_name=u'Género')
+
+    class Meta:
+        verbose_name = "Género"
+        verbose_name_plural = "Géneros"
+        ordering = ['id']
+
     def __str__(self):
         return u'%s' % self.nombre
 
@@ -43,18 +49,62 @@ class Persona(ModeloBase):
     telefono_movil = models.CharField(max_length=10, verbose_name=u"Teléfono móvil")
     telefono_convencional = models.CharField(max_length=10, verbose_name=u"Teléfono convencional", null=True, blank=True)
     genero = models.ForeignKey(Genero, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Persona"
+        verbose_name_plural = "Personas"
+        ordering = ['id']
+
     def __str__(self):
         return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre1)
 
+
+    def tiene_perfil_persona(self):
+        return self.personaperfil_set().exists()
+
 class PersonaPerfil(ModeloBase):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    es_paciente = models.BooleanField(default=False, verbose_name=u'Es paciente')
-    es_administrador = models.BooleanField(default=False, verbose_name=u'Es administrador')
-    es_especialista = models.BooleanField(default=False, verbose_name=u'Es especialista')
-    es_asistente = models.BooleanField(default=False, verbose_name=u'Es asistente')
+    is_paciente = models.BooleanField(default=False, verbose_name=u'Es paciente')
+    is_administrador = models.BooleanField(default=False, verbose_name=u'Es administrador')
+    is_especialista = models.BooleanField(default=False, verbose_name=u'Es especialista')
+    is_asistente = models.BooleanField(default=False, verbose_name=u'Es asistente')
+
+    class Meta:
+        verbose_name = "Perfil de persona"
+        verbose_name_plural = "Perfiles de personas"
+        ordering = ['id']
+
+    def __str__(self):
+        if self.es_paciente():
+            return u'%s' % "PACIENTE"
+        elif self.es_administrador():
+            return u'%s' % "ADMINISTRADOR"
+        elif self.es_especialista():
+            return u'%s' % "ESPECIALISTA"
+        elif self.es_asistente():
+            return u'%s' % "ASISTENTE"
+        else:
+            return u'%s' % "NO TIENE PERFIL"
+
+    def es_paciente(self):
+        return self.es_paciente
+
+    def es_administrador(self):
+        return self.es_administrador
+
+    def es_especialista(self):
+        return self.es_especialista
+
+    def es_asistente(self):
+        return self.es_asistente
 
 class Paciente(ModeloBase):
     persona = models.ForeignKey(Persona, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Paciente"
+        verbose_name_plural = "Pacientes"
+        ordering = ['id']
 
     def __str__(self):
         return u'%s' % self.persona

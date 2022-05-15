@@ -87,7 +87,6 @@ class RegistroUsuarioForm(UserCreationForm):
             ),
         }
 
-
 class ModuloForm(forms.Form):
     nombre = forms.CharField(label='Nombre', required=True,
                              widget=forms.TextInput(attrs={'class': 'form-control uppercase-input', }))

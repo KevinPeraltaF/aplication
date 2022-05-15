@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from aplication import settings
 from odontologico.forms import RegistroUsuarioForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Modulo, Persona, Paciente
+from odontologico.models import Modulo, Persona, Paciente, PersonaPerfil
 
 
 @transaction.atomic()
@@ -27,14 +27,21 @@ def login_usuario(request):
                     usuario = authenticate(username=request.POST['usuario'].lower().strip(),
                                            password=request.POST['clave'])
                     if usuario is not None:
-                        if usuario.is_active:
+                        if Persona.objects.filter(usuario=usuario).exists():
+                            persona = Persona.objects.get(usuario=usuario)
+                            if usuario.is_active:
+                                login(request, usuario)
+                                request.session['persona'] = persona
+                                return JsonResponse({"respuesta": True, "url": settings.LOGIN_REDIRECT_URL,
+                                                     "sesion_id": request.session.session_key})
+                            else:
+                                return JsonResponse(
+                                    {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
+                        if usuario.is_superuser:
                             login(request, usuario)
                             request.session['persona'] = 'persona'
                             return JsonResponse({"respuesta": True, "url": settings.LOGIN_REDIRECT_URL,
                                                  "sesion_id": request.session.session_key})
-                        else:
-                            return JsonResponse(
-                                {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
                     else:
                         return JsonResponse({"respuesta": False,
                                              'mensaje': u'Inicio de sesión incorrecto, usuario o clave no coinciden.'})
@@ -66,53 +73,63 @@ def registrate(request):
     global ex
     data = {}
     if request.method == 'POST':
-        try:
-            if request.session.get('id') != None:  # Regístrese solo cuando no haya iniciado sesión
-                return JsonResponse({"respuesta": False, "mensaje": "Ya tiene sesión iniciada."})
-            form = RegistroUsuarioForm(request.POST)
+        if 'peticion' in request.POST:
+            peticion = request.POST['peticion']
+            if peticion == 'registrarpaciente':
+                try:
+                    if request.session.get('id') != None:  # Regístrese solo cuando no haya iniciado sesión
+                        return JsonResponse({"respuesta": False, "mensaje": "Ya tiene sesión iniciada."})
+                    form = RegistroUsuarioForm(request.POST)
 
-            if form.is_valid():
-                username = form.cleaned_data['username']
-                password = form.cleaned_data['password1']
-                nombre1 = form.cleaned_data['nombre1']
-                nombre2 = form.cleaned_data['nombre2']
-                apellido1 = form.cleaned_data['apellido1']
-                apellido2 = form.cleaned_data['apellido2']
-                cedula = form.cleaned_data['cedula']
-                genero = form.cleaned_data['genero']
-                telefono_movil = form.cleaned_data['telefono_movil']
-                telefono_convencional = form.cleaned_data['telefono_convencional']
-                email = form.cleaned_data['email']
-                username = username.strip()  # Eliminar espacios y líneas nuevas
-                password = password.strip()
-                usuario = User.objects.create_user(username, '', password)
-                usuario.save()
+                    if form.is_valid():
+                        username = form.cleaned_data['username']
+                        password = form.cleaned_data['password1']
+                        nombre1 = form.cleaned_data['nombre1']
+                        nombre2 = form.cleaned_data['nombre2']
+                        apellido1 = form.cleaned_data['apellido1']
+                        apellido2 = form.cleaned_data['apellido2']
+                        cedula = form.cleaned_data['cedula']
+                        genero = form.cleaned_data['genero']
+                        telefono_movil = form.cleaned_data['telefono_movil']
+                        telefono_convencional = form.cleaned_data['telefono_convencional']
+                        email = form.cleaned_data['email']
+                        username = username.strip()  # Eliminar espacios y líneas nuevas
+                        password = password.strip()
+                        usuario = User.objects.create_user(username, '', password)
+                        usuario.save()
 
-                persona = Persona(
-                    usuario=usuario,
-                    nombre1=nombre1,
-                    nombre2=nombre2,
-                    apellido1=apellido1,
-                    apellido2=apellido2,
-                    email=email,
-                    cedula=cedula,
-                    genero=genero,
-                    telefono_movil=telefono_movil,
-                    telefono_convencional=telefono_convencional
-                )
-                persona.save()
+                        persona = Persona(
+                            usuario=usuario,
+                            nombre1=nombre1,
+                            nombre2=nombre2,
+                            apellido1=apellido1,
+                            apellido2=apellido2,
+                            email=email,
+                            cedula=cedula,
+                            genero=genero,
+                            telefono_movil=telefono_movil,
+                            telefono_convencional=telefono_convencional
+                        )
+                        persona.save()
 
-                paciente = Paciente(
-                    persona=persona
-                )
-                paciente.save()
-                return redirect('/login/')
+                        persona_perfil = PersonaPerfil(
+                            persona=persona,
+                            is_paciente=True
+                        )
+                        persona_perfil.save()
 
-            else:
-                return render(request, "registration/registrate.html", {'form': form})
-        except Exception as ex:
-            transaction.set_rollback(True)
-            return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+                        paciente = Paciente(
+                            persona=persona
+                        )
+                        paciente.save()
+                        return redirect('/login/')
+
+                    else:
+                        return render(request, "registration/registrate.html", {'form': form})
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+        return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta."})
 
     else:
         data['form'] = RegistroUsuarioForm()

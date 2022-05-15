@@ -3,14 +3,14 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth.models import User
 
-from odontologico.models import Modulo,Genero,Persona,Paciente
+from odontologico.models import Modulo, Genero, Persona, Paciente, PersonaPerfil
+
 admin.site.unregister(User)
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username','is_staff','is_active','is_superuser','date_joined',)
     search_fields = ('username',)
     list_filter = ('is_staff', 'is_active', 'is_superuser',)
-
 
 @admin.register(Modulo)
 class ModuloAdmin(admin.ModelAdmin):
@@ -19,7 +19,6 @@ class ModuloAdmin(admin.ModelAdmin):
     list_display = ('nombre','descripcion','icono','ruta','activo','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
     list_filter = ('nombre','descripcion','activo',)
     search_fields = ('nombre','descripcion',)
-
 
 @admin.register(Genero)
 class GeneroAdmin(admin.ModelAdmin):
@@ -43,3 +42,10 @@ class PacienteAdmin(admin.ModelAdmin):
     list_display = ('persona','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
     list_filter = ('persona',)
     search_fields = ('persona',)
+
+@admin.register(PersonaPerfil)
+class PersonaPerfilAdmin(admin.ModelAdmin):
+    list_display = ('persona','is_paciente','is_administrador','is_especialista','is_asistente','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
+    search_fields = ('persona',)
+
+

@@ -17,6 +17,7 @@
                     <div class="card-body pb-3">
                         <form method="POST" id="formularioenviar">
                             {% csrf_token %}
+                            <input type="hidden" name="peticion" value="registrarpaciente">
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group input-group-static my-3  ">
