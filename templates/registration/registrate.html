@@ -77,37 +77,55 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <div class="input-group input-group-static my-3  ">
-                                        {{ form.telefono_movil.label_tag }}
-                                        {{ form.telefono_movil }}{{ form.telefono_movil.errors }}
-                                        {% if form.telefono_movil.help_text %}
+                                  <div class="input-group input-group-static my-3  ">
+                                        {{ form.cedula.label_tag }}
+                                        {{ form.cedula }}{{ form.cedula.errors }}
+                                        {% if form.cedula.help_text %}
                                             <small id="help"
-                                                   class="form-text text-muted">{{ form.telefono_movil.help_text|safe }}</small> {% endif %}
+                                                   class="form-text text-muted">{{ form.genero.help_text|safe }}</small> {% endif %}
+                                    </div>
+                                    <div class="input-group input-group-static my-3  ">
+                                        {{ form.genero.label_tag }}
+                                        {{ form.genero }}{{ form.genero.errors }}
+                                        {% if form.genero.help_text %}
+                                            <small id="help"
+                                                   class="form-text text-muted">{{ form.genero.help_text|safe }}</small> {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group input-group-static my-3  ">
+                                            {{ form.telefono_movil.label_tag }}
+                                            {{ form.telefono_movil }}{{ form.telefono_movil.errors }}
+                                            {% if form.telefono_movil.help_text %}
+                                                <small id="help"
+                                                       class="form-text text-muted">{{ form.telefono_movil.help_text|safe }}</small> {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group input-group-static my-3  ">
+                                            {{ form.telefono_convencional.label_tag }}
+                                            {{ form.telefono_convencional }}{{ form.telefono_convencional.errors }}
+                                            {% if form.telefono_convencional.help_text %}
+                                                <small id="help"
+                                                       class="form-text text-muted">{{ form.telefono_convencional.help_text|safe }}</small> {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="input-group input-group-static my-3  ">
-                                        {{ form.telefono_convencional.label_tag }}
-                                        {{ form.telefono_convencional }}{{ form.telefono_convencional.errors }}
-                                        {% if form.telefono_convencional.help_text %}
+
+
+                                <div class="input-group input-group-static my-3  ">
+                                        {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
+                                        {% if form.password1.help_text %}
                                             <small id="help"
-                                                   class="form-text text-muted">{{ form.telefono_convencional.help_text|safe }}</small> {% endif %}
+                                                   class="form-text text-muted">{{ form.password1.help_text|safe }}</small> {% endif %}
+                                    </div>
+                                    <div class="input-group input-group-static my-3  ">
+                                        {{ form.password2.label_tag }} {{ form.password2 }}{{ form.password2.errors }}
+                                        {% if form.password2.help_text %}
+                                            <small id="help"
+                                                   class="form-text text-muted">{{ form.password2.help_text|safe }}</small> {% endif %}
                                     </div>
                                 </div>
-                            </div>
-
-
-                            <div class="input-group input-group-static my-3  ">
-                                {{ form.password1.label_tag }} {{ form.password1 }}{{ form.password1.errors }}
-                                {% if form.password1.help_text %}
-                                    <small id="help"
-                                           class="form-text text-muted">{{ form.password1.help_text|safe }}</small> {% endif %}
-                            </div>
-                            <div class="input-group input-group-static my-3  ">
-                                {{ form.password2.label_tag }} {{ form.password2 }}{{ form.password2.errors }}
-                                {% if form.password2.help_text %}
-                                    <small id="help"
-                                           class="form-text text-muted">{{ form.password2.help_text|safe }}</small> {% endif %}
                             </div>
 
                             <div class="text-center">
@@ -122,7 +140,7 @@
                         <p class="mb-4 text-sm mx-auto">
                             Ya tienes una cuenta?
                             <a href="{% url 'login_usuario' %}" class="text-success text-gradient font-weight-bold">Inicia
-                                sesión</a>
+                                sesión.</a>
                         </p>
                     </div>
                 </div>
@@ -135,6 +153,7 @@
 {% block script %}
     <script>
 
-
+        var mask = IMask(document.getElementById('id_telefono_movil'), { mask: '00 000 0000'});
+        var mask = IMask(document.getElementById('id_telefono_convencional'), { mask: '000 000 0000'});
     </script>
 {% endblock %}

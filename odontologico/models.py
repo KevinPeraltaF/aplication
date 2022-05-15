@@ -17,7 +17,7 @@ class Modulo(ModeloBase):
         unique_together = ('ruta',)
 
     def __str__(self):
-        return '{}'.format(self.nombre)
+        return u'%s' % self.nombre
 
     def save(self, *args, **kwargs):
         self.nombre = self.nombre.strip().capitalize()
@@ -28,6 +28,8 @@ class Modulo(ModeloBase):
 
 class Genero(ModeloBase):
     nombre = models.CharField(max_length=100, verbose_name=u'Género')
+    def __str__(self):
+        return u'%s' % self.nombre
 
 
 class Persona(ModeloBase):
@@ -38,12 +40,18 @@ class Persona(ModeloBase):
     apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
     email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico personal", unique=True)
     cedula = models.CharField( max_length=10, verbose_name=u'Cédula', unique=True)
-    telefono_movil = models.CharField(max_length=12, verbose_name=u"Teléfono móvil")
-    telefono_convencional = models.CharField(max_length=10, verbose_name=u"Teléfono móvil", null=True, blank=True)
+    telefono_movil = models.CharField(max_length=10, verbose_name=u"Teléfono móvil")
+    telefono_convencional = models.CharField(max_length=10, verbose_name=u"Teléfono convencional", null=True, blank=True)
     genero = models.ForeignKey(Genero, null=True, on_delete=models.CASCADE)
     def __str__(self):
         return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre1)
 
+class PersonaPerfil(ModeloBase):
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    es_paciente = models.BooleanField(default=False, verbose_name=u'Es paciente')
+    es_administrador = models.BooleanField(default=False, verbose_name=u'Es administrador')
+    es_especialista = models.BooleanField(default=False, verbose_name=u'Es especialista')
+    es_asistente = models.BooleanField(default=False, verbose_name=u'Es asistente')
 
 class Paciente(ModeloBase):
     persona = models.ForeignKey(Persona, null=True, on_delete=models.CASCADE)
