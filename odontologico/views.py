@@ -18,33 +18,21 @@ from odontologico.models import Modulo, Persona, Paciente, PersonaPerfil
 def login_usuario(request):
     global ex
     data = {}
-    add_data_aplication(request, data)
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
             if peticion == 'login_usuario':
                 try:
-                    usuario = authenticate(username=request.POST['usuario'].lower().strip(),
-                                           password=request.POST['clave'])
+                    usuario = authenticate(username=request.POST['usuario'].lower().strip(), password=request.POST['clave'])
+                    persona = Persona.objects.filter(usuario=usuario)[0]
                     if usuario is not None:
-                        if Persona.objects.filter(usuario=usuario).exists():
-                            persona = Persona.objects.get(usuario=usuario)
-                            if usuario.is_active:
-                                login(request, usuario)
-                                request.session['persona'] = persona
-                                return JsonResponse({"respuesta": True, "url": settings.LOGIN_REDIRECT_URL,
-                                                     "sesion_id": request.session.session_key})
-                            else:
-                                return JsonResponse(
-                                    {"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
-                        if usuario.is_superuser:
+                        if usuario.is_active:
                             login(request, usuario)
-                            request.session['persona'] = 'persona'
-                            return JsonResponse({"respuesta": True, "url": settings.LOGIN_REDIRECT_URL,
-                                                 "sesion_id": request.session.session_key})
+                            return JsonResponse({"respuesta": True, "url": settings.LOGIN_REDIRECT_URL})
+                        else:
+                            return JsonResponse({"respuesta": False, 'mensaje': u'Inicio de sesión incorrecto, usuario no activo.'})
                     else:
-                        return JsonResponse({"respuesta": False,
-                                             'mensaje': u'Inicio de sesión incorrecto, usuario o clave no coinciden.'})
+                        return JsonResponse({"respuesta": False,'mensaje': u'Inicio de sesión incorrecto, usuario o clave no coinciden.'})
                 except Exception as ex:
                     transaction.set_rollback(True)
                     return JsonResponse(
