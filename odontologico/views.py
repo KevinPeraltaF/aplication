@@ -24,7 +24,6 @@ def login_usuario(request):
             if peticion == 'login_usuario':
                 try:
                     usuario = authenticate(username=request.POST['usuario'].lower().strip(), password=request.POST['clave'])
-                    persona = Persona.objects.filter(usuario=usuario)[0]
                     if usuario is not None:
                         if usuario.is_active:
                             login(request, usuario)
