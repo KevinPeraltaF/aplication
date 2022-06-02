@@ -12,10 +12,14 @@ class ModeloBase(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        self.usuario_creacion_id = 1
-        self.usuario_modificacion_id = 1
-        super(ModeloBase, self).save(*args, **kwargs)
-
+        usuario = None
+        if len(args):
+            usuario = args[0].user.id
+        if self.id:
+            self.usuario_modificacion_id = usuario
+        else:
+            self.usuario_creacion_id = usuario
+        models.Model.save(self)
 
 def add_data_aplication(request,data):
     from odontologico.models import Modulo

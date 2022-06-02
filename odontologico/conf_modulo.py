@@ -40,7 +40,7 @@ def view_modulo(request):
                             ruta=form.cleaned_data['ruta'],
                             activo=form.cleaned_data['activo']
                         )
-                        modulo.save()
+                        modulo.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Registro guardado correctamente."})
 
                     else:
@@ -72,7 +72,7 @@ def view_modulo(request):
                             modulo.icono = request.POST['imagen_ruta']
                         modulo.ruta = form.cleaned_data['ruta']
                         modulo.activo = form.cleaned_data['activo']
-                        modulo.save()
+                        modulo.save(request)
 
                         return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
 
@@ -86,7 +86,7 @@ def view_modulo(request):
                     with transaction.atomic():
                         registro = Modulo.objects.get(pk=request.POST['id'])
                         registro.status = False
-                        registro.save()
+                        registro.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
 
                 except Exception as ex:

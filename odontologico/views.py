@@ -83,7 +83,7 @@ def registrate(request):
                         username = username.strip()  # Eliminar espacios y líneas nuevas
                         password = password.strip()
                         usuario = User.objects.create_user(username, '', password)
-                        usuario.save()
+                        usuario.save(request)
 
                         persona = Persona(
                             usuario=usuario,
@@ -97,18 +97,18 @@ def registrate(request):
                             telefono_movil=telefono_movil,
                             telefono_convencional=telefono_convencional
                         )
-                        persona.save()
+                        persona.save(request)
 
                         persona_perfil = PersonaPerfil(
                             persona=persona,
                             is_paciente=True
                         )
-                        persona_perfil.save()
+                        persona_perfil.save(request)
 
                         paciente = Paciente(
                             persona=persona
                         )
-                        paciente.save()
+                        paciente.save(request)
                         return redirect('/login/')
 
                     else:
