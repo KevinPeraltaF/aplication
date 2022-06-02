@@ -98,7 +98,7 @@ class PersonaPerfil(ModeloBase):
         return self.es_asistente
 
 class Paciente(ModeloBase):
-    persona = models.ForeignKey(Persona, null=True, on_delete=models.CASCADE)
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Paciente"
@@ -110,8 +110,8 @@ class Paciente(ModeloBase):
 
 
 class AccesoModulo(ModeloBase):
-    grupo = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
-    modulo = models.ForeignKey(Modulo, null=True, on_delete=models.CASCADE)
+    grupo = models.ForeignKey(Group,  on_delete=models.CASCADE)
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
     activo = models.BooleanField(default=True)
 
     class Meta:

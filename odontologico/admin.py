@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth.models import User
 
-from odontologico.models import Modulo, Genero, Persona, Paciente, PersonaPerfil
+from odontologico.models import Modulo, Genero, Persona, Paciente, PersonaPerfil, AccesoModulo
 
 admin.site.unregister(User)
 @admin.register(User)
@@ -47,5 +47,11 @@ class PacienteAdmin(admin.ModelAdmin):
 class PersonaPerfilAdmin(admin.ModelAdmin):
     list_display = ('persona','is_paciente','is_administrador','is_especialista','is_asistente','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
     search_fields = ('persona',)
+
+
+@admin.register(AccesoModulo)
+class AccesoModuloAdmin(admin.ModelAdmin):
+    list_display = ('grupo','modulo','activo','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
+    search_fields = ('grupo','modulo',)
 
 

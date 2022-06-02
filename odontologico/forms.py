@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
-from odontologico.models import Genero
+from odontologico.models import Genero, Modulo
 
 
 def deshabilitar_campo(form, campo):
@@ -43,7 +43,7 @@ class RegistroUsuarioForm(UserCreationForm):
     apellido2 = forms.CharField(label="Apellido materno", widget=forms.TextInput(attrs={'class': 'form-control', }))
     cedula = forms.CharField(label=u"Cédula", max_length=10, required=False,
                              widget=forms.TextInput(attrs={'class': 'form-control', }))
-    genero = forms.ModelChoiceField(label=u"Género", queryset=Genero.objects.all(),
+    genero = forms.ModelChoiceField(label=u"Género", queryset=Genero.objects.filter(status=True),
                                     widget=forms.Select(attrs={'class': 'form-control', }))
     telefono_movil = forms.CharField(label=u"Teléfono móvil", max_length=50,
                                      widget=forms.TextInput(attrs={'class': 'form-control', }))
@@ -131,3 +131,7 @@ class PersonaForm(forms.Form):
         deshabilitar_campo(self, 'cedula')
         deshabilitar_campo(self, 'genero')
 
+class AccesoModuloForm(forms.Form):
+    grupo = forms.ModelChoiceField(label=u"Grupo", queryset=Group.objects.all(), widget=forms.Select(attrs={'class': 'form-control', }))
+    modulo = forms.ModelChoiceField(label=u"Módulo", queryset=Modulo.objects.filter(status=True, activo = True), widget=forms.Select(attrs={'class': 'form-control', }))
+    activo = forms.BooleanField(label='Activo', required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check form-switch ms-2 my-auto is-filled','checked':'checked'}))
