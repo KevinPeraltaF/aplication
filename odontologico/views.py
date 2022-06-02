@@ -83,7 +83,7 @@ def registrate(request):
                         username = username.strip()  # Eliminar espacios y líneas nuevas
                         password = password.strip()
                         usuario = User.objects.create_user(username, '', password)
-                        usuario.save(request)
+                        usuario.save()
 
                         persona = Persona(
                             usuario=usuario,

@@ -107,7 +107,7 @@ class ModuloForm(forms.Form):
 
 class PersonaForm(forms.Form):
     nombre1 = forms.CharField(label='1ª Nombre', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control uppercase-input', }))
+                             widget=forms.TextInput(attrs={'class': ' form-control uppercase-input ', }))
     nombre2 = forms.CharField(label='2ª Nombre', required=True,
                              widget=forms.TextInput(attrs={'class': 'form-control uppercase-input', }))
     apellido1 = forms.CharField(label='1ª Apellido', required=True,
