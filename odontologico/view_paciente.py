@@ -4,6 +4,8 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
+
+from odontologico.forms import PersonaForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Paciente
 
@@ -21,9 +23,14 @@ def view_paciente(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'peticion':
+            if peticion == 'add_paciente':
                 try:
-                    pass
+                    data['titulo'] = 'Agregar nuevo paciente'
+                    data['titulo_formulario'] = 'Formulario de registro de paciente'
+                    data['peticion'] = 'add_paciente'
+                    form = PersonaForm()
+                    data['form'] = form
+                    return render(request, "paciente/add_paciente.html", data)
                 except Exception as ex:
                     transaction.set_rollback(True)
                     pass
