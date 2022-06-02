@@ -131,7 +131,7 @@ def view_paciente(request):
                         'telefono_movil': paciente.persona.telefono_movil,
                         'telefono_convencional': paciente.persona.telefono_convencional
                     })
-                    return render(request, "conf_sistema/edit_modulo.html", data)
+                    return render(request, "paciente/edit_paciente.html", data)
                 except Exception as ex:
                     pass
 
