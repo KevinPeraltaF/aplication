@@ -107,22 +107,27 @@ class ModuloForm(forms.Form):
 
 class PersonaForm(forms.Form):
     nombre1 = forms.CharField(label='1ª Nombre', required=True,
-                             widget=forms.TextInput(attrs={'class': ' form-control uppercase-input ', }))
+                             widget=forms.TextInput(attrs={'class': ' form-control', }))
     nombre2 = forms.CharField(label='2ª Nombre', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control uppercase-input', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido1 = forms.CharField(label='1ª Apellido', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control uppercase-input', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido2 = forms.CharField(label='2º Apellido', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control uppercase-input', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control', }))
     email = forms.CharField(label=u"Correo electrónico", max_length=200, required=True,
-                            widget=forms.TextInput(attrs={'class': 'form-control uppercase-input',}))
+                            widget=forms.TextInput(attrs={'class': 'form-control',}))
     cedula = forms.CharField(label=u"Cédula", max_length=10, required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control uppercase-input',}))
+                             widget=forms.TextInput(attrs={'class': 'form-control',}))
     genero = forms.ModelChoiceField(label=u"Gènero",required=True, queryset=Genero.objects.filter(status=True),
-                                  widget=forms.Select(attrs={'class': 'form-control uppercase-input',}))
+                                  widget=forms.Select(attrs={'class': 'form-control',}))
 
     telefono_movil = forms.CharField(label=u"Teléfono móvil", max_length=50, required=False,
-                               widget=forms.TextInput(attrs={'class': 'form-control uppercase-input',}))
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'(99 123 1234)'}))
     telefono_convencional = forms.CharField(label=u"Teléfono fijo", max_length=50, required=False,
-                                    widget=forms.TextInput(attrs={'class': 'form-control uppercase-input',}))
+                                    widget=forms.TextInput(attrs={'class': 'form-control ',}))
+
+
+    def editar(self):
+        deshabilitar_campo(self, 'cedula')
+        deshabilitar_campo(self, 'genero')
 

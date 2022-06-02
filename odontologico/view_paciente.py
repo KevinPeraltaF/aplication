@@ -79,8 +79,18 @@ def view_paciente(request):
                 try:
                     form = PersonaForm(request.POST, request.FILES)
                     if form.is_valid():
-                        pass
-
+                        paciente = Paciente.objects.get(pk=request.POST['id'])
+                        persona = Persona.objects.get(pk = paciente.id)
+                        persona.nombre1 =request.POST['nombre1']
+                        persona.nombre2 =request.POST['nombre2']
+                        persona.apellido1=request.POST['apellido1']
+                        persona.apellido2=request.POST['apellido2']
+                        persona.email=request.POST['email']
+                        persona.cedula=request.POST['cedula']
+                        persona.genero_id=request.POST['genero']
+                        persona.telefono_movil=request.POST['telefono_movil']
+                        persona.telefono_convencional=request.POST['telefono_convencional']
+                        persona.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
 
 
@@ -120,7 +130,7 @@ def view_paciente(request):
                     data['titulo_formulario'] = 'Formulario de editar paciente'
                     data['peticion'] = 'edit_paciente'
                     data['paciente'] = paciente = Paciente.objects.get(pk=request.GET['id'])
-                    data['form'] = form = PersonaForm(initial={
+                    form = PersonaForm(initial={
                         'nombre1':paciente.persona.nombre1,
                         'nombre2': paciente.persona.nombre2,
                         'apellido1': paciente.persona.apellido1,
@@ -131,6 +141,8 @@ def view_paciente(request):
                         'telefono_movil': paciente.persona.telefono_movil,
                         'telefono_convencional': paciente.persona.telefono_convencional
                     })
+                    form.editar()
+                    data['form'] = form
                     return render(request, "paciente/edit_paciente.html", data)
                 except Exception as ex:
                     pass
