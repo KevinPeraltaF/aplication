@@ -117,7 +117,7 @@ def view_modulo(request):
                     data['MEDIA_URL'] = MEDIA_URL
                     data['modulo'] = modulo = Modulo.objects.get(pk=request.GET['id'])
                     data['form'] = form = ModuloForm(initial=model_to_dict(modulo))
-                    return render(request, "conf_sistema/edit_modulo.html", data)
+                    return render(request, "conf_sistema/edit_paciente.html", data)
                 except Exception as ex:
                     pass
 

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db import transaction
+from django.forms import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -73,6 +74,30 @@ def view_paciente(request):
                 except Exception as ex:
                    transaction.set_rollback(True)
                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'edit_paciente':
+                try:
+                    form = PersonaForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        pass
+
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'eliminar_paciente':
+                try:
+                    with transaction.atomic():
+                        registro = Paciente.objects.get(pk=request.POST['id'])
+                        registro.status = False
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
+
+                except Exception as ex:
+                    pass
         return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:
@@ -88,6 +113,28 @@ def view_paciente(request):
                 except Exception as ex:
                     transaction.set_rollback(True)
                     pass
+
+            if peticion == 'edit_paciente':
+                try:
+                    data['titulo'] = 'Editar paciente'
+                    data['titulo_formulario'] = 'Formulario de editar paciente'
+                    data['peticion'] = 'edit_paciente'
+                    data['paciente'] = paciente = Paciente.objects.get(pk=request.GET['id'])
+                    data['form'] = form = PersonaForm(initial={
+                        'nombre1':paciente.persona.nombre1,
+                        'nombre2': paciente.persona.nombre2,
+                        'apellido1': paciente.persona.apellido1,
+                        'apellido2': paciente.persona.apellido2,
+                        'email': paciente.persona.email,
+                        'cedula': paciente.persona.cedula,
+                        'genero': paciente.persona.genero,
+                        'telefono_movil': paciente.persona.telefono_movil,
+                        'telefono_convencional': paciente.persona.telefono_convencional
+                    })
+                    return render(request, "conf_sistema/edit_modulo.html", data)
+                except Exception as ex:
+                    pass
+
         else:
             try:
                 data['titulo'] = 'Pacientes'
