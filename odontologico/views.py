@@ -2,7 +2,7 @@ import sys
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from aplication import settings
 from odontologico.forms import RegistroUsuarioForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Modulo, Persona, Paciente, PersonaPerfil
+from odontologico.models import Modulo, Persona, Paciente, PersonaPerfil, AccesoModulo
 
 
 @transaction.atomic()
@@ -130,6 +130,12 @@ def dashboard(request):
     global ex
     data = {}
     add_data_aplication(request, data)
+    usuario_logeado = request.user
+    if  Persona.objects.filter(usuario=usuario_logeado, status=True).exists():
+        persona_logeado = Persona.objects.get(usuario=usuario_logeado, status=True)
+    else:
+        persona_logeado = 'SUPERADMINISTRADOR'
+
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -146,7 +152,17 @@ def dashboard(request):
         else:
             try:
                 data['titulo'] = 'Menú principal'
-                data['modulos'] = modulos = Modulo.objects.filter(status=True, activo=True)
+
+                #obtener perfiles
+
+
+                #obtener modulos
+                if usuario_logeado.is_superuser:
+                    modulos = Modulo.objects.filter(status=True,activo=True)
+                else:
+                    menu = AccesoModulo.objects.values_list('modulo_id').filter(status = True, activo = True ,grupo__in = usuario_logeado.groups.all())
+                    modulos = Modulo.objects.filter(status=True, activo=True, pk__in = menu )
+                data['modulos'] = modulos
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
