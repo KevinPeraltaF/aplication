@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
 from odontologico.funciones import ModeloBase
 
@@ -22,7 +22,6 @@ class Modulo(ModeloBase):
     def save(self, *args, **kwargs):
         self.nombre = self.nombre.strip().capitalize()
         self.descripcion = self.descripcion.strip().capitalize()
-        self.ruta = self.ruta.strip().capitalize()
         return super(Modulo, self).save(*args, **kwargs)
 
 
@@ -99,7 +98,7 @@ class PersonaPerfil(ModeloBase):
         return self.es_asistente
 
 class Paciente(ModeloBase):
-    persona = models.ForeignKey(Persona, null=True, on_delete=models.CASCADE)
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Paciente"
@@ -108,3 +107,18 @@ class Paciente(ModeloBase):
 
     def __str__(self):
         return u'%s' % self.persona
+
+
+class AccesoModulo(ModeloBase):
+    grupo = models.ForeignKey(Group,  on_delete=models.CASCADE)
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Acceso a módulo"
+        verbose_name_plural = "Acceso a módulos"
+        ordering = ['id']
+
+    def __str__(self):
+        return u'%s - %s - %s' % (self.grupo,self.modulo, self.activo)
+
