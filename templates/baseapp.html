@@ -127,8 +127,29 @@
                         <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                             aria-labelledby="dropdownMenuButton">
 
-                            <ol> <a href="{% url 'logout_usuario' %}" class="logout"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar Sesión" data-container="body" data-animation="true"><i class="fa fa-power-off"></i>
+                            <ol> <a href="{% url 'logout_usuario' %}" class="logout"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cerrar Sesión" data-container="body" data-animation="true">
                                     Cerrar Sesión</a></ol>
+
+                            {% for perfil in mis_perfiles %}
+
+                                {% if perfil.is_paciente %}
+                                    <ol><a href="#" class="logout"> Perfil paciente</a></ol>
+                                {% endif %}
+                                {% if perfil.is_asistente %}
+                                    <ol><a href="#" class="logout" >Perfil asistente</a></ol>
+                                {% endif %}
+                                {% if perfil.is_especialista %}
+                                    <ol><a href="#" class="logout" >Perfil especialista</a></ol>
+
+                                {% endif %}
+                                {% if perfil.is_administrador %}
+                                    <ol><a href="#" class="logout"> Perfil administrador</a></ol>
+                                {% endif %}
+
+                            {% endfor %}
+
+
+
 
 
 

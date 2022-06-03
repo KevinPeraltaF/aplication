@@ -152,9 +152,11 @@ def dashboard(request):
         else:
             try:
                 data['titulo'] = 'Menú principal'
-
+                mis_perfiles = None
                 #obtener perfiles
-
+                if not 'SUPERADMINISTRADOR' == persona_logeado:
+                    mis_perfiles = PersonaPerfil.objects.filter(status=True, persona=persona_logeado)
+                    data['mis_perfiles'] = mis_perfiles
 
                 #obtener modulos
                 if usuario_logeado.is_superuser:
