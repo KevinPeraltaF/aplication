@@ -26,6 +26,17 @@ def view_paciente(request):
                 try:
                     form = PersonaForm(request.POST, request.FILES)
                     if form.is_valid():
+
+                        campos_repetidos = list()
+
+                        if Persona.objects.values('id').filter(cedula=form.cleaned_data['cedula']).exists():
+                            campos_repetidos.append(form['cedula'].name)
+                        if Persona.objects.values('id').filter(email=form.cleaned_data['email']).exists():
+                            campos_repetidos.append(form['email'].name)
+                        if campos_repetidos:
+                            return JsonResponse(
+                                {"respuesta": False, "mensaje": "registro ya existe.", 'repetidos': campos_repetidos})
+
                         username = form.cleaned_data['cedula']
                         password = form.cleaned_data['cedula']
                         nombre1 = form.cleaned_data['nombre1']
