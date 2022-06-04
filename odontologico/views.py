@@ -139,16 +139,10 @@ def dashboard(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
-            return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'peticion':
-                try:
-                    pass
-                except Exception as ex:
-                    transaction.set_rollback(True)
-                    pass
+
         else:
             try:
                 data['titulo'] = 'Menú principal'
