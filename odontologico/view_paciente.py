@@ -29,9 +29,9 @@ def view_paciente(request):
 
                         campos_repetidos = list()
 
-                        if Persona.objects.values('id').filter(cedula=form.cleaned_data['cedula']).exists():
+                        if Persona.objects.values('id').filter(cedula=form.cleaned_data['cedula'], status=True).exists():
                             campos_repetidos.append(form['cedula'].name)
-                        if Persona.objects.values('id').filter(email=form.cleaned_data['email']).exists():
+                        if Persona.objects.values('id').filter(email=form.cleaned_data['email'], status=True).exists():
                             campos_repetidos.append(form['email'].name)
                         if campos_repetidos:
                             return JsonResponse(
