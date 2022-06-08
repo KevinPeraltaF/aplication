@@ -128,8 +128,8 @@ class PersonaForm(forms.Form):
 
 
     def editar(self):
-        deshabilitar_campo(self, 'cedula')
-        deshabilitar_campo(self, 'genero')
+        campo_solo_lectura(self, 'cedula')
+        campo_solo_lectura(self, 'genero')
 
 class AccesoModuloForm(forms.Form):
     grupo = forms.ModelChoiceField(label=u"Grupo", queryset=Group.objects.all(), widget=forms.Select(attrs={'class': 'form-control', }))

@@ -91,7 +91,7 @@ def view_paciente(request):
                     form = PersonaForm(request.POST, request.FILES)
                     if form.is_valid():
                         paciente = Paciente.objects.get(pk=request.POST['id'])
-                        persona = Persona.objects.get(pk = paciente.id)
+                        persona = Persona.objects.get(pk = paciente.persona_id)
                         persona.nombre1 =request.POST['nombre1']
                         persona.nombre2 =request.POST['nombre2']
                         persona.apellido1=request.POST['apellido1']

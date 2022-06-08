@@ -91,7 +91,7 @@ def view_doctor(request):
                     form = PersonaForm(request.POST, request.FILES)
                     if form.is_valid():
                         doctor = Doctor.objects.get(pk=request.POST['id'])
-                        persona = Persona.objects.get(pk = doctor.id)
+                        persona = Persona.objects.get(pk = doctor.persona_id)
                         persona.nombre1 =request.POST['nombre1']
                         persona.nombre2 =request.POST['nombre2']
                         persona.apellido1=request.POST['apellido1']
@@ -104,7 +104,7 @@ def view_doctor(request):
                         persona.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
                     else:
-                        return render(request, "registration/registrate.html", {'form': form})
+                        return render(request, "doctor/add_doctor.html", {'form': form})
 
 
                 except Exception as ex:
