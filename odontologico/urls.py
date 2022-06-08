@@ -6,6 +6,7 @@ from odontologico.conf_grupo import view_grupo
 from odontologico.conf_modulo import view_modulo
 from odontologico.conf_persona import view_persona
 from odontologico.conf_usuario import view_usuario
+from odontologico.view_doctor import view_doctor
 from odontologico.view_paciente import view_paciente
 from odontologico.views import login_usuario, dashboard, logout_usuario, registrate
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path(r'conf_sistemas/personas/', view_persona, name='conf_persona'),
     path(r'conf_sistemas/usuarios/', view_usuario, name='conf_usuario'),
     path(r'Pacientes/', view_paciente, name='pacientes'),
+    path(r'Doctores/', view_doctor, name='doctores'),
 ]
