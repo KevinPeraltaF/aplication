@@ -13,7 +13,7 @@
                         <h6 class="mb-0">{{ titulo_tabla }}</h6>
                     </div>
                     <div class="col-6 text-end">
-                        <a class="btn btn-outline-dark btn-sm mb-0" href="?peticion=add_paciente"><i
+                        <a class="btn btn-outline-dark btn-sm mb-0" href="?peticion=add_cita"><i
                                 class="material-icons text-sm">add</i>&nbsp;&nbsp;Agregar</a>
                     </div>
                 </div>
@@ -82,12 +82,25 @@
                                             <a href="javascript:;" class="text-secondary" id="dropdownMarketingCard" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="material-icons text-xl">more_vert</i>
                                             </a>
-                                            <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3" aria-labelledby="dropdownMarketingCard" style="">
-                                                <li><a class="dropdown-item border-radius-md"  href="?peticion=edit_paciente&id={{ fila.pk }}">Editar</a></li>
+                                            <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                                aria-labelledby="dropdownMarketingCard" style="">
+                                                {% if fila.estado_cita == 2 %}{#   pendiente #}
+
+                                                    <li><a class="dropdown-item border-radius-md"
+                                                           href="?peticion=edit_cita&id={{ fila.pk }}">Editar</a>
+                                                    </li>
+
+                                                {% endif %}
+
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
-                                                <li><a class="dropdown-item border-radius-md text-danger" href="javascript:;" onclick="eliminar_registro('eliminar_paciente','{{ fila }}','{{ fila.pk }}')" >Eliminar</a></li>
+                                                {% if fila.estado_cita == 2 %}{#   pendiente #}
+                                                    <li><a class="dropdown-item border-radius-md text-danger"
+                                                           href="javascript:;"
+                                                           onclick="eliminar_registro('eliminar_cita','{{ fila }}','{{ fila.pk }}')">Eliminar</a>
+                                                    </li>
+                                                {% endif %}
                                             </ul>
                                         </div>
                                     </td>

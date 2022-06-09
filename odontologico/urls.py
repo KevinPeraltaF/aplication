@@ -25,5 +25,5 @@ urlpatterns = [
     path(r'Pacientes/', view_paciente, name='pacientes'),
     path(r'Doctores/', view_doctor, name='doctores'),
     path(r'Asistentes/',view_asistente, name='asistentes'),
-    path(r'Agendar_cita/',view_agendar_cita, name='agendar_ita'),
+    path(r'Agendar_cita/',view_agendar_cita, name='agendar_cita'),
 ]

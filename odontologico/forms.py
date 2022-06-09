@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
+from django.forms import DateTimeInput, ModelChoiceField
 
-from odontologico.models import Genero, Modulo
+from odontologico.models import Genero, Modulo, Paciente, Doctor
 
 
 def deshabilitar_campo(form, campo):
@@ -135,3 +136,10 @@ class AccesoModuloForm(forms.Form):
     grupo = forms.ModelChoiceField(label=u"Grupo", queryset=Group.objects.all(), widget=forms.Select(attrs={'class': 'form-control', }))
     modulo = forms.ModelChoiceField(label=u"Módulo", queryset=Modulo.objects.filter(status=True, activo = True), widget=forms.Select(attrs={'class': 'form-control', }))
     activo = forms.BooleanField(label='Activo', required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check form-switch ms-2 my-auto is-filled','checked':'checked'}))
+
+
+class AgendarCitaForm(forms.Form):
+    paciente = ModelChoiceField(label=u'Paciente', queryset=Paciente.objects.filter(status=True), widget=forms.Select(attrs={'class': 'form-control', }))
+    doctor = ModelChoiceField(label=u'Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
+    fecha_cita = forms.DateField(label=u"Fecha de la cita", input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}), )
+    hora_cita = forms.TimeField(label=u"Hora de la cita", input_formats=['%H:%M'], widget=DateTimeInput(format='%H:%M', attrs={'class': 'form-control'}))
