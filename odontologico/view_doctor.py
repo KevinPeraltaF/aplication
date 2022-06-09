@@ -1,6 +1,6 @@
 import sys
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.forms import model_to_dict
@@ -52,6 +52,8 @@ def view_doctor(request):
                         password = password.strip()
                         usuario = User.objects.create_user(username, '', password)
                         usuario.save()
+                        grupo = Group.objects.get(pk=3)  # ESPECIALISTA
+                        grupo.user_set.add(usuario)
 
                         persona = Persona(
                             usuario=usuario,

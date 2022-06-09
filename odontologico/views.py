@@ -85,6 +85,9 @@ def registrate(request):
                         usuario = User.objects.create_user(username, '', password)
                         usuario.save()
 
+                        grupo = Group.objects.get(pk=4)  # PACIENTE
+                        grupo.user_set.add(usuario)
+
                         persona = Persona(
                             usuario=usuario,
                             nombre1=nombre1,
