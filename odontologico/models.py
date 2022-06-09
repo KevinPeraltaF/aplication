@@ -2,6 +2,11 @@ from django.contrib.auth.models import User, Group
 from django.db import models
 from odontologico.funciones import ModeloBase
 
+ESTADO_CITA = (
+    (1, u"ATENDIDO"),
+    (2, u"PENDIENTE"),
+    (3, u"ANULADO"),
+)
 
 class Modulo(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre del módulo", max_length=100, unique=True)
@@ -55,7 +60,7 @@ class Persona(ModeloBase):
         ordering = ['id']
 
     def __str__(self):
-        return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre1)
+        return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre2)
 
 
     def tiene_perfil_persona(self):
@@ -143,4 +148,32 @@ class AccesoModulo(ModeloBase):
 
     def __str__(self):
         return u'%s - %s - %s' % (self.grupo,self.modulo, self.activo)
+
+class Horario_hora(ModeloBase):
+    hora_inicio = models.TimeField(verbose_name=u"Hora inicio")
+    hora_fin = models.TimeField(verbose_name=u"Hora fin")
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Horario Horas de atención"
+        verbose_name_plural = "Horarios Horas de atenciones"
+        ordering = ['id']
+
+    def __str__(self):
+        return u'%s - %s' % (self.hora_inicio, self.hora_fin)
+
+class AgendarCita(ModeloBase):
+    paciente = models.ForeignKey(Paciente,  on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor,  on_delete=models.CASCADE)
+    fecha = models.DateField(verbose_name=u'Fecha')
+    horario = models.ForeignKey(Horario_hora,  on_delete=models.CASCADE)
+    estado_cita = models.IntegerField(choices=ESTADO_CITA, null=True, blank=True, verbose_name=u'Estado cita')
+
+    class Meta:
+        verbose_name = "Agendar cita"
+        verbose_name_plural = "Agendar citas"
+        ordering = ['id']
+
+    def __str__(self):
+        return u'Paciente: %s - Especialista: %s - Fecha: %s - Horario: %s' % (self.paciente,self.doctor, self.fecha,self.horario)
 

@@ -3,7 +3,8 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth.models import User
 
-from odontologico.models import Modulo, Genero, Persona, Paciente, PersonaPerfil, AccesoModulo
+from odontologico.models import Modulo, Genero, Persona, Paciente, PersonaPerfil, AccesoModulo, Horario_hora, \
+    AgendarCita
 
 admin.site.unregister(User)
 @admin.register(User)
@@ -53,5 +54,15 @@ class PersonaPerfilAdmin(admin.ModelAdmin):
 class AccesoModuloAdmin(admin.ModelAdmin):
     list_display = ('grupo','modulo','activo','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
     search_fields = ('grupo','modulo',)
+
+@admin.register(Horario_hora)
+class Horario_horaAdmin(admin.ModelAdmin):
+    list_display = ('hora_inicio','hora_fin','activo','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
+    search_fields = ('hora_inicio','hora_fin',)
+
+@admin.register(AgendarCita)
+class AgendarCitaAdmin(admin.ModelAdmin):
+    list_display = ('paciente','doctor','fecha','horario','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
+    search_fields = ('paciente','doctor','fecha','horario',)
 
 
