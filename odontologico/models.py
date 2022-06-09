@@ -119,6 +119,17 @@ class Doctor(ModeloBase):
     def __str__(self):
         return u'%s' % self.persona
 
+class Asistente(ModeloBase):
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Asistente"
+        verbose_name_plural = "Asistentes"
+        ordering = ['id']
+
+    def __str__(self):
+        return u'%s' % self.persona
+
 
 class AccesoModulo(ModeloBase):
     grupo = models.ForeignKey(Group,  on_delete=models.CASCADE)
