@@ -1,10 +1,12 @@
+from datetime import datetime
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 from django.forms import DateTimeInput, ModelChoiceField
 
-from odontologico.models import Genero, Modulo, Paciente, Doctor
+from odontologico.models import Genero, Modulo, Paciente, Doctor, Horario_hora
 
 
 def deshabilitar_campo(form, campo):
@@ -141,5 +143,9 @@ class AccesoModuloForm(forms.Form):
 class AgendarCitaForm(forms.Form):
     paciente = ModelChoiceField(label=u'Paciente', queryset=Paciente.objects.filter(status=True), widget=forms.Select(attrs={'class': 'form-control', }))
     doctor = ModelChoiceField(label=u'Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
-    fecha_cita = forms.DateField(label=u"Fecha de la cita", input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}), )
-    hora_cita = forms.TimeField(label=u"Hora de la cita", input_formats=['%H:%M'], widget=DateTimeInput(format='%H:%M', attrs={'class': 'form-control'}))
+    fecha_cita = forms.DateField(label=u"Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
+    hora_cita = forms.ModelChoiceField(label=u"Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
+
+    def editar(self):
+        campo_solo_lectura(self, 'paciente')
+        campo_solo_lectura(self, 'doctor')

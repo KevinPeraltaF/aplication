@@ -21,6 +21,52 @@ def view_agendar_cita(request):
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
 
+            if peticion == 'add_cita':
+                try:
+                    form = AgendarCitaForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        paciente = form.cleaned_data['paciente']
+                        doctor = form.cleaned_data['doctor']
+                        fecha_cita = form.cleaned_data['fecha_cita']
+                        hora_cita = form.cleaned_data['hora_cita']
+
+                        cita = AgendarCita(
+                            paciente=paciente,
+                            doctor=doctor,
+                            fecha=fecha_cita,
+                            horario=hora_cita,
+                            estado_cita = 2 #estado pendiente
+                        )
+                        cita.save(request)
+
+
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro guardado correctamente."})
+                    else:
+                        return JsonResponse(
+                            {"respuesta": False, "mensaje": "Ha ocurrido un error al enviar los datos."})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+            if peticion == 'edit_cita':
+                try:
+                    form = AgendarCitaForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        cita = AgendarCita.objects.get(pk=request.POST['id'])
+                        cita.paciente = form.cleaned_data['paciente']
+                        cita.doctor = form.cleaned_data['doctor']
+                        cita.fecha = form.cleaned_data['fecha_cita']
+                        cita.horario = form.cleaned_data['hora_cita']
+                        cita.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
             if peticion == 'eliminar_cita':
                 try:
                     with transaction.atomic():
@@ -51,23 +97,19 @@ def view_agendar_cita(request):
             if peticion == 'edit_cita':
                 try:
                     data['titulo'] = 'Editar cita'
-                    data['titulo_formulario'] = 'Formulario de editar paciente'
-                    data['peticion'] = 'edit_paciente'
-                    data['paciente'] = paciente = Paciente.objects.get(pk=request.GET['id'])
-                    form = PersonaForm(initial={
-                        'nombre1': paciente.persona.nombre1,
-                        'nombre2': paciente.persona.nombre2,
-                        'apellido1': paciente.persona.apellido1,
-                        'apellido2': paciente.persona.apellido2,
-                        'email': paciente.persona.email,
-                        'cedula': paciente.persona.cedula,
-                        'genero': paciente.persona.genero,
-                        'telefono_movil': paciente.persona.telefono_movil,
-                        'telefono_convencional': paciente.persona.telefono_convencional
+                    data['titulo_formulario'] = 'Formulario de editar cita'
+                    data['peticion'] = 'edit_cita'
+                    data['cita'] = cita = AgendarCita.objects.get(pk=request.GET['id'])
+                    form = AgendarCitaForm(initial={
+                        'paciente': cita.paciente,
+                        'doctor': cita.doctor,
+                        'fecha_cita': cita.fecha,
+                        'hora_cita': cita.horario,
+
                     })
                     form.editar()
                     data['form'] = form
-                    return render(request, "paciente/edit_paciente.html", data)
+                    return render(request, "agendar_cita/edit_cita.html", data)
                 except Exception as ex:
                     pass
 
