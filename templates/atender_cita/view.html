@@ -87,7 +87,7 @@
                                                 {% if fila.estado_cita == 2 %}{#   pendiente #}
 
                                                     <li><a class="dropdown-item border-radius-md"
-                                                           href="?peticion=edit_cita&id={{ fila.pk }}">Editar</a>
+                                                           href="?peticion=atender_cita&id={{ fila.pk }}">Atender cita</a>
                                                     </li>
 
                                                 {% endif %}
@@ -98,12 +98,8 @@
                                                 {% if fila.estado_cita == 2 %}{#   pendiente #}
                                                     <li><a class="dropdown-item border-radius-md text-danger"
                                                            href="javascript:;"
-                                                           onclick="eliminar_registro('eliminar_cita','{{ fila }}','{{ fila.pk }}')">Eliminar</a>
-                                                    </li>
-
-                                                    <li><a class="dropdown-item border-radius-md text-danger"
-                                                           href="javascript:;"
-                                                           onclick="accion_anular_cita('anular_cita','{{ fila | upper }}','{{ fila.pk }}')">Anular cita</a>
+                                                           onclick="accion_anular_cita('anular_cita','{{ fila | upper }}','{{ fila.pk }}')">Anular
+                                                        cita</a>
                                                     </li>
                                                 {% endif %}
                                             </ul>
@@ -138,7 +134,7 @@
 {% endblock %}
 
 {% block script %}
-    <script>
+     <script>
     function accion_anular_cita(peticion, registro, id) {
 
         Swal.fire({

@@ -5,6 +5,7 @@ from odontologico.funciones import ModeloBase
 ESTADO_CITA = (
     (1, u"ATENDIDO"),
     (2, u"PENDIENTE"),
+    (3, u"ANULADO"),
 )
 
 class Modulo(ModeloBase):

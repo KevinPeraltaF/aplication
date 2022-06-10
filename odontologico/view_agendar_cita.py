@@ -77,6 +77,17 @@ def view_agendar_cita(request):
 
                 except Exception as ex:
                     pass
+
+            if peticion == 'anular_cita':
+                try:
+                    with transaction.atomic():
+                        registro = AgendarCita.objects.get(pk=request.POST['id'])
+                        registro.estado_cita = 3
+                        registro.save(request)
+                        return JsonResponse({"respuesta": True, "mensaje": "Cita anulada correctamente."})
+
+                except Exception as ex:
+                    pass
         return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:
