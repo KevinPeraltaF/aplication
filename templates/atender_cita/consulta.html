@@ -9,7 +9,7 @@
 {% block lista_de_items_many_to_many %}
 {% endblock %}
 {% block titulo %}{{ titulo_formulario |upper }}{% endblock %}
-{% block class_extra_card_formulario %}col-lg-8 col-md-10{% endblock %}
+{% block class_extra_card_formulario %}col-lg-12 col-md-12{% endblock %}
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}"><br>
     <h5 class="text-xxl-end" >PACIENTE : {{ cita.paciente | upper }}</h5>
@@ -29,10 +29,36 @@
     <h5 class="mt-3">ODONTOGRAMA</h5>
     <div class="row"  id="odontograma">
       <div class="col"></div>
-      <div class="col mt-3">
-
-      </div>
       <div class="col"></div>
+        <div class="col">
+            <div class="row">
+                <div id="controls" class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label id="fractura" class="btn btn-danger">
+                                    <input type="radio" name="options" id="option1" autocomplete="off" checked>Fractura</label>
+                                <label id="restauracion" class="btn btn-primary">
+                                    <input type="radio" name="options" id="option2" autocomplete="off"> Obturación
+                                </label>
+                                <label id="extraccion" class="btn btn-warning">
+                                    <input type="radio" name="options" id="option3" autocomplete="off"> Extracción
+                                </label>
+                                <label id="extraer" class="btn btn-warning">
+                                    <input type="radio" name="options" id="option4" autocomplete="off"> A Extraer
+                                </label>
+                                <label id="puente" class="btn btn-primary">
+                                    <input type="radio" name="options" id="option5" autocomplete="off"> Puente
+                                </label>
+                                <label id="borrar" class="btn btn-success">
+                                    <input type="radio" name="options" id="option6" autocomplete="off"> Borrar
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+
+        </div>
 
     </div>
 
@@ -60,10 +86,6 @@
 
 
 {% block js %}
-
-   <script>
-
-    </script>
 
 {% endblock %}
 
