@@ -22,8 +22,8 @@ urlpatterns = [
     path(r'conf_sistemas/acceso_modulos/', view_acceso_modulo, name='conf_acceso_modulo'),
     path(r'conf_sistemas/personas/', view_persona, name='conf_persona'),
     path(r'conf_sistemas/usuarios/', view_usuario, name='conf_usuario'),
-    path(r'Pacientes/', view_paciente, name='pacientes'),
-    path(r'Doctores/', view_doctor, name='doctores'),
-    path(r'Asistentes/',view_asistente, name='asistentes'),
-    path(r'Agendar_cita/',view_agendar_cita, name='agendar_cita'),
+    path(r'pacientes/', view_paciente, name='pacientes'),
+    path(r'doctores/', view_doctor, name='doctores'),
+    path(r'asistentes/',view_asistente, name='asistentes'),
+    path(r'agendar_cita/',view_agendar_cita, name='agendar_cita'),
 ]
