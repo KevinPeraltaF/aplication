@@ -1,0 +1,69 @@
+{% extends 'formularioBase.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block contenido_extra %}
+
+{% endblock %}
+{% block lista_de_items_many_to_many %}
+{% endblock %}
+{% block titulo %}{{ titulo_formulario |upper }}{% endblock %}
+{% block class_extra_card_formulario %}col-lg-8 col-md-10{% endblock %}
+{% block inputs_extras %}
+    <input type="hidden" name="peticion" value="{{ peticion }}"><br>
+    <h5 class="text-xxl-end" >PACIENTE : {{ cita.paciente | upper }}</h5>
+    <h5 class="text-xxl-end" >CI: {{ cita.paciente.persona.cedula }}</h5>
+    <h6></h6>
+{% endblock %}
+
+{% block news_inputs_form %}
+
+    <div class="row">
+        <div class="input-group input-group-static my-3  ">
+            {{ form2.diagnostico_previo.errors }} {{ form2.diagnostico_previo.label_tag }} {{ form2.diagnostico_previo }} {% if form2.diagnostico_previo.help_text %}
+            <small id="help"
+                   class="form-text text-muted">{{ form2.diagnostico_previo.help_text|safe }}</small> {% endif %}
+        </div>
+    </div>
+    <h5 class="mt-3">ODONTOGRAMA</h5>
+    <div class="row"  id="odontograma">
+      <div class="col"></div>
+      <div class="col mt-3">
+
+      </div>
+      <div class="col"></div>
+
+    </div>
+
+     <div class="row">
+        <div class="input-group input-group-static my-3  ">
+            {{ form2.observacion.errors }} {{ form2.observacion.label_tag }} {{ form2.observacion }} {% if form2.observacion.help_text %}
+            <small id="help"
+                   class="form-text text-muted">{{ form2.observacion.help_text|safe }}</small> {% endif %}
+        </div>
+    </div>
+
+
+
+{% endblock %}
+{% block nombre_boton_submit %}Guardar{% endblock %}
+{% block location_href_destino %}{% url 'atender_cita' %}{% endblock %}
+{% block botones_extras %}{% endblock %}
+
+{% block modals %}
+    <!-- Modal -->
+
+{% endblock %}
+
+
+
+
+{% block js %}
+
+   <script>
+
+    </script>
+
+{% endblock %}
+

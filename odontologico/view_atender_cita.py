@@ -4,6 +4,8 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
+
+from odontologico.forms import ConsultaForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import AgendarCita, Persona
 
@@ -37,9 +39,15 @@ def view_atender_cita(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'peticion':
+            if peticion == 'atender_consulta':
                 try:
-                    pass
+                    data['titulo'] = 'Consulta'
+                    data['titulo_formulario'] = 'Formulario de atención de consulta a paciente'
+                    data['peticion'] = 'atender_consulta'
+                    data['cita'] = AgendarCita.objects.get(pk=request.GET['id'])
+                    form2 = ConsultaForm()
+                    data['form2'] = form2
+                    return render(request, "atender_cita/consulta.html", data)
                 except Exception as ex:
                     transaction.set_rollback(True)
                     pass

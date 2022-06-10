@@ -149,3 +149,12 @@ class AgendarCitaForm(forms.Form):
     def editar(self):
         campo_solo_lectura(self, 'paciente')
         campo_solo_lectura(self, 'doctor')
+
+
+class ConsultaForm(forms.Form):
+    diagnostico_previo =  forms.CharField(label='Diagnostio Previo', required=True,
+                             widget=forms.Textarea(attrs={'class': 'form-control', }))
+
+    observacion =  forms.CharField(label='Observacion', required=True,
+                             widget=forms.Textarea(attrs={'class': 'form-control', }))
+
