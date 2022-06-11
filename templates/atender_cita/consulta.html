@@ -12,8 +12,8 @@
 {% block class_extra_card_formulario %}col-lg-10 col-md-10{% endblock %}
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}"><br>
-    <h5 class="text-xxl-end" >PACIENTE : {{ cita.paciente | upper }}</h5>
-    <h5 class="text-xxl-end" >CI: {{ cita.paciente.persona.cedula }}</h5>
+    <h5 class="text-xxl-end">PACIENTE : {{ cita.paciente | upper }}</h5>
+    <h5 class="text-xxl-end">CI: {{ cita.paciente.persona.cedula }}</h5>
     <h6></h6>
 {% endblock %}
 
@@ -28,7 +28,67 @@
         </div>
     </div>
     <h5 class="mt-3">ODONTOGRAMA</h5>
+    <div class="row">
+        <div id="opcionesOdontograma">
+            <div class="btn-group" data-toggle="buttons">
+                <label id="fractura" class="btn btn-success active">
+                    <input type="radio" name="options" id="opcionObservacion" onclick="obtenerOpcion(this)" autocomplete="off" >En observacion</label>
+                <label id="restauracion" class="btn btn-secondary">
+                    <input type="radio" name="options" id="opcionAusente" onclick="obtenerOpcion(this)" autocomplete="off"> Diente ausente
+                </label>
+                <label id="extraccion" class="btn btn-primary">
+                    <input type="radio" name="options" id="opcionRadicular" onclick="obtenerOpcion(this)" autocomplete="off"> Remanente Radicular
+                </label>
+                <label id="extraer" class="btn btn-warning">
+                    <input type="radio" name="options" id="opcionCarie" onclick="obtenerOpcion(this)" autocomplete="off"> Caries
+                </label>
+                <label id="puente" class="btn btn-primary">
+                    <input type="radio" name="options" id="opcionCorona" onclick="obtenerOpcion(this)" autocomplete="off"> Corona
+                </label>
+                <label id="borrar" class="btn btn-dark">
+                    <input type="radio" name="options" id="opcionIncrustacion" onclick="obtenerOpcion(this)" autocomplete="off"> Incrustación
+                </label>
 
+                <label id="borrar" class="btn btn-dark">
+                    <input type="radio" name="options"  id="opcionClavija" onclick="obtenerOpcion(this)"autocomplete="off"> Clavija
+                </label>
+
+                <label id="borrar" class="btn btn-dark">
+                    <input type="radio" name="options" id="opcionFractura" onclick="obtenerOpcion(this)" autocomplete="off"> Fractura
+                </label>
+
+            </div>
+
+             <div class="btn-group" data-toggle="buttons">
+                <label id="fractura" class="btn btn-danger active">
+                    <input type="radio" name="options" id="opcionEndodoncia"  onclick="obtenerOpcion(this)" autocomplete="off" >En observacion</label>
+                <label id="restauracion" class="btn btn-primary">
+                    <input type="radio" name="options"  id="opcionObturacion" onclick="obtenerOpcion(this)" autocomplete="off"> Diente ausente
+                </label>
+                <label id="extraccion" class="btn btn-warning">
+                    <input type="radio" name="options" id="opcionIntrusion" onclick="obtenerOpcion(this)" autocomplete="off"> Remanente Radicular
+                </label>
+                <label id="extraer" class="btn btn-warning">
+                    <input type="radio" name="options" id="opcionExtrusion" onclick="obtenerOpcion(this)" autocomplete="off"> Caries
+                </label>
+                <label id="puente" class="btn btn-primary">
+                    <input type="radio" name="options" id="opcionProtesis" onclick="obtenerOpcion(this)" autocomplete="off"> Corona
+                </label>
+                <label id="borrar" class="btn btn-dark">
+                    <input type="radio" name="options"  id="opcionImplante" onclick="obtenerOpcion(this)" autocomplete="off"> Incrustación
+                </label>
+
+                <label id="borrar" class="btn btn-dark">
+                    <input type="radio" name="options"  id="opcionOrtodoncia" onclick="obtenerOpcion(this)"autocomplete="off"> Clavija
+                </label>
+
+                <label id="borrar" class="btn btn-dark">
+                    <input type="radio" name="options" id="opcionEdentulo" onclick="obtenerOpcion(this)" autocomplete="off"> Fractura
+                </label>
+
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col"></div>
         <div class="col">
@@ -1031,105 +1091,104 @@
 {% endblock %}
 
 
-<script>
-var idFuncion;
-var color=0;
-var verificaColor=0;
-var cuenta=0;
-function obtenerOpcion(b){
-    idFuncion=b.id;
-    color=1;
-
-}
-
-
-function obtenerIdPoligono( b ){
-var id=b.id
-var color=b.style.fill;
-
-if (cuenta == 0){
-    if (color = 1){
-        cuenta = cuenta + 1;
-        /*$('<input/>').attr({type:'text',value:'2',name:"odontoVerificador"+i}).appendTo('#opcionesOdontograma');*/
-        document.getElementById("odontoloVerificador").value =2;
-
-    }
-}
-
-
-switch(idFuncion){
-    case "opcionObservacion":
-    document.getElementById(id).style.fill="rgb(103, 182, 103)"
-    break;
-
-    case "opcionAusente":
-    document.getElementById(id).style.fill="rgb(76, 77, 80)"
-    break;
-
-    case "opcionRadicular":
-    document.getElementById(id).style.fill="rgb(47, 36, 199)"
-    break;
-
-    case "opcionCarie":
-    document.getElementById(id).style.fill="rgb(112, 175, 194)"
-    break;
-
-    case "opcionCorona":
-    document.getElementById(id).style.fill="rgb(48, 47, 146)"
-    break;
-
-    case "opcionIncrustacion":
-    document.getElementById(id).style.fill="rgb(176, 201, 176)"
-    break;
-
-    case "opcionClavija":
-    document.getElementById(id).style.fill="rgb(8, 112, 8)"
-    break;
-
-    case "opcionFractura":
-    document.getElementById(id).style.fill="rgb(204, 180, 143)"
-    break;
-
-    case "opcionEndodoncia":
-    document.getElementById(id).style.fill="rgb(208, 150, 241)"
-    break;
-
-    case "opcionObturacion":
-    document.getElementById(id).style.fill="rgb(140, 67, 158)"
-    break;
-
-    case "opcionIntrusion":
-    document.getElementById(id).style.fill="rgb(216, 95, 210)"
-    break;
-
-    case "opcionExtrusion":
-    document.getElementById(id).style.fill="rgb(233, 213, 102)"
-    break;
-
-    case "opcionProtesis":
-    document.getElementById(id).style.fill="rgb(230, 77, 77)"
-    break;
-
-    case "opcionImplante":
-    document.getElementById(id).style.fill="rgb(83, 53, 28)"
-    break;
-
-    case "opcionOrtodoncia":
-    document.getElementById(id).style.fill="rgb(221, 224, 48)"
-    break;
-
-    case "opcionEdentulo":
-    document.getElementById(id).style.fill="rgb(0, 0, 0)"
-    break;
-}
-
-}
-
-
-
-</script>
-
 {% block js %}
+    <script>
+        var idFuncion;
+        var color = 0;
+        var verificaColor = 0;
+        var cuenta = 0;
 
+        function obtenerOpcion(b) {
+            idFuncion = b.id;
+            color = 1;
+
+        }
+
+
+        function obtenerIdPoligono(b) {
+
+            var id = b.id
+            var color = b.style.fill;
+
+            if (cuenta == 0) {
+                if (color = 1) {
+                    cuenta = cuenta + 1;
+                    /*$('<input/>').attr({type:'text',value:'2',name:"odontoVerificador"+i}).appendTo('#opcionesOdontograma');*/
+                    document.getElementById("odontoloVerificador").value = 2;
+
+                }
+            }
+
+
+            switch (idFuncion) {
+                case "opcionObservacion":
+                    document.getElementById(id).style.fill = "rgb(103, 182, 103)"
+                    break;
+
+                case "opcionAusente":
+                    document.getElementById(id).style.fill = "rgb(76, 77, 80)"
+                    break;
+
+                case "opcionRadicular":
+                    document.getElementById(id).style.fill = "rgb(47, 36, 199)"
+                    break;
+
+                case "opcionCarie":
+                    document.getElementById(id).style.fill = "rgb(112, 175, 194)"
+                    break;
+
+                case "opcionCorona":
+                    document.getElementById(id).style.fill = "rgb(48, 47, 146)"
+                    break;
+
+                case "opcionIncrustacion":
+                    document.getElementById(id).style.fill = "rgb(176, 201, 176)"
+                    break;
+
+                case "opcionClavija":
+                    document.getElementById(id).style.fill = "rgb(8, 112, 8)"
+                    break;
+
+                case "opcionFractura":
+                    document.getElementById(id).style.fill = "rgb(204, 180, 143)"
+                    break;
+
+                case "opcionEndodoncia":
+                    document.getElementById(id).style.fill = "rgb(208, 150, 241)"
+                    break;
+
+                case "opcionObturacion":
+                    document.getElementById(id).style.fill = "rgb(140, 67, 158)"
+                    break;
+
+                case "opcionIntrusion":
+                    document.getElementById(id).style.fill = "rgb(216, 95, 210)"
+                    break;
+
+                case "opcionExtrusion":
+                    document.getElementById(id).style.fill = "rgb(233, 213, 102)"
+                    break;
+
+                case "opcionProtesis":
+                    document.getElementById(id).style.fill = "rgb(230, 77, 77)"
+                    break;
+
+                case "opcionImplante":
+                    document.getElementById(id).style.fill = "rgb(83, 53, 28)"
+                    break;
+
+                case "opcionOrtodoncia":
+                    document.getElementById(id).style.fill = "rgb(221, 224, 48)"
+                    break;
+
+                case "opcionEdentulo":
+                    document.getElementById(id).style.fill = "rgb(0, 0, 0)"
+                    break;
+            }
+
+        }
+
+
+    </script>
 {% endblock %}
 
