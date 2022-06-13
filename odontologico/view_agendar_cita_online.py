@@ -92,12 +92,17 @@ def view_agendar_cita_online(request):
                 data['titulo'] = 'Agendar Cita'
                 data['titulo_tabla'] = 'Mis citas médicas'
                 data['persona_logeado'] = persona_logeado
-                lista = AgendarCita.objects.filter(status=True,paciente__persona = persona_logeado ).order_by('id')
-                data['existe_cita_medica_pendiente'] =  existe_cita_medica_pendiente = AgendarCita.objects.filter(status=True,paciente__persona = persona_logeado ,estado_cita = 2).exists()
-                paginator = Paginator(lista, 15)
-                page_number = request.GET.get('page')
-                page_obj = paginator.get_page(page_number)
-                data['page_obj'] = page_obj
+                if persona_logeado == 'SUPERADMINISTRADOR':
+                    lista =None
+                    data['existe_cita_medica_pendiente'] =True
+                    data['page_obj'] = None
+                else:
+                    lista = AgendarCita.objects.filter(status=True,paciente__persona = persona_logeado ).order_by('id')
+                    data['existe_cita_medica_pendiente'] =  existe_cita_medica_pendiente = AgendarCita.objects.filter(status=True,paciente__persona = persona_logeado ,estado_cita = 2).exists()
+                    paginator = Paginator(lista, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['page_obj'] = page_obj
                 return render(request, "agendar_cita/view_cita_online.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
