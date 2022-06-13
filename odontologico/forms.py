@@ -158,3 +158,11 @@ class ConsultaForm(forms.Form):
     observacion =  forms.CharField(label='Observacion', required=True,
                              widget=forms.Textarea(attrs={'class': 'form-control', }))
 
+
+class AgendarCitaOnlineForm(forms.Form):
+    doctor = ModelChoiceField(label=u'Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
+    fecha_cita = forms.DateField(label=u"Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
+    hora_cita = forms.ModelChoiceField(label=u"Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
+
+
+

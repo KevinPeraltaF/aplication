@@ -6,9 +6,9 @@ from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from odontologico.forms import PersonaForm, AgendarCitaForm
+from odontologico.forms import PersonaForm, AgendarCitaForm, AgendarCitaOnlineForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import PersonaPerfil, Persona, Asistente, AgendarCita
+from odontologico.models import PersonaPerfil, Persona, Asistente, AgendarCita, Paciente
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -31,9 +31,18 @@ def view_agendar_cita_online(request):
 
             if peticion == 'add_cita':
                 try:
-                    form = AgendarCitaForm(request.POST, request.FILES)
+                    form = AgendarCitaOnlineForm(request.POST, request.FILES)
+
                     if form.is_valid():
-                        paciente = form.cleaned_data['paciente']
+                        existe_cita_agendada = False
+                        if AgendarCita.objects.filter(status=True, estado_cita=2, horario=form.cleaned_data['hora_cita'], fecha=form.cleaned_data['fecha_cita'],doctor=form.cleaned_data['doctor']).exists():
+                            existe_cita_agendada = True
+
+                        if existe_cita_agendada:
+                            return JsonResponse({"respuesta": False, "mensaje": "Lo siento, no esta disponible ese horario."})
+
+
+                        paciente = Paciente.objects.get(persona = persona_logeado, status = True)
                         doctor = form.cleaned_data['doctor']
                         fecha_cita = form.cleaned_data['fecha_cita']
                         hora_cita = form.cleaned_data['hora_cita']
@@ -69,7 +78,7 @@ def view_agendar_cita_online(request):
                     data['titulo'] = 'Agendar nueva cita'
                     data['titulo_formulario'] = 'Formulario de registro de citas'
                     data['peticion'] = 'add_cita'
-                    form = AgendarCitaForm()
+                    form = AgendarCitaOnlineForm()
                     data['form'] = form
                     return render(request, "agendar_cita/add_cita_online.html", data)
                 except Exception as ex:
