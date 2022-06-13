@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.template.loader import get_template
 
 from odontologico.funciones import add_data_aplication
+from odontologico.models import Persona
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -17,6 +18,12 @@ def view_grupo(request):
     global ex
     data = {}
     add_data_aplication(request, data)
+    usuario_logeado = request.user
+    if Persona.objects.filter(usuario=usuario_logeado, status=True).exists():
+        persona_logeado = Persona.objects.get(usuario=usuario_logeado, status=True)
+    else:
+        persona_logeado = 'SUPERADMINISTRADOR'
+
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -78,7 +85,7 @@ def view_grupo(request):
                     data['titulo_formulario'] = 'Formulario de registro de grupos'
                     data['peticion'] = 'add_grupo'
                     data['permisos'] = Permission.objects.all()
-
+                    data['persona_logeado'] = persona_logeado
                     return render(request, "conf_sistema/add_grupo.html", data)
                 except Exception as ex:
                     pass
@@ -97,8 +104,10 @@ def view_grupo(request):
                     data['titulo'] = 'Editar Grupo'
                     data['grupo'] = Group.objects.get(pk=request.GET['id'])
                     data['permisos'] = Permission.objects.all()
+                    data['persona_logeado'] = persona_logeado
                     data['titulo_formulario'] = 'Formulario de editar Grupo'
                     data['peticion'] = 'edit_grupo'
+                    data['persona_logeado'] = persona_logeado
                     return render(request, "conf_sistema/edit_grupo.html", data)
                 except Exception as ex:
                     pass
@@ -107,6 +116,7 @@ def view_grupo(request):
             try:
                 data['titulo'] = 'Configuración de grupos'
                 data['titulo_tabla'] = 'Lista  de Grupos'
+                data['persona_logeado'] = persona_logeado
                 lista = Group.objects.all().order_by('id')
                 paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')

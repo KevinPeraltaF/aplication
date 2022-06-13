@@ -17,6 +17,12 @@ def view_agendar_cita(request):
     global ex
     data = {}
     add_data_aplication(request, data)
+    usuario_logeado = request.user
+    if Persona.objects.filter(usuario=usuario_logeado, status=True).exists():
+        persona_logeado = Persona.objects.get(usuario=usuario_logeado, status=True)
+    else:
+        persona_logeado = 'SUPERADMINISTRADOR'
+
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -98,6 +104,7 @@ def view_agendar_cita(request):
                     data['titulo'] = 'Agendar nueva cita'
                     data['titulo_formulario'] = 'Formulario de registro de citas'
                     data['peticion'] = 'add_cita'
+                    data['persona_logeado'] = persona_logeado
                     form = AgendarCitaForm()
                     data['form'] = form
                     return render(request, "agendar_cita/add_cita.html", data)
@@ -110,6 +117,7 @@ def view_agendar_cita(request):
                     data['titulo'] = 'Editar cita'
                     data['titulo_formulario'] = 'Formulario de editar cita'
                     data['peticion'] = 'edit_cita'
+                    data['persona_logeado'] = persona_logeado
                     data['cita'] = cita = AgendarCita.objects.get(pk=request.GET['id'])
                     form = AgendarCitaForm(initial={
                         'paciente': cita.paciente,
@@ -128,6 +136,7 @@ def view_agendar_cita(request):
             try:
                 data['titulo'] = 'Agendar Cita'
                 data['titulo_tabla'] = 'Lista  de citas'
+                data['persona_logeado'] = persona_logeado
                 lista = AgendarCita.objects.filter(status=True).order_by('id')
                 paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')

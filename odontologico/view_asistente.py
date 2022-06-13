@@ -17,6 +17,12 @@ def view_asistente(request):
     global ex
     data = {}
     add_data_aplication(request, data)
+    usuario_logeado = request.user
+    if Persona.objects.filter(usuario=usuario_logeado, status=True).exists():
+        persona_logeado = Persona.objects.get(usuario=usuario_logeado, status=True)
+    else:
+        persona_logeado = 'SUPERADMINISTRADOR'
+
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -131,6 +137,7 @@ def view_asistente(request):
                     data['titulo'] = 'Agregar nuevo asistente'
                     data['titulo_formulario'] = 'Formulario de registro de asistente'
                     data['peticion'] = 'add_asistente'
+                    data['persona_logeado'] = persona_logeado
                     form = PersonaForm()
                     data['form'] = form
                     return render(request, "asistente/add_asistente.html", data)
@@ -143,6 +150,7 @@ def view_asistente(request):
                     data['titulo'] = 'Editar asistente'
                     data['titulo_formulario'] = 'Formulario de editar asistente'
                     data['peticion'] = 'edit_asistente'
+                    data['persona_logeado'] = persona_logeado
                     data['asistente'] = asistente = Asistente.objects.get(pk=request.GET['id'])
                     form = PersonaForm(initial={
                         'nombre1':asistente.persona.nombre1,
@@ -165,6 +173,7 @@ def view_asistente(request):
             try:
                 data['titulo'] = 'asistentes'
                 data['titulo_tabla'] = 'Lista  de asistentes'
+                data['persona_logeado'] = persona_logeado
                 lista = Asistente.objects.filter(status=True).order_by('id')
                 paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')

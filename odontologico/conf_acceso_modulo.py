@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 from odontologico.forms import AccesoModuloForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import AccesoModulo
+from odontologico.models import AccesoModulo, Persona
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -16,6 +16,12 @@ def view_acceso_modulo(request):
     global ex
     data = {}
     add_data_aplication(request, data)
+    usuario_logeado = request.user
+    if Persona.objects.filter(usuario=usuario_logeado, status=True).exists():
+        persona_logeado = Persona.objects.get(usuario=usuario_logeado, status=True)
+    else:
+        persona_logeado = 'SUPERADMINISTRADOR'
+
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -62,6 +68,7 @@ def view_acceso_modulo(request):
                     data['titulo'] = 'Agregar nuevo acceso a módulo'
                     data['titulo_formulario'] = 'Formulario de registro de acceso a módulo'
                     data['peticion'] = 'add_acceso_modulo'
+                    data['persona_logeado'] = persona_logeado
                     form = AccesoModuloForm()
                     data['form'] = form
 
@@ -73,6 +80,7 @@ def view_acceso_modulo(request):
             try:
                 data['titulo'] = 'Configuración de acceso a módulos'
                 data['titulo_tabla'] = 'Lista  de acceso a módulos'
+                data['persona_logeado'] = persona_logeado
                 lista = AccesoModulo.objects.filter(status=True).order_by('id')
                 paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')

@@ -44,6 +44,7 @@ def view_atender_cita(request):
                     data['titulo'] = 'Consulta'
                     data['titulo_formulario'] = 'Formulario de atención de consulta a paciente'
                     data['peticion'] = 'atender_consulta'
+                    data['persona_logeado'] = persona_logeado
                     data['cita'] = AgendarCita.objects.get(pk=request.GET['id'])
                     form2 = ConsultaForm()
                     data['form2'] = form2
@@ -55,6 +56,7 @@ def view_atender_cita(request):
             try:
                 data['titulo'] = 'Citas Planificadas'
                 data['titulo_tabla'] = 'Lista  de citas'
+                data['persona_logeado'] = persona_logeado
                 if not persona_logeado =='SUPERADMINISTRADOR':
                     lista = AgendarCita.objects.filter(status=True,doctor__persona= persona_logeado ).order_by('-estado_cita')
                 else:

@@ -158,9 +158,11 @@ def dashboard(request):
                 #obtener modulos
                 if usuario_logeado.is_superuser:
                     modulos = Modulo.objects.filter(status=True,activo=True)
+
                 else:
                     menu = AccesoModulo.objects.values_list('modulo_id').filter(status = True, activo = True ,grupo__in = usuario_logeado.groups.all())
                     modulos = Modulo.objects.filter(status=True, activo=True, pk__in = menu )
+                data['persona_logeado'] = persona_logeado
                 data['modulos'] = modulos
                 return render(request, "registration/dashboard.html ", data)
             except Exception as ex:

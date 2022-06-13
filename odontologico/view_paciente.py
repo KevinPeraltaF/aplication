@@ -18,6 +18,12 @@ def view_paciente(request):
     global ex
     data = {}
     add_data_aplication(request, data)
+    usuario_logeado = request.user
+    if Persona.objects.filter(usuario=usuario_logeado, status=True).exists():
+        persona_logeado = Persona.objects.get(usuario=usuario_logeado, status=True)
+    else:
+        persona_logeado = 'SUPERADMINISTRADOR'
+
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -166,6 +172,7 @@ def view_paciente(request):
             try:
                 data['titulo'] = 'Pacientes'
                 data['titulo_tabla'] = 'Lista  de Pacientes'
+                data['persona_logeado'] = persona_logeado
                 lista = Paciente.objects.filter(status=True).order_by('id')
                 paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')

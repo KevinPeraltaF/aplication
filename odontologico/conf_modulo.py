@@ -9,7 +9,7 @@ from django.shortcuts import render
 from aplication.settings import MEDIA_URL
 from odontologico.forms import ModuloForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Modulo
+from odontologico.models import Modulo, Persona
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -18,6 +18,12 @@ def view_modulo(request):
     global ex
     data = {}
     add_data_aplication(request, data)
+    usuario_logeado = request.user
+    if Persona.objects.filter(usuario=usuario_logeado, status=True).exists():
+        persona_logeado = Persona.objects.get(usuario=usuario_logeado, status=True)
+    else:
+        persona_logeado = 'SUPERADMINISTRADOR'
+
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
@@ -101,6 +107,7 @@ def view_modulo(request):
                     data['titulo'] = 'Agregar nuevo módulo'
                     data['titulo_formulario'] = 'Formulario de registro de Módulo'
                     data['peticion'] = 'add_modulo'
+                    data['persona_logeado'] = persona_logeado
                     form= ModuloForm()
                     form.add()
                     data['form'] = form
@@ -114,6 +121,7 @@ def view_modulo(request):
                     data['titulo'] = 'Editar módulo'
                     data['titulo_formulario'] = 'Formulario de editar Módulo'
                     data['peticion'] = 'edit_modulo'
+                    data['persona_logeado'] = persona_logeado
                     data['MEDIA_URL'] = MEDIA_URL
                     data['modulo'] = modulo = Modulo.objects.get(pk=request.GET['id'])
                     data['form'] = form = ModuloForm(initial=model_to_dict(modulo))
@@ -125,6 +133,7 @@ def view_modulo(request):
             try:
                 data['titulo'] = 'Configuración de Módulos'
                 data['titulo_tabla'] = 'Lista  de Módulos'
+                data['persona_logeado'] = persona_logeado
                 lista = Modulo.objects.filter(status=True).order_by('id')
                 paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')

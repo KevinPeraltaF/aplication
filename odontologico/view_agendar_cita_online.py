@@ -78,6 +78,7 @@ def view_agendar_cita_online(request):
                     data['titulo'] = 'Agendar nueva cita'
                     data['titulo_formulario'] = 'Formulario de registro de citas'
                     data['peticion'] = 'add_cita'
+                    data['persona_logeado'] = persona_logeado
                     form = AgendarCitaOnlineForm()
                     data['form'] = form
                     return render(request, "agendar_cita/add_cita_online.html", data)
@@ -90,6 +91,7 @@ def view_agendar_cita_online(request):
             try:
                 data['titulo'] = 'Agendar Cita'
                 data['titulo_tabla'] = 'Mis citas médicas'
+                data['persona_logeado'] = persona_logeado
                 lista = AgendarCita.objects.filter(status=True,paciente__persona = persona_logeado ).order_by('id')
                 data['existe_cita_medica_pendiente'] =  existe_cita_medica_pendiente = AgendarCita.objects.filter(status=True,paciente__persona = persona_logeado ,estado_cita = 2).exists()
                 paginator = Paginator(lista, 15)
