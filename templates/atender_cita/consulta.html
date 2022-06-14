@@ -20,11 +20,19 @@
 {% block news_inputs_form %}
 
     <div class="row">
+     <h5 class="mt-3">DIAGNOSTICO PREVIO</h5>
         <div class="input-group input-group-static my-3  ">
-            {{ form2.diagnostico_previo.errors }} {{ form2.diagnostico_previo.label_tag }} {{ form2.diagnostico_previo }}
+            {{ form2.diagnostico_previo.errors }}  {{ form2.diagnostico_previo }}
             {% if form2.diagnostico_previo.help_text %}
                 <small id="help"
                        class="form-text text-muted">{{ form2.diagnostico_previo.help_text|safe }}</small> {% endif %}
+        </div>
+          <h5 class="mt-3">TRATAMIENTOS</h5>
+        <div class="input-group input-group-static my-3  ">
+            {{ form2.tratamientos.errors }}  {{ form2.tratamientos }}
+            {% if form2.tratamientos.help_text %}
+                <small id="help"
+                       class="form-text text-muted">{{ form2.tratamientos.help_text|safe }}</small> {% endif %}
         </div>
     </div>
     <h5 class="mt-3">ODONTOGRAMA</h5>
@@ -89,6 +97,7 @@
             </div>
         </div>
     </div>
+    <br><br>
     <div class="row">
         <div class="col"></div>
         <div class="col">
@@ -1092,6 +1101,14 @@
 
 
 {% block js %}
+
+        <script>
+     $(function () {
+          //Bootstrap Duallistbox
+        $('.duallistbox').bootstrapDualListbox();
+
+     });
+    </script>
     <script>
         var idFuncion;
         var color = 0;

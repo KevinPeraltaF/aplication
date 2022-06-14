@@ -439,20 +439,6 @@ class Odontograma(models.Model):
     RP38=models.CharField(max_length=50, null=True)
     LP38=models.CharField(max_length=50, null=True)
 
-
-class Consulta(ModeloBase):
-    fecha = models.DateField(verbose_name=u'Fecha')
-    motivo_consulta = models.TextField(default='', max_length= 600, verbose_name='Motivo de la consulta')
-    paciente = models.ForeignKey(Paciente,  on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Doctor,  on_delete=models.CASCADE)
-    diagnostico_previo = models.TextField(default='', max_length= 600, verbose_name='Diagnostico Previo')
-    odontograma = models.ForeignKey(Odontograma,  on_delete=models.CASCADE)
-    observacion = models.TextField(default='', max_length=600, verbose_name='Observación')
-
-    def __str__(self):
-        return u'Paciente: %s - Fecha: %s ' % (self.paciente, self.fecha)
-
-
 class Tratamiento(ModeloBase):
     nombre = models.CharField(max_length=100, verbose_name=u'Nombre')
     costo = models.DecimalField(max_digits=30, decimal_places=2, default=0, verbose_name=u'Costo')
@@ -466,3 +452,17 @@ class Tratamiento(ModeloBase):
 
     def __str__(self):
         return u'%s - Costo:$%s' % (self.nombre,self.costo)
+
+class Consulta(ModeloBase):
+    fecha = models.DateField(verbose_name=u'Fecha')
+    motivo_consulta = models.TextField(default='', max_length= 600, verbose_name='Motivo de la consulta')
+    paciente = models.ForeignKey(Paciente,  on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor,  on_delete=models.CASCADE)
+    diagnostico_previo = models.TextField(default='', max_length= 600, verbose_name='Diagnostico Previo')
+    odontograma = models.ForeignKey(Odontograma,  on_delete=models.CASCADE)
+    observacion = models.TextField(default='', max_length=600, verbose_name='Observación')
+    tratamientos =  models.ManyToManyField(Tratamiento, verbose_name=u'Tratamientos')
+    def __str__(self):
+        return u'Paciente: %s - Fecha: %s ' % (self.paciente, self.fecha)
+
+
