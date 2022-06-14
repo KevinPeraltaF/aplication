@@ -24,6 +24,18 @@ def view_atender_cita(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
+            if peticion == 'atender_consulta':
+                try:
+
+                    '''
+                    #realizar el guardado de la consulta - diagnostico previo - tratamiento y odontograma
+                    '''
+
+                    return JsonResponse({"respuesta": True, "mensaje": "Se registro correctamente la consulta."})
+                except Exception as ex:
+                    pass
+
+
 
             if peticion == 'anular_cita':
                 try:
