@@ -165,4 +165,11 @@ class AgendarCitaOnlineForm(forms.Form):
     hora_cita = forms.ModelChoiceField(label=u"Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
 
 
+class TratamientoForm(forms.Form):
+    nombre =  forms.CharField(label='Nombre', required=True, widget=forms.TextInput(attrs={'class': 'form-control', }))
+
+    costo = forms.DecimalField(initial='0.00', label=u'Costo',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    descripcion =  forms.CharField(label='Descripción', required=False,widget=forms.Textarea(attrs={'class': 'form-control', }))
+
 

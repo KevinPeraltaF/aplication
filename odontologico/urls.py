@@ -12,6 +12,7 @@ from odontologico.view_asistente import view_asistente
 from odontologico.view_atender_cita import view_atender_cita
 from odontologico.view_doctor import view_doctor
 from odontologico.view_paciente import view_paciente
+from odontologico.view_tratamiento import view_tratamiento
 from odontologico.views import login_usuario, dashboard, logout_usuario, registrate
 
 urlpatterns = [
@@ -30,4 +31,5 @@ urlpatterns = [
     path(r'agendar_cita/',view_agendar_cita, name='agendar_cita'),
     path(r'atender_cita/',view_atender_cita, name='atender_cita'),
     path(r'cita_online/',view_agendar_cita_online, name='agendar_cita_online'),
+    path(r'tratamiento/',view_tratamiento, name='tratamiento'),
 ]
