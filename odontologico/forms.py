@@ -152,10 +152,10 @@ class AgendarCitaForm(forms.Form):
 
 
 class ConsultaForm(forms.Form):
-    diagnostico_previo =  forms.CharField(label='Diagnostio Previo', required=True,
+    diagnostico_previo =  forms.CharField(label='Diagnostio Previo', required=False,
                              widget=forms.Textarea(attrs={'class': 'form-control', }))
     tratamientos = forms.ModelMultipleChoiceField(Tratamiento.objects.filter(status=True), label=u'Tratamientos', required=False,  widget=forms.SelectMultiple(attrs={'class': 'duallistbox form-control'}))
-    observacion =  forms.CharField(label='Observacion', required=True, widget=forms.Textarea(attrs={'class': 'form-control', }))
+    observacion =  forms.CharField(label='Observacion', required=False, widget=forms.Textarea(attrs={'class': 'form-control', }))
 
 
 class AgendarCitaOnlineForm(forms.Form):
