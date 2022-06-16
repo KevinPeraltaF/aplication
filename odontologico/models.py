@@ -113,6 +113,13 @@ class Paciente(ModeloBase):
     def __str__(self):
         return u'%s' % self.persona
 
+    def tiene_odontograma(self):
+        return self.agendarcita_set.filter(status=True, estado_cita=1).exists()
+
+
+
+
+
 class Doctor(ModeloBase):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
 
