@@ -12,6 +12,7 @@
 {% block class_extra_card_formulario %}col-lg-10 col-md-10{% endblock %}
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}"><br>
+    <input type="hidden" name="id" value="{{ cita.id }}"><br>
     <h5 class="text-xxl-end">PACIENTE : {{ cita.paciente | upper }}</h5>
     <h5 class="text-xxl-end">CI: {{ cita.paciente.persona.cedula }}</h5>
     <h6></h6>

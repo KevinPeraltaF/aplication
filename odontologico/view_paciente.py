@@ -145,6 +145,17 @@ def view_paciente(request):
                     transaction.set_rollback(True)
                     pass
 
+            if peticion == 'historial_odontograma':
+                try:
+                    data['titulo'] = 'Historial - Odontogramas'
+                    data['titulo_formulario'] = 'Odontograma'
+                    data['peticion'] = 'historial_odontograma'
+
+                    return render(request, "paciente/historial_odontograma.html", data)
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    pass
+
             if peticion == 'edit_paciente':
                 try:
                     data['titulo'] = 'Editar paciente'

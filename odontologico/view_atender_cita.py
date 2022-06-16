@@ -28,7 +28,7 @@ def view_atender_cita(request):
                 try:
                     colores = request.POST.getlist('color[]')
                     partes = request.POST.getlist('identificador[]')
-                    Odontograma.objects.create(TP18=colores[0], BP18=colores[1],
+                    odontograma = Odontograma(TP18=colores[0], BP18=colores[1],
                                                RP18=colores[2], LP18=colores[3], CP18=colores[4], CP17=colores[5],
                                                TP17=colores[6], BP17=colores[7], RP17=colores[8], LP17=colores[9],
                                                CP16=colores[10], TP16=colores[11], BP16=colores[12], RP16=colores[13],
@@ -107,6 +107,13 @@ def view_atender_cita(request):
                                                BP37=colores[252], RP37=colores[253], LP37=colores[254],
                                                CP38=colores[255], TP38=colores[256], BP38=colores[257],
                                                RP38=colores[258], LP38=colores[259])
+
+                    odontograma.save(request)
+
+                    cita = AgendarCita.objects.get(pk=request.POST['id'])
+                    cita.estado_cita = 1
+                    cita.save(request)
+
                     '''
                     #realizar el guardado de la consulta - diagnostico previo - tratamiento y odontograma
                     '''
@@ -137,7 +144,7 @@ def view_atender_cita(request):
                     data['titulo_formulario'] = 'Formulario de atención de consulta a paciente'
                     data['peticion'] = 'atender_consulta'
                     data['persona_logeado'] = persona_logeado
-                    data['cita'] = AgendarCita.objects.get(pk=request.GET['id'])
+                    data['cita'] = cita =AgendarCita.objects.get(pk=request.GET['id'])
                     form2 = ConsultaForm()
                     data['form2'] = form2
                     return render(request, "atender_cita/consulta.html", data)
