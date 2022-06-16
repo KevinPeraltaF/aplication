@@ -7,9 +7,9 @@ from django.forms import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from odontologico.forms import PersonaForm
+from odontologico.forms import PersonaForm, ConsultaForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Paciente, PersonaPerfil, Persona
+from odontologico.models import Paciente, PersonaPerfil, Persona, Consulta
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -151,6 +151,11 @@ def view_paciente(request):
                     data['titulo_formulario'] = 'Odontograma'
                     data['peticion'] = 'historial_odontograma'
 
+                    lista = Consulta.objects.filter(status=True,paciente__id = request.GET['id'])
+                    paginator = Paginator(lista, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['page_obj'] = page_obj
                     return render(request, "paciente/historial_odontograma.html", data)
                 except Exception as ex:
                     transaction.set_rollback(True)
@@ -176,6 +181,16 @@ def view_paciente(request):
                     form.editar()
                     data['form'] = form
                     return render(request, "paciente/edit_paciente.html", data)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'ver_odontograma':
+                try:
+                    data['titulo'] = 'Ver consulta'
+                    data['titulo_formulario'] = 'Ver consulta'
+                    data['consulta'] = consulta = Consulta.objects.get(pk=request.GET['id'])
+
+                    return render(request, "paciente/ver_consulta.html", data)
                 except Exception as ex:
                     pass
 

@@ -461,8 +461,7 @@ class Tratamiento(ModeloBase):
         return u'%s - Costo:$%s' % (self.nombre,self.costo)
 
 class Consulta(ModeloBase):
-    fecha = models.DateField(verbose_name=u'Fecha')
-    motivo_consulta = models.TextField(default='', max_length= 600, verbose_name='Motivo de la consulta')
+    fecha = models.DateField(verbose_name=u'Fecha' ,auto_now_add=True)
     paciente = models.ForeignKey(Paciente,  on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor,  on_delete=models.CASCADE)
     diagnostico_previo = models.TextField(default='', max_length= 600, verbose_name='Diagnostico Previo')
