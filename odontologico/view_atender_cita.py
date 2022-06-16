@@ -150,6 +150,9 @@ def view_atender_cita(request):
                         )
                         consulta.save(request)
 
+                        for foo in form.cleaned_data['tratamientos']:
+                            consulta.tratamientos.add(foo)
+
 
                     '''
                     #realizar el guardado de la consulta - diagnostico previo - tratamiento y odontograma

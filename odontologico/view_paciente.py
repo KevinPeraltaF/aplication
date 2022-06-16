@@ -189,6 +189,7 @@ def view_paciente(request):
                     data['titulo'] = 'Ver consulta'
                     data['titulo_formulario'] = 'Ver consulta'
                     data['consulta'] = consulta = Consulta.objects.get(pk=request.GET['id'])
+                    data['odontograma'] = odontograma= consulta.odontograma
 
                     return render(request, "paciente/ver_consulta.html", data)
                 except Exception as ex:

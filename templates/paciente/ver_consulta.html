@@ -19,7 +19,7 @@
                     <div class="input-group input-group-static my-3  ">
                         {% for foo in  consulta.tratamientos.all %}
                             <input type="text" name="" class="form-control" readonly, disabled
-                                   value="{{ foo }}">
+                                   value="{{ foo |upper }}">
                         {% endfor %}
 
                     </div>
@@ -27,7 +27,7 @@
                     <hr class="dropdown-divider">
 
                     <h5 class="mt-3">ODONTOGRAMA</h5>
-                    <div class="row container">
+                    <div class="row ">
                         <div id="opcionesOdontograma">
                             <div class="btn-group" data-toggle="buttons">
                                 <label id="fractura" class="btn btn-success active"
@@ -1604,9 +1604,9 @@
                         <div class="col"></div>
                     </div>
 
-
+                    <br>
                     <hr class="dropdown-divider">
-
+                    <h5 class="mt-3">OBSERVACIÓN</h5>
                     <div class="input-group input-group-static my-3  ">
                         <textarea type="text" name="" class="form-control" readonly, disabled
                                   placeholder="{{ consulta.observacion }}"></textarea>
