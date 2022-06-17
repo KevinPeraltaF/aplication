@@ -482,15 +482,19 @@ class Consulta(ModeloBase):
         return  total_costo
 
     def obtener_total_abonado(self):
-        total_Abonado = 0
         abonos = AbonoPago.objects.filter(consulta=self)
         total_Abonado = abonos.aggregate(Sum('abono'))
-        return  total_Abonado
+        if total_Abonado['abono__sum'] is None:
+            total_Abonado = 0
+        else:
+            total_Abonado = total_Abonado['abono__sum']
+
+        return total_Abonado
 
     def obtener_saldo_pendiente(self):
         total = self.obtener_costo_total()
         abonado =self.obtener_total_abonado()
-        restante = total - abonado['abono__sum']
+        restante = total - abonado
         return restante
 
 

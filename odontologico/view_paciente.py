@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.forms import model_to_dict
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import get_template
 
 from odontologico.forms import PersonaForm, ConsultaForm, AbonarCuotaForm
@@ -133,7 +133,7 @@ def view_paciente(request):
                         )
                         abono.save(request)
 
-                        return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
+                        return redirect('/pacientes/?peticion=consultas_realizadas&id=%s' % consulta.paciente_id)
 
 
                 except Exception as ex:
@@ -172,9 +172,7 @@ def view_paciente(request):
                     data['titulo'] = 'Consultas realizadas'
                     data['titulo_formulario'] = 'Odontograma'
                     data['peticion'] = 'consultas_realizadas'
-
                     lista = Consulta.objects.filter(status=True,paciente__id = request.GET['id'])
-
                     paginator = Paginator(lista, 15)
                     page_number = request.GET.get('page')
                     page_obj = paginator.get_page(page_number)

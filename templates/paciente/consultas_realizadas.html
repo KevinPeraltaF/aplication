@@ -79,7 +79,7 @@
                                 </td>
 
                                 <td class="text-xs text-center" data-title="Fecha">
-                                    <h6 class="mb-0 text-xs">$ {{ fila.obtener_total_abonado.abono__sum }}</h6>
+                                    <h6 class="mb-0 text-xs">$ {{ fila.obtener_total_abonado }}</h6>
                                 </td>
                                 <td class="text-xs text-center" data-title="Fecha">
                                     <h6 class="mb-0 text-xs">$ {{ fila.obtener_costo_total }}</h6>
@@ -164,6 +164,7 @@
                     <form  method="POST" autocomplete="off"  action="{{ request.path }}" enctype="multipart/form-data">
                         {% csrf_token %}
                          <div class=" contenido-modal">
+
                         </div>
                     </form>
 
