@@ -118,6 +118,10 @@ class Paciente(ModeloBase):
     def tiene_odontograma(self):
         return self.agendarcita_set.filter(status=True, estado_cita=1).exists()
 
+    def en_uso(self):
+        existe = self.agendarcita_set.exists() | self.consulta_set.exists()
+        return existe
+
 
 
 
@@ -132,6 +136,10 @@ class Doctor(ModeloBase):
 
     def __str__(self):
         return u'%s' % self.persona
+
+    def en_uso(self):
+        existe = self.agendarcita_set.exists() | self.consulta_set.exists()
+        return existe
 
 class Asistente(ModeloBase):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)

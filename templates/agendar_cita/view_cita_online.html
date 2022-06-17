@@ -84,30 +84,7 @@
                                     </td>
 
                                     <td class="text-secondary text-sm font-weight-bolder text-center">
-                                      {% if fila.estado_cita == 1 %}
-                                        <div class="dropstart">
-                                            <a href="javascript:;" class="text-secondary" id="dropdownMarketingCard"
-                                               data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="material-icons text-xl">more_vert</i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
-                                                aria-labelledby="dropdownMarketingCard" style="">
-                                                <li><a class="dropdown-item border-radius-md"
-                                                       href="?peticion=ver_odontograma&id={{ fila.pk }}">Ver
-                                                    Odontograma</a>
-                                                </li>
 
-                                                <li><a class="dropdown-item border-radius-md"
-                                                       href="javascript:;"
-                                                       onclick="ventana_modal('historial_abono_cuota','{{ fila.pk }}','Historial abonado')">Historial
-                                                    de abonos
-                                                </a>
-                                                </li>
-
-
-                                            </ul>
-                                        </div>
-                                    {% endif %}
                                     </td>
 
 
