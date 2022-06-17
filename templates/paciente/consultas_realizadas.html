@@ -108,11 +108,17 @@
                                             {% if not fila.cancelado %}
                                                 <li><a class="dropdown-item border-radius-md"
                                                        href="javascript:;"
-                                                       onclick="ventana_modal('abonar_cuota','{{ fila.pk }}','Abonar cuota')">Abonar
+                                                       onclick="formulario_modal('abonar_cuota','{{ fila.pk }}','Abonar cuota')">Abonar
                                                     cuota</a>
                                                 </li>
 
                                             {% endif %}
+                                            <li><a class="dropdown-item border-radius-md"
+                                                   href="javascript:;"
+                                                   onclick="ventana_modal('historial_abono_cuota','{{ fila.pk }}','Abonar cuota')">Historial
+                                                de abonos
+                                            </a>
+                                            </li>
 
 
                                         </ul>
@@ -161,9 +167,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form  method="POST" autocomplete="off"  action="{{ request.path }}" enctype="multipart/form-data">
+                    <form method="POST" autocomplete="off" action="{{ request.path }}" enctype="multipart/form-data">
                         {% csrf_token %}
-                         <div class=" contenido-modal">
+                        <div class=" contenido-modal">
 
                         </div>
                     </form>
@@ -173,12 +179,34 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalGeneric_historial_cuota">
+
+        <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase"></h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 
 {% block script %}
     <script>
-        function ventana_modal(peticion, pk, titulo) {
+        function formulario_modal(peticion, pk, titulo) {
             $.ajax({
                 type: "GET",
                 url: `{{ request.path }}`,
@@ -192,6 +220,34 @@
                         $('.contenido-modal').html(data.data);
                         $('#modalGeneric .modal-title').html(titulo);
                         $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
+                    } else {
+                        alert(data.mensaje);
+                    }
+                },
+                error: function () {
+                    alert("Error de conexión.");
+                },
+
+            });
+        }
+
+    </script>
+
+       <script>
+        function ventana_modal(peticion, pk, titulo) {
+            $.ajax({
+                type: "GET",
+                url: `{{ request.path }}`,
+                dataType: "json",
+                data: {
+                    'peticion': peticion,
+                    'id': pk,
+                },
+                success: function (data) {
+                    if (data.respuesta === true) {
+                        $('.modal-body').html(data.data);
+                        $('#historial_cuota .modal-title').html(titulo);
+                        $("#historial_cuota").modal({backdrop: 'static'}).modal('show');
                     } else {
                         alert(data.mensaje);
                     }
