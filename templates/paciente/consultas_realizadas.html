@@ -115,7 +115,7 @@
                                             {% endif %}
                                             <li><a class="dropdown-item border-radius-md"
                                                    href="javascript:;"
-                                                   onclick="ventana_modal('historial_abono_cuota','{{ fila.pk }}','Abonar cuota')">Historial
+                                                   onclick="ventana_modal('historial_abono_cuota','{{ fila.pk }}','Historial abonado')">Historial
                                                 de abonos
                                             </a>
                                             </li>
@@ -180,9 +180,8 @@
         </div>
     </div>
 
-
-    <!-- Modal -->
-    <div class="modal fade" id="modalGeneric_historial_cuota">
+     <!-- Modal -->
+    <div class="modal fade" id="modalGeneric_historial">
 
         <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
             <div class="modal-content">
@@ -192,15 +191,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body_historial">
 
                 </div>
-                <div class="modal-footer">
+                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
+
             </div>
         </div>
     </div>
+
+
 {% endblock %}
 
 
@@ -245,9 +247,9 @@
                 },
                 success: function (data) {
                     if (data.respuesta === true) {
-                        $('.modal-body').html(data.data);
-                        $('#historial_cuota .modal-title').html(titulo);
-                        $("#historial_cuota").modal({backdrop: 'static'}).modal('show');
+                        $('.modal-body_historial').html(data.data);
+                        $('#modalGeneric_historial .modal-title').html(titulo);
+                        $("#modalGeneric_historial").modal({backdrop: 'static'}).modal('show');
                     } else {
                         alert(data.mensaje);
                     }

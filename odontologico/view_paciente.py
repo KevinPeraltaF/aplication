@@ -221,6 +221,15 @@ def view_paciente(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'historial_abono_cuota':
+                try:
+                    data['historial_abono'] = historial_abono = AbonoPago.objects.filter(status=True,consulta_id= request.GET['id'])
+                    data['consulta'] = Consulta.objects.get(pk= request.GET['id'])
+                    template = get_template("paciente/modal/historial_abono.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
             if peticion == 'abonar_cuota':
                 try:
                     data['consulta'] = consulta = Consulta.objects.get(pk=request.GET['id'])
