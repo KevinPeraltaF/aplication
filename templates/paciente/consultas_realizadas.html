@@ -79,7 +79,7 @@
                                 </td>
 
                                 <td class="text-xs text-center" data-title="Fecha">
-                                    <h6 class="mb-0 text-xs">$0</h6>
+                                    <h6 class="mb-0 text-xs">$ {{ fila.obtener_total_abonado.abono__sum }}</h6>
                                 </td>
                                 <td class="text-xs text-center" data-title="Fecha">
                                     <h6 class="mb-0 text-xs">$ {{ fila.obtener_costo_total }}</h6>
@@ -107,7 +107,8 @@
 
                                             {% if not fila.cancelado %}
                                                 <li><a class="dropdown-item border-radius-md"
-                                                        href="javascript:;" onclick="ventana_modal('abonar_cuota','{{ fila.pk }}','Abonar cuota')">Abonar
+                                                       href="javascript:;"
+                                                       onclick="ventana_modal('abonar_cuota','{{ fila.pk }}','Abonar cuota')">Abonar
                                                     cuota</a>
                                                 </li>
 
@@ -160,6 +161,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <form  method="POST" autocomplete="off"  action="{{ request.path }}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                         <div class=" contenido-modal">
+                        </div>
+                    </form>
 
                 </div>
 
@@ -182,7 +188,7 @@
                 },
                 success: function (data) {
                     if (data.respuesta === true) {
-                        $('.modal-body').html(data.data);
+                        $('.contenido-modal').html(data.data);
                         $('#modalGeneric .modal-title').html(titulo);
                         $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
                     } else {

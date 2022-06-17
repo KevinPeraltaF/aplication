@@ -10,7 +10,7 @@ from django.template.loader import get_template
 
 from odontologico.forms import PersonaForm, ConsultaForm, AbonarCuotaForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Paciente, PersonaPerfil, Persona, Consulta
+from odontologico.models import Paciente, PersonaPerfil, Persona, Consulta, AbonoPago
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -120,6 +120,27 @@ def view_paciente(request):
                     transaction.set_rollback(True)
                     return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
 
+            if peticion == 'abonar_cuota':
+                try:
+                    form = AbonarCuotaForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        abono = form.cleaned_data['abono']
+                        consulta = Consulta.objects.get(pk=request.POST['id'])
+                        abono = AbonoPago(
+                            consulta=consulta,
+                            abono=abono,
+
+                        )
+                        abono.save(request)
+
+                        return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
+
+
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    return JsonResponse({"respuesta": False, "mensaje": "Ha ocurrido un error, intente mas tarde."})
+
+
             if peticion == 'eliminar_paciente':
                 try:
                     with transaction.atomic():
@@ -153,7 +174,6 @@ def view_paciente(request):
                     data['peticion'] = 'consultas_realizadas'
 
                     lista = Consulta.objects.filter(status=True,paciente__id = request.GET['id'])
-                    data['abonado'] = 0
 
                     paginator = Paginator(lista, 15)
                     page_number = request.GET.get('page')

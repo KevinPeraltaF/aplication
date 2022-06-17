@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.db import models
+from django.db.models import Sum
+
 from odontologico.funciones import ModeloBase
 
 ESTADO_CITA = (
@@ -478,6 +480,18 @@ class Consulta(ModeloBase):
         for costo in self.tratamientos.all():
             total_costo = total_costo + costo.costo
         return  total_costo
+
+    def obtener_total_abonado(self):
+        total_Abonado = 0
+        abonos = AbonoPago.objects.filter(consulta=self)
+        total_Abonado = abonos.aggregate(Sum('abono'))
+        return  total_Abonado
+
+    def obtener_saldo_pendiente(self):
+        total = self.obtener_costo_total()
+        abonado =self.obtener_total_abonado()
+        restante = total - abonado['abono__sum']
+        return restante
 
 
 class AbonoPago(ModeloBase):
