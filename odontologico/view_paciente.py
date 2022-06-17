@@ -126,12 +126,17 @@ def view_paciente(request):
                     if form.is_valid():
                         abono = form.cleaned_data['abono']
                         consulta = Consulta.objects.get(pk=request.POST['id'])
-                        abono = AbonoPago(
-                            consulta=consulta,
-                            abono=abono,
+                        if not abono > consulta.obtener_saldo_pendiente():
+                            abono = AbonoPago(
+                                consulta=consulta,
+                                abono=abono,
 
-                        )
-                        abono.save(request)
+                            )
+                            abono.save(request)
+
+                        if consulta.obtener_saldo_pendiente() == 0:
+                            consulta.cancelado = True
+                            consulta.save(request)
 
                         return redirect('/pacientes/?peticion=consultas_realizadas&id=%s' % consulta.paciente_id)
 
