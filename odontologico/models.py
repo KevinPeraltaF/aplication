@@ -468,7 +468,22 @@ class Consulta(ModeloBase):
     odontograma = models.ForeignKey(Odontograma,  on_delete=models.CASCADE)
     observacion = models.TextField(default='', max_length=600, verbose_name='Observación')
     tratamientos =  models.ManyToManyField(Tratamiento, verbose_name=u'Tratamientos')
+    cancelado = models.BooleanField(default=False)
     def __str__(self):
         return u'Paciente: %s - Fecha: %s ' % (self.paciente, self.fecha)
 
+
+    def obtener_costo_total(self):
+        total_costo = 0
+        for costo in self.tratamientos.all():
+            total_costo = total_costo + costo.costo
+        return  total_costo
+
+
+class AbonoPago(ModeloBase):
+    consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
+    abono = models.DecimalField(max_digits=30, decimal_places=2, default=0, verbose_name=u'Abono')
+
+    def __str__(self):
+        return u'Abonado: %s ' % (self.abono)
 

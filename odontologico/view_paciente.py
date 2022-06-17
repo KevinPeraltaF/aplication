@@ -6,8 +6,9 @@ from django.db import transaction
 from django.forms import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import get_template
 
-from odontologico.forms import PersonaForm, ConsultaForm
+from odontologico.forms import PersonaForm, ConsultaForm, AbonarCuotaForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Paciente, PersonaPerfil, Persona, Consulta
 
@@ -145,18 +146,20 @@ def view_paciente(request):
                     transaction.set_rollback(True)
                     pass
 
-            if peticion == 'historial_odontograma':
+            if peticion == 'consultas_realizadas':
                 try:
-                    data['titulo'] = 'Historial - Odontogramas'
+                    data['titulo'] = 'Consultas realizadas'
                     data['titulo_formulario'] = 'Odontograma'
-                    data['peticion'] = 'historial_odontograma'
+                    data['peticion'] = 'consultas_realizadas'
 
                     lista = Consulta.objects.filter(status=True,paciente__id = request.GET['id'])
+                    data['abonado'] = 0
+
                     paginator = Paginator(lista, 15)
                     page_number = request.GET.get('page')
                     page_obj = paginator.get_page(page_number)
                     data['page_obj'] = page_obj
-                    return render(request, "paciente/historial_odontograma.html", data)
+                    return render(request, "paciente/consultas_realizadas.html", data)
                 except Exception as ex:
                     transaction.set_rollback(True)
                     pass
@@ -192,6 +195,17 @@ def view_paciente(request):
                     data['histoColores'] = odontograma= consulta.odontograma
 
                     return render(request, "paciente/ver_consulta.html", data)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'abonar_cuota':
+                try:
+                    data['consulta'] = consulta = Consulta.objects.get(pk=request.GET['id'])
+                    form = AbonarCuotaForm()
+                    data['form'] = form
+                    data['peticion'] = 'abonar_cuota'
+                    template = get_template("paciente/modal/formAbonarCuota.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
 

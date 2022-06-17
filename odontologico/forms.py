@@ -172,3 +172,9 @@ class TratamientoForm(forms.Form):
     descripcion =  forms.CharField(label='Descripción', required=False,widget=forms.Textarea(attrs={'class': 'form-control', }))
 
 
+
+class AbonarCuotaForm(forms.Form):
+
+    abono = forms.DecimalField(initial='0.00', label=u'Abono',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
