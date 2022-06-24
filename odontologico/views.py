@@ -164,6 +164,6 @@ def dashboard(request):
                     modulos = Modulo.objects.filter(status=True, activo=True, pk__in = menu )
                 data['persona_logeado'] = persona_logeado
                 data['modulos'] = modulos
-                return render(request, "registration/dashboard.html ", data)
+                return render(request, "registration/dashboard.html", data)
             except Exception as ex:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
