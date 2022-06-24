@@ -117,14 +117,14 @@ class PersonaForm(forms.Form):
                              widget=forms.TextInput(attrs={'class': 'form-control', }))
     apellido2 = forms.CharField(label='2º Apellido', required=True,
                              widget=forms.TextInput(attrs={'class': 'form-control', }))
-    email = forms.CharField(label=u"Correo electrónico", max_length=200, required=True,
+    email = forms.CharField(label="Correo electrónico", max_length=200, required=True,
                             widget=forms.TextInput(attrs={'class': 'form-control',}))
-    cedula = forms.CharField(label=u"Cédula", max_length=10, required=True,
+    cedula = forms.CharField(label="Cédula", max_length=10, required=True,
                              widget=forms.TextInput(attrs={'class': 'form-control',}))
-    genero = forms.ModelChoiceField(label=u"Gènero",required=True, queryset=Genero.objects.filter(status=True),
+    genero = forms.ModelChoiceField(label="Gènero",required=True, queryset=Genero.objects.filter(status=True),
                                   widget=forms.Select(attrs={'class': 'form-control',}))
 
-    telefono_movil = forms.CharField(label=u"Teléfono móvil", max_length=50, required=False,
+    telefono_movil = forms.CharField(label="Teléfono móvil", max_length=50, required=False,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'(99 123 1234)'}))
     telefono_convencional = forms.CharField(label=u"Teléfono fijo", max_length=50, required=False,
                                     widget=forms.TextInput(attrs={'class': 'form-control ',}))
@@ -135,16 +135,16 @@ class PersonaForm(forms.Form):
         campo_solo_lectura(self, 'genero')
 
 class AccesoModuloForm(forms.Form):
-    grupo = forms.ModelChoiceField(label=u"Grupo", queryset=Group.objects.all(), widget=forms.Select(attrs={'class': 'form-control', }))
-    modulo = forms.ModelChoiceField(label=u"Módulo", queryset=Modulo.objects.filter(status=True, activo = True), widget=forms.Select(attrs={'class': 'form-control', }))
+    grupo = forms.ModelChoiceField(label="Grupo", queryset=Group.objects.all(), widget=forms.Select(attrs={'class': 'form-control', }))
+    modulo = forms.ModelChoiceField(label="Módulo", queryset=Modulo.objects.filter(status=True, activo = True), widget=forms.Select(attrs={'class': 'form-control', }))
     activo = forms.BooleanField(label='Activo', required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check form-switch ms-2 my-auto is-filled','checked':'checked'}))
 
 
 class AgendarCitaForm(forms.Form):
-    paciente = ModelChoiceField(label=u'Paciente', queryset=Paciente.objects.filter(status=True), widget=forms.Select(attrs={'class': 'form-control', }))
-    doctor = ModelChoiceField(label=u'Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
-    fecha_cita = forms.DateField(label=u"Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
-    hora_cita = forms.ModelChoiceField(label=u"Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
+    paciente = ModelChoiceField(label='Paciente', queryset=Paciente.objects.filter(status=True), widget=forms.Select(attrs={'class': 'form-control', }))
+    doctor = ModelChoiceField(label='Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
+    fecha_cita = forms.DateField(label="Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
+    hora_cita = forms.ModelChoiceField(label="Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
 
     def editar(self):
         campo_solo_lectura(self, 'paciente')
@@ -159,15 +159,15 @@ class ConsultaForm(forms.Form):
 
 
 class AgendarCitaOnlineForm(forms.Form):
-    doctor = ModelChoiceField(label=u'Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
-    fecha_cita = forms.DateField(label=u"Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
-    hora_cita = forms.ModelChoiceField(label=u"Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
+    doctor = ModelChoiceField(label='Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
+    fecha_cita = forms.DateField(label="Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
+    hora_cita = forms.ModelChoiceField(label="Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
 
 
 class TratamientoForm(forms.Form):
     nombre =  forms.CharField(label='Nombre', required=True, widget=forms.TextInput(attrs={'class': 'form-control', }))
 
-    costo = forms.DecimalField(initial='0.00', label=u'Costo',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    costo = forms.DecimalField(initial='0.00', label='Costo',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     descripcion =  forms.CharField(label='Descripción', required=False,widget=forms.Textarea(attrs={'class': 'form-control', }))
 
@@ -175,6 +175,18 @@ class TratamientoForm(forms.Form):
 
 class AbonarCuotaForm(forms.Form):
 
-    abono = forms.DecimalField(initial='0.00', label=u'Abono',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    abono = forms.DecimalField(initial='0.00', label='Abono',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
+
+
+class HorarioHoraForm(forms.Form):
+    hora_inicio = forms.TimeField(label="Hora Inicio", input_formats=['%H:%M'],
+                                  widget=DateTimeInput(format='%H:%M',
+                                                       attrs={'class': 'form-control'}))
+    hora_fin = forms.TimeField(label="Hora Fin", input_formats=['%H:%M'],
+                               widget=DateTimeInput(format='%H:%M',
+                                                    attrs={'class': 'form-control'}))
+
+    activo = forms.BooleanField(label='Activo', required=False, widget=forms.CheckboxInput(
+        attrs={'class': 'form-check form-switch ms-2 my-auto is-filled', 'checked': 'checked'}))
 
