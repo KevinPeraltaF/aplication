@@ -221,6 +221,15 @@ def view_paciente(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'ver_factura':
+                try:
+                    data['titulo'] = 'Ver factura'
+                    data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
+
+                    return render(request, "paciente/ver_factura.html", data)
+                except Exception as ex:
+                    pass
+
             if peticion == 'historial_abono_cuota':
                 try:
                     data['historial_abono'] = historial_abono = AbonoPago.objects.filter(status=True,consulta_id= request.GET['id'])

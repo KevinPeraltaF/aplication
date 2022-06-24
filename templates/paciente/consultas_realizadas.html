@@ -113,6 +113,13 @@
                                                 </li>
 
                                             {% endif %}
+
+                                            {% if fila.cancelado %}
+                                                <li><a class="dropdown-item border-radius-md"
+                                                       href="?peticion=ver_factura&id={{ fila.pk }}"  >Factura</a>
+                                                </li>
+
+                                            {% endif %}
                                             <li><a class="dropdown-item border-radius-md"
                                                    href="javascript:;"
                                                    onclick="ventana_modal('historial_abono_cuota','{{ fila.pk }}','Historial abonado')">Historial
@@ -180,7 +187,7 @@
         </div>
     </div>
 
-     <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="modalGeneric_historial">
 
         <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable">
@@ -194,7 +201,7 @@
                 <div class="modal-body_historial">
 
                 </div>
-                   <div class="modal-footer">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
 
