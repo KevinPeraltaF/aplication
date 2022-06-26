@@ -489,6 +489,14 @@ class Consulta(ModeloBase):
             total_costo = total_costo + costo.costo
         return  total_costo
 
+    def obtener_iva(self):
+        return (float(self.obtener_costo_total()) * 0.12)
+
+    def obtener_subtotal(self):
+        return float(self.obtener_costo_total())-float(self.obtener_iva())
+
+
+
     def obtener_total_abonado(self):
         abonos = AbonoPago.objects.filter(consulta=self)
         total_Abonado = abonos.aggregate(Sum('abono'))
@@ -505,6 +513,8 @@ class Consulta(ModeloBase):
         restante = total - abonado
         return restante
 
+    def obtener_ultima_fecha_abonada(self):
+        return self.abonopago_set.filter(status=True).last()
 
 class AbonoPago(ModeloBase):
     consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
