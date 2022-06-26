@@ -9,7 +9,7 @@ from django.shortcuts import render
 
 from odontologico.forms import PersonaForm, TratamientoForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Paciente, PersonaPerfil, Persona, Tratamiento
+from odontologico.models import Paciente, PersonaPerfil, Persona, Tratamiento, Consulta
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -30,13 +30,22 @@ def view_mis_facturas(request):
         return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:
-            pass
+            peticion = request.GET['peticion']
+            if peticion == 'ver_factura':
+                try:
+                    data['titulo'] = 'Ver factura'
+                    data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
+
+                    return render(request, "paciente/ver_factura.html", data)
+                except Exception as ex:
+                    pass
         else:
             try:
                 data['titulo'] = 'Facturas'
                 data['titulo_tabla'] = 'Lista  de facturas'
                 data['persona_logeado'] = persona_logeado
-                lista = Tratamiento.objects.filter(status=True).order_by('id')
+                paciente = Paciente.objects.get(status=True, persona = persona_logeado)
+                lista = Consulta.objects.filter(status=True,paciente = paciente, cancelado =True)
                 paginator = Paginator(lista, 15)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
