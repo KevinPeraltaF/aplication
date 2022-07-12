@@ -1,16 +1,77 @@
+import os
 import sys
+from io import StringIO
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+from django.contrib.staticfiles import finders
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.forms import model_to_dict
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
+from xhtml2pdf import pisa
 
+from aplication import settings
+from aplication.settings import BASE_DIR
 from odontologico.forms import PersonaForm, ConsultaForm, AbonarCuotaForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Paciente, PersonaPerfil, Persona, Consulta, AbonoPago
+
+
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources
+    """
+    path_uri = str(BASE_DIR) + str(uri)
+    result = finders.find(path_uri)
+    if result:
+        if not isinstance(result, (list, tuple)):
+            result = [result]
+        result = list(os.path.realpath(path) for path in result)
+        path = result[0]
+    else:
+        sUrl = settings.STATIC_URL  # Typically /static/
+        sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
+        mUrl = settings.MEDIA_URL  # Typically /media/
+        mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+
+        if uri.startswith(mUrl):
+            path = os.path.join(mRoot, uri.replace(mUrl, ""))
+        elif uri.startswith(sUrl):
+            path = os.path.join(sRoot, uri.replace(sUrl, ""))
+        else:
+            return uri
+
+    # make sure that file exists
+    if not os.path.isfile(path):
+        raise Exception(
+            'media URI must start with %s or %s' % (sUrl, mUrl)
+        )
+    return path
+
+
+
+
+def render_pdf_view(template_paths,data):
+    template_path = template_paths
+    context = data
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="factura.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -227,6 +288,15 @@ def view_paciente(request):
                     data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
 
                     return render(request, "paciente/ver_factura.html", data)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'descargar_factura':
+                try:
+                    data['titulo'] = 'Ver factura'
+                    data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
+
+                    return render_pdf_view('paciente/factura_pdf.html', data)
                 except Exception as ex:
                     pass
 
