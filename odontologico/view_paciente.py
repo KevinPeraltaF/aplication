@@ -320,6 +320,22 @@ def view_paciente(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'enviar_correo':
+                try:
+                    from django.conf import settings
+                    from django.core.mail import send_mail
+
+                    send_mail(
+                        'Título del correo',
+                        'Hola, este correo es enviado desde un post en PyWombat. 🐍',
+                        settings.EMAIL_HOST_USER,
+                        ['nelson-emelec@live.com'],
+                        fail_silently=False
+                    )
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
+
         else:
             try:
                 data['titulo'] = 'Pacientes'

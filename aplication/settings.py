@@ -153,3 +153,13 @@ SESSION_COOKIE_AGE = 3600
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL='/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#email
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'fuenteskevin543@gmail.com'
+EMAIL_HOST_PASSWORD = 'ujkgspzbkwzpwrhj'
+EMAIL_PORT = 587
