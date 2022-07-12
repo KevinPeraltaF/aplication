@@ -5,138 +5,134 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="FUENTES PERALTA NELSON KEVIN">
-    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
-    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
     <title>{% block titulo %}{{ titulo }}{% endblock %}</title>
 
-    <!--     Fonts and icons     -->
-    <link href="{% static 'fonts/robotofontfamily.css' %}" rel="stylesheet"/>
-    <!-- Nucleo Icons -->
-    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet"/>
-    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet"/>
-    <!-- Font Awesome Icons -->
-    <script src="{% static 'js/fontawesome.js' %}"></script>
-    <!-- Material Icons -->
-    <link href="{% static 'css/icon.css' %}" rel="stylesheet"/>
-    <!-- CSS Files -->
-    <link id="pagestyle" href="{% static 'css/material-dashboard.min.css' %}" rel="stylesheet"/>
-    <link href="{% static 'css/sweetalert2.min.css' %}" rel="stylesheet"/>
-    <link href="{% static 'css/jquery.toast.min.css' %}" rel="stylesheet"/>
-    <!-- CSS duallistbox -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-duallistbox.min.css' %}">
     <style>
-        .uppercase-input {
-            color: black;
-            width: 100%;
-            font-size: 12px;
-            margin-bottom: 0;
-            text-transform: capitalize;
+        .factura {
+            table-layout: fixed;
         }
 
+        .fact-info > div > h5 {
+            font-weight: bold;
+        }
+
+        .factura > thead {
+            border-top: solid 3px #000;
+            border-bottom: 3px solid #000;
+        }
+
+        .factura > thead > tr > th:nth-child(2), .factura > tbod > tr > td:nth-child(2) {
+            width: 300px;
+        }
+
+        .factura > thead > tr > th:nth-child(n+3) {
+            text-align: right;
+        }
+
+        .factura > tbody > tr > td:nth-child(n+3) {
+            text-align: right;
+        }
+
+        .factura > tfoot > tr > th, .factura > tfoot > tr > th:nth-child(n+3) {
+            font-size: 24px;
+            text-align: right;
+        }
+
+        .cond {
+            border-top: solid 2px #000;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <strong>Milagro - Ecuador</strong><br>
-            Fecha:<strong>{{ factura.obtener_ultima_fecha_abonada.fecha_creacion|date:"d-m-Y" }}</strong><br>
 
-            N° de Factura :<strong>000 - 001</strong>
+<div id="app" class="col-11">
+
+    <h2>Factura</h2>
+
+    <div class="row my-3">
+        <div class="col-10">
 
         </div>
-        <br>
-        <div class="card-body">
-            <div class="row mb-4">
+        <div class="col-2">
+            {#        <img src="~/images/Mil-Pasos_Negro.png" />#}
+        </div>
+    </div>
 
-            </div>
+    <div class="row fact-info mt-3">
 
-            <div class="table-responsive-sm">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th class="center">#</th>
-                        <th>Item</th>
-                        <th class="right">Tratamiento</th>
-                        <th class="center">Cantidad</th>
-                        <th class="right">Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for foo in factura.tratamientos.all %}
-                        <tr>
-                            <td class="center">{{ forloop.counter }}</td>
-                            <td class="left strong">{{ foo.nombre }}</td>
+        <div class="col-3">
+            <h5>N° de factura: 000 - 001</h5>
+            <h5>Fecha: {{ factura.obtener_ultima_fecha_abonada.fecha_creacion|date:"d-m-Y" }}</h5>
 
+        </div>
 
-                            <td class="right">${{ foo.costo |floatformat:2 }}</td>
-                            <td class="center">1</td>
-                            <td class="right">${{ foo.costo |floatformat:2 }}</td>
-                        </tr>
+    </div>
 
-                    {% endfor %}
+    <hr/>
 
+    <div class="row my-5">
+        <table class="table table-borderless factura">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Item</th>
+                <th>Tratamiento</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for foo in factura.tratamientos.all %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ foo.nombre }}</td>
 
-                    </tbody>
-                </table>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-5">
+                    <td>${{ foo.costo |floatformat:2 }}</td>
+                    <td>1</td>
+                    <td>${{ foo.costo |floatformat:2 }}</td>
+                </tr>
 
-                </div>
+            {% endfor %}
 
-                <div class="col-lg-4 col-sm-5 ml-auto">
-                    <table class="table table-clear">
-                        <tbody>
-                        <tr>
-                            <td class="left">
-                                <strong>Subtotal</strong>
-                            </td>
-                            <td class="right">${{ factura.obtener_subtotal|floatformat:2 }}</td>
-                        </tr>
-                        <tr>
-                            <td class="left">
-                                <strong>IVA (12%)</strong>
-                            </td>
-                            <td class="right">${{ factura.obtener_iva|floatformat:2 }}</td>
-                        </tr>
-                        <tr>
-                            <td class="left">
-                                <strong>Total</strong>
-                            </td>
-                            <td class="right">
-                                <strong>${{ factura.obtener_costo_total |floatformat:2 }}</strong>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </tbody>
 
-            <div class="form-group mt-3 text-right">
-                <a href="javascript:history.back()" class="btn btn-primary">Regresar</a>
-            </div>
+        </table>
+    </div>
+
+    <div class="cond row">
+        <div class="col-12 mt-3"><br>
+            <tr>
+                <td>
+                    <strong>Subtotal</strong>
+                </td>
+                <td>${{ factura.obtener_subtotal|floatformat:2 }}</td>
+            </tr>
+            <br>
+            <tr>
+                <td>
+                    <strong>IVA (12%)</strong>
+                </td>
+                <td>${{ factura.obtener_iva|floatformat:2 }}</td>
+            </tr>
+            <br>
+            <tr>
+                <td>
+                    <strong>Total</strong>
+                </td>
+                <td>
+                    <strong>${{ factura.obtener_costo_total |floatformat:2 }}</strong>
+                </td>
+            </tr>
         </div>
     </div>
 </div>
 
 
-<!--   Core JS Files   -->
-<script src="{% static 'js/core/popper.min.js' %}"></script>
-<script src="{% static 'js/core/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
-<script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+<br><br>
 
-<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="{% static 'js/material-dashboard.min.js' %}"></script>
-<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-<script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
-<script src="{% static 'js/sweetalert2.min.js' %}"></script>
-<script src="{% static 'js/componentes.js' %}"></script>
-<script src="{% static 'js/jquery.blockUI.js' %}"></script>
-<script src="{% static 'js/jquery.toast.min.js' %}"></script>
-<script src="{% static 'js/imask.js' %}"></script>
-<script src="{% static 'js/jquery.bootstrap-duallistbox.min.js' %} "></script>
+</div>
+
+
 </body>
 </html>

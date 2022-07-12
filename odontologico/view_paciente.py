@@ -293,7 +293,7 @@ def view_paciente(request):
 
             if peticion == 'descargar_factura':
                 try:
-                    data['titulo'] = 'Ver factura'
+                    data['titulo'] = 'factura'
                     data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
 
                     return render_pdf_view('paciente/factura_pdf.html', data)
