@@ -40,12 +40,12 @@ class RegistroUsuarioForm(UserCreationForm):
             self.fields['password2'].widget.attrs['class'] = "form-control"
 
     email = forms.EmailField(label="Email", widget=forms.TextInput(attrs={'class': 'form-control', }))
-    nombre1 = forms.CharField(label="1er. Nombre", widget=forms.TextInput(attrs={'class': 'form-control', }))
-    nombre2 = forms.CharField(label="2do. Nombre", widget=forms.TextInput(attrs={'class': 'form-control', }))
-    apellido1 = forms.CharField(label="Apellido paterno", widget=forms.TextInput(attrs={'class': 'form-control', }))
-    apellido2 = forms.CharField(label="Apellido materno", widget=forms.TextInput(attrs={'class': 'form-control', }))
+    nombre1 = forms.CharField(label="1er. Nombre", widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)', }))
+    nombre2 = forms.CharField(label="2do. Nombre", widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)', }))
+    apellido1 = forms.CharField(label="Apellido paterno", widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)', }))
+    apellido2 = forms.CharField(label="Apellido materno", widget=forms.TextInput(attrs={'class': 'form-control', 'onKeyPress' : 'return solo_letras(event)',}))
     cedula = forms.CharField(label=u"Cédula", max_length=10, required=False,
-                             widget=forms.TextInput(attrs={'class': 'form-control', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_numeros(event)',}))
     genero = forms.ModelChoiceField(label=u"Género", queryset=Genero.objects.filter(status=True),
                                     widget=forms.Select(attrs={'class': 'form-control', }))
     telefono_movil = forms.CharField(label=u"Teléfono móvil", max_length=50,
@@ -92,9 +92,9 @@ class RegistroUsuarioForm(UserCreationForm):
 
 class ModuloForm(forms.Form):
     nombre = forms.CharField(label='Nombre', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)', }))
     descripcion = forms.CharField(label='Descripción', required=True,
-                                  widget=forms.TextInput(attrs={'class': ' form-control '}))
+                                  widget=forms.TextInput(attrs={'class': ' form-control ','onKeyPress' : 'return solo_letras(event)', }))
     ruta = forms.CharField(label='Ruta', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     icono = forms.ImageField(label='Icono', required=False, widget=forms.ClearableFileInput(
         attrs={'class': 'dropify', 'data-allowed-file-extensions': 'PNG png'}))
@@ -110,17 +110,17 @@ class ModuloForm(forms.Form):
 
 class PersonaForm(forms.Form):
     nombre1 = forms.CharField(label='1ª Nombre', required=True,
-                             widget=forms.TextInput(attrs={'class': ' form-control', }))
+                             widget=forms.TextInput(attrs={'class': ' form-control','onKeyPress' : 'return solo_letras(event)',  }))
     nombre2 = forms.CharField(label='2ª Nombre', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)',  }))
     apellido1 = forms.CharField(label='1ª Apellido', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)', }))
     apellido2 = forms.CharField(label='2º Apellido', required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control', }))
+                             widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)',  }))
     email = forms.CharField(label="Correo electrónico", max_length=200, required=True,
                             widget=forms.TextInput(attrs={'class': 'form-control',}))
     cedula = forms.CharField(label="Cédula", max_length=10, required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control',}))
+                             widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_numeros(event)',}))
     genero = forms.ModelChoiceField(label="Gènero",required=True, queryset=Genero.objects.filter(status=True),
                                   widget=forms.Select(attrs={'class': 'form-control',}))
 
@@ -165,9 +165,9 @@ class AgendarCitaOnlineForm(forms.Form):
 
 
 class TratamientoForm(forms.Form):
-    nombre =  forms.CharField(label='Nombre', required=True, widget=forms.TextInput(attrs={'class': 'form-control', }))
+    nombre =  forms.CharField(label='Nombre', required=True, widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_letras(event)', }))
 
-    costo = forms.DecimalField(initial='0.00', label='Costo',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    costo = forms.DecimalField(initial='0.00', label='Costo',required=True, widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_digitos(event)',}))
 
     descripcion =  forms.CharField(label='Descripción', required=False,widget=forms.Textarea(attrs={'class': 'form-control', }))
 
@@ -175,7 +175,7 @@ class TratamientoForm(forms.Form):
 
 class AbonarCuotaForm(forms.Form):
 
-    abono = forms.DecimalField(initial='0.00', label='Abono',required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    abono = forms.DecimalField(initial='0.00', label='Abono',required=True, widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_digitos(event)',}))
 
 
 

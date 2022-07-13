@@ -282,6 +282,15 @@
 
     });
 
+    function solo_numeros(e) {
+        key = e.keyCode || e.which;
+        tecla = String.fromCharCode(key);
+        letras_validas = "1234567890";
+        if (letras_validas.indexOf(tecla) === -1) {
+            return false;
+        }
+    }
+
     function solo_digitos(e) {
         key = e.keyCode || e.which;
         tecla = String.fromCharCode(key);
@@ -295,11 +304,10 @@
         key = e.keyCode || e.which;
         tecla = String.fromCharCode(key);
         letras_validas = "abcdefghijklmnopqrstuwxvyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        if (letras.indexOf(tecla) === -1) {
+        if (letras_validas.indexOf(tecla) === -1) {
             return false;
         }
     }
-
 </script>
 {% block script %}{% endblock %}
 
