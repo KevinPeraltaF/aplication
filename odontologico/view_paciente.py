@@ -10,8 +10,7 @@ from django.db import transaction
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
-from django.template.loader import get_template, render_to_string
-from weasyprint import HTML, CSS
+from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 from aplication import settings
@@ -55,30 +54,22 @@ def link_callback(uri, rel):
 
 
 
-#
-# def render_pdf_view(template_paths,data):
-#     template_path = template_paths
-#     context = data
-#     # Create a Django response object, and specify content_type as pdf
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'attachment; filename="factura.pdf"'
-#     # find the template and render it.
-#     template = get_template(template_path)
-#     html = template.render(context)
-#
-#     # create a pdf
-#     pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
-#     # if error then show some funny view
-#     if pisa_status.err:
-#        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-#     return response
 
-def render_pdf_view(template_paths, data):
-    html_string = render_to_string(template_paths, data)
-    html = HTML(string=html_string)
-    pdf = html.write_pdf(stylesheets=[CSS(settings.STATIC_ROOT + '/css/reporte_odontograma.css')]);
-    response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
+def render_pdf_view(template_paths,data):
+    template_path = template_paths
+    context = data
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="factura.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
 
