@@ -122,7 +122,36 @@ def registrate(request):
         return JsonResponse({"respuesta": False, "mensaje": "No se ha encontrado respuesta."})
 
     else:
-        data['form'] = RegistroUsuarioForm()
+        if 'peticion' in request.GET:
+            peticion = request.GET['peticion']
+
+            if peticion == 'validar_cedula':
+                cedula = request.GET['cedula']
+                persona = Persona.objects.filter(status=True, cedula=cedula)
+                if persona.exists():
+                    return JsonResponse({"respuesta": True, 'mensaje': 'Cédula ya existe'})
+                else:
+                    return JsonResponse({"respuesta": False, 'mensaje': ''})
+
+            if peticion == 'validar_usuario':
+                usuario = request.GET['usuario']
+                persona = User.objects.filter(username=usuario)
+                if persona.exists():
+                    return JsonResponse({"respuesta": True, 'mensaje': 'Usuario ya existe'})
+                else:
+                    return JsonResponse({"respuesta": False, 'mensaje': ''})
+
+            if peticion == 'validar_email':
+                correo = request.GET['email']
+                email = Persona.objects.filter(email=correo, status=True)
+                if email.exists():
+                    return JsonResponse({"respuesta": True, 'mensaje': 'Email ya existe'})
+                else:
+                    return JsonResponse({"respuesta": False, 'mensaje': ''})
+
+
+        else:
+            data['form'] = RegistroUsuarioForm()
 
     return render(request, "registration/registrate.html", data)
 
