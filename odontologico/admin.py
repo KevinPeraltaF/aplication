@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 
 from odontologico.models import Modulo, Genero, Persona, Paciente, PersonaPerfil, AccesoModulo, Horario_hora, \
-    AgendarCita
+    AgendarCita, TiempoAntesRecordatorioCorreo
 
 admin.site.unregister(User)
 @admin.register(User)
@@ -65,4 +65,7 @@ class AgendarCitaAdmin(admin.ModelAdmin):
     list_display = ('paciente','doctor','fecha','horario','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
     search_fields = ('paciente','doctor','fecha','horario',)
 
-
+@admin.register(TiempoAntesRecordatorioCorreo)
+class TiempoAntesRecordatorioCorreoAdmin(admin.ModelAdmin):
+    list_display = ( 'dias_antes','horas_antes','minutos_antes',  'usuario_creacion', 'fecha_creacion', 'usuario_modificacion','fecha_modificacion', 'status',)
+    search_fields = ('dias_antes', 'horas_antes', 'minutos_antes',)

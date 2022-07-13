@@ -523,3 +523,14 @@ class AbonoPago(ModeloBase):
     def __str__(self):
         return u'Abonado: %s ' % (self.abono)
 
+
+
+class TiempoAntesRecordatorioCorreo(ModeloBase):
+    dias_antes = models.CharField(max_length=100, verbose_name=u'Días antes del recordatorio')
+    horas_antes = models.CharField(max_length=100, verbose_name=u'Horas antes del recordatorio')
+    minutos_antes = models.CharField(max_length=100, verbose_name=u'Minutos antes del recordatorio')
+
+    def __str__(self):
+        return u'Días: %s | Horas: %s | Minutos: %s' % (self.dias_antes,self.horas_antes,self.minutos_antes)
+
+
