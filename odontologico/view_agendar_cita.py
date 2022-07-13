@@ -132,6 +132,25 @@ def view_agendar_cita(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'enviar_correo':
+                try:
+                    from django.conf import settings
+                    from django.core.mail import send_mail
+                    data['cita'] = cita = AgendarCita.objects.get(pk=request.GET['id'])
+
+                    titulo_del_correo =  'RECORDATORIO / CITA MÉDICA / ODONTÓLOGO :)'
+                    cuerpo_del_correo =  'Hola, este es un correo enviado por el sistema odontologico, se le recuerda que tiene una cita planificada para la fecha: %s y horario : %s.  Por favor no contestar a este correo.' %(cita.fecha, cita.horario)
+                    send_mail(
+                        titulo_del_correo,
+                        cuerpo_del_correo,
+                        settings.EMAIL_HOST_USER,
+                        [cita.paciente.persona.email],
+                        fail_silently=False
+                    )
+                    return JsonResponse({"respuesta": True, "mensaje": "recordatorio enviado correctamente."})
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
         else:
             try:
                 data['titulo'] = 'Agendar Cita'
