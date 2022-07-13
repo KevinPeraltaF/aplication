@@ -300,6 +300,17 @@ def view_paciente(request):
                 except Exception as ex:
                     pass
 
+            if peticion == 'descargar_odontograma':
+                try:
+                    data['titulo'] = 'Ver consulta'
+                    data['titulo_formulario'] = 'Ver consulta'
+                    data['consulta'] = consulta = Consulta.objects.get(pk=request.GET['id'])
+                    data['histoColores'] = odontograma = consulta.odontograma
+
+                    return render_pdf_view('paciente/odontograma_pdf.html', data)
+                except Exception as ex:
+                    pass
+
             if peticion == 'historial_abono_cuota':
                 try:
                     data['historial_abono'] = historial_abono = AbonoPago.objects.filter(status=True,consulta_id= request.GET['id'])

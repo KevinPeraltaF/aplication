@@ -105,6 +105,11 @@
                                                    href="?peticion=ver_odontograma&id={{ fila.pk }}">Ver Odontograma</a>
                                             </li>
 
+                                            <li><a class="dropdown-item border-radius-md"
+                                                   href="?peticion=descargar_odontograma&id={{ fila.pk }}">Descargar
+                                                Odontograma</a>
+                                            </li>
+
                                             {% if not fila.cancelado %}
                                                 <li><a class="dropdown-item border-radius-md"
                                                        href="javascript:;"
