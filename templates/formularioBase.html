@@ -21,11 +21,37 @@
                         {% csrf_token %}
 
                         {% for field in form %}
-                            <div class="input-group input-group-static my-3  ">
-                                {{ field.errors }} {{ field.label_tag }} {{ field }} {% if field.help_text %}
-                                <small id="help"
-                                       class="form-text text-muted">{{ field.help_text|safe }}</small> {% endif %}
-                            </div>
+
+                            {% if not field.auto_id == 'id_fecha_cita' %}
+                                <div class="input-group input-group-static my-3  ">
+                                    {{ field.errors }} {{ field.label_tag }} {{ field }} {% if field.help_text %}
+                                    <small id="help"
+                                           class="form-text text-muted">{{ field.help_text|safe }}</small> {% endif %}
+                                </div>
+
+                            {% else %}
+                                <div class="form-group">
+                                    {{ field.label_tag }}
+                                    <div class="input-group date" id="{{ field.auto_id }}" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                               data-target="#{{ field.auto_id }}"
+                                               id="{{ field.auto_id }}" name="{{ field.name }}"
+                                               value="{{ field.initial|date:'d-m-Y' }}">
+                                        <div class="input-group-append" data-target="#{{ field.auto_id }}"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% endif %}
+
+
+
+
+
+
+
 
                         {% endfor %}
                         {% block news_inputs_form %}
@@ -55,6 +81,16 @@
 {% block script %}
 
     <script>
+        $(function () {
+            //Date picker
+            $('#id_fecha_cita').datetimepicker({
+                format: 'DD-MM-YYYY'
+            });
+
+        });
+
+
+
         $('#formulario_data_enviar').submit(function (e) {
             e.preventDefault();
             var $form = $(this);
@@ -144,6 +180,8 @@
 
         });
     </script>
+
+
 
     {% block js %}
 
