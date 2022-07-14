@@ -307,7 +307,7 @@ def view_paciente(request):
                     data['consulta'] = consulta = Consulta.objects.get(pk=request.GET['id'])
                     data['histoColores'] = odontograma = consulta.odontograma
 
-                    return render_pdf_view('paciente/odontograma_pdf.html', data)
+                    return render(request, 'paciente/odontograma_pdf.html', data)
                 except Exception as ex:
                     pass
 

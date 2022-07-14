@@ -10,6 +10,7 @@ from django.shortcuts import render
 from odontologico.forms import PersonaForm, TratamientoForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Paciente, PersonaPerfil, Persona, Tratamiento, Consulta
+from odontologico.view_paciente import render_pdf_view
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -37,6 +38,15 @@ def view_mis_facturas(request):
                     data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
 
                     return render(request, "paciente/ver_factura.html", data)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'descargar_factura':
+                try:
+                    data['titulo'] = 'factura'
+                    data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
+
+                    return render_pdf_view('paciente/factura_pdf.html', data)
                 except Exception as ex:
                     pass
         else:
