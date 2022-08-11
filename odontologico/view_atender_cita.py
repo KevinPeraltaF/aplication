@@ -184,13 +184,35 @@ def view_atender_cita(request):
                     data['titulo_formulario'] = 'Formulario de atención de consulta a paciente'
                     data['peticion'] = 'atender_consulta'
                     data['persona_logeado'] = persona_logeado
-                    data['cita'] = cita =AgendarCita.objects.get(pk=request.GET['id'])
+                    data['cita'] = cita = AgendarCita.objects.get(pk=request.GET['id'])
                     form2 = ConsultaForm()
                     data['form2'] = form2
                     return render(request, "atender_cita/consulta.html", data)
                 except Exception as ex:
                     transaction.set_rollback(True)
                     pass
+
+            if peticion == 'enviar_correo':
+                try:
+                    from django.conf import settings
+                    from django.core.mail import send_mail
+                    data['cita'] = cita = AgendarCita.objects.get(pk=request.GET['id'])
+
+                    titulo_del_correo = 'RECORDATORIO / CITA MÉDICA / ODONTÓLOGO :)'
+                    cuerpo_del_correo = 'Hola, este es un correo enviado por el sistema odontologico, se le recuerda que tiene una cita planificada para la fecha: %s y horario : %s.  Por favor no contestar a este correo.' % (
+                    cita.fecha, cita.horario)
+                    send_mail(
+                        titulo_del_correo,
+                        cuerpo_del_correo,
+                        settings.EMAIL_HOST_USER,
+                        [cita.paciente.persona.email],
+                        fail_silently=False
+                    )
+                    return JsonResponse({"respuesta": True, "mensaje": "recordatorio enviado correctamente."})
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
+
         else:
             try:
                 data['titulo'] = 'Citas Planificadas'
