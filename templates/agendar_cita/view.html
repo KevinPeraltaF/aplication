@@ -52,6 +52,13 @@
                                          <div class="d-flex flex-column justify-content-center">
                                                 <h6 class="mb-0 text-xs">{{ fila.paciente| upper }}</h6>
                                                 <p class="text-xs text-secondary mb-0"><strong>CI: {{ fila.paciente.persona.cedula }} </strong> </p>
+                                                  <p class="text-xs text-secondary mb-0"><strong> <i
+                                                    class="fa fa-mobile-phone" title="MÓVIL"></i>
+                                                +593 {{ fila.paciente.persona.telefono_movil }} </strong> <a
+                                                    href='https://web.whatsapp.com/send?l=en&phone=+593{{ fila.paciente.persona.telefono_movil }}&text=Buen dia, se le recuerda que tiene una cita pendiente con el dentista, Fecha: {{ fila.fecha }} Hora: {{ fila.horario.hora_inicio }}     '
+                                                    target="_blank" title="Enviar recordatorio" data-bs-toggle="tooltip" data-bs-placement="bottom" >
+                                                <i class="fa fa-whatsapp"></i>
+                                            </a></p>
                                             </div>
                                     </td>
 

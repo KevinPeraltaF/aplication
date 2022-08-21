@@ -97,6 +97,11 @@
                                                            href="?peticion=atender_consulta&id={{ fila.pk }}">Atender cita</a>
                                                     </li>
 
+                                                     <li><a class="dropdown-item border-radius-md" onclick="enviar_recordatorio('enviar_correo','{{ fila.pk }}','{{ fila | upper }}')"
+                                                           href="javascript:;">Enviar correo de
+                                                        recordatorio</a>
+                                                    </li>
+
                                                 {% endif %}
 
                                                 <li>
@@ -142,6 +147,57 @@
 
 {% block script %}
      <script>
+
+         function enviar_recordatorio(peticion,id,registro){
+         Swal.fire({
+            title: '¿Estás seguro de enviar un recordatorio a esta cita?',
+            text: registro,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, enviar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ reques.path }}',
+                    async: false,
+                    data: {
+                        peticion: peticion,
+                        id: id,
+                    },
+                    dataType: "json",
+                    beforeSend: function () {
+
+                    }
+                }).done(function (data) {
+                    if (data.respuesta === true) {
+                        Swal.fire(
+                            'Recordatorio Enviado!',
+                            data.mensaje,
+                            'success'
+                        ).then(function () {
+                            location.reload();
+                        });
+                    } else {
+
+                        Swal.fire(data.mensaje);
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    mensaje_alerta('Error al intentar conectar con el servidor', 'Error de conexiòn');
+                }).always(function () {
+                });
+
+
+            }
+
+        })
+
+    }
+
+
     function accion_anular_cita(peticion, registro, id) {
 
         Swal.fire({
