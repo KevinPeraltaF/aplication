@@ -14,6 +14,7 @@ from odontologico.view_doctor import view_doctor
 from odontologico.view_horas_atencion import view_horas_atencion
 from odontologico.view_mis_facturas import view_mis_facturas
 from odontologico.view_paciente import view_paciente
+from odontologico.view_reportes import view_reportes
 from odontologico.view_tratamiento import view_tratamiento
 from odontologico.views import login_usuario, dashboard, logout_usuario, registrate
 
@@ -36,4 +37,5 @@ urlpatterns = [
     path(r'tratamiento/',view_tratamiento, name='tratamiento'),
     path(r'horas_atencion/',view_horas_atencion ,name='horas_atencion'),
     path(r'misFacturas/',view_mis_facturas ,name='mis_facturas'),
+    path(r'reportes/',view_reportes ,name='reportes'),
 ]
