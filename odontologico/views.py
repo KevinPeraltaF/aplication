@@ -82,7 +82,7 @@ def registrate(request):
                         email = form.cleaned_data['email']
                         username = username.strip()  # Eliminar espacios y líneas nuevas
                         password = password.strip()
-                        usuario = User.objects.create_user(username, '', password)
+                        usuario = User.objects.create_user(username, email, password)
                         usuario.save()
 
                         grupo = Group.objects.get(pk=4)  # PACIENTE
