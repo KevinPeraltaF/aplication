@@ -107,11 +107,14 @@
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
-                                                {% if fila.estado_cita == 2 %}{#   pendiente #}
-                                                    <li><a class="dropdown-item border-radius-md text-danger"
+                                                {% if fila.estado_cita == 2 or fila.estado_cita == 3 %}
+                                                  <li><a class="dropdown-item border-radius-md text-danger"
                                                            href="javascript:;"
                                                            onclick="eliminar_registro('eliminar_cita','{{ fila }}','{{ fila.pk }}')">Eliminar</a>
                                                     </li>
+                                                {% endif %}
+                                                {% if fila.estado_cita == 2 %}{#   pendiente #}
+
 
                                                     <li><a class="dropdown-item border-radius-md text-danger"
                                                            href="javascript:;"

@@ -5,6 +5,7 @@ from io import StringIO
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.contrib.staticfiles import finders
+from django.core.mail import EmailMultiAlternatives
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.forms import model_to_dict
@@ -19,7 +20,22 @@ from odontologico.forms import PersonaForm, ConsultaForm, AbonarCuotaForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Paciente, PersonaPerfil, Persona, Consulta, AbonoPago
 
+def create_mail(user_mail, subject, template_name, context):
+    template = get_template(template_name)
+    content = template.render(context)
 
+    message = EmailMultiAlternatives(
+        subject=subject,
+        body='',
+        from_email=settings.EMAIL_HOST_USER,
+        to=[
+            user_mail
+        ],
+        cc=[]
+    )
+
+    message.attach_alternative(content, 'text/html')
+    return message
 def link_callback(uri, rel):
     """
     Convert HTML URIs to absolute system paths so xhtml2pdf can access those
@@ -299,6 +315,28 @@ def view_paciente(request):
                     return render_pdf_view('paciente/factura_pdf.html', data)
                 except Exception as ex:
                     pass
+
+            if peticion == 'enviar_factura':
+
+                try:
+                    from django.conf import settings
+                    from django.core.mail import send_mail
+                    factura = Consulta.objects.get(pk=request.GET['id'])
+                    mail = create_mail(
+                        factura.paciente.persona.email,
+                        'Esta es tu factura por la consulta realizada en el centro odontologico',
+                        'factura.html',
+                        {
+                            'factura': factura
+                        }
+                    )
+
+                    mail.send(fail_silently=False)
+
+                    return JsonResponse({"respuesta": True, "mensaje": "Factura enviado correctamente."})
+                except Exception as ex:
+                    print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
+
 
             if peticion == 'descargar_odontograma':
                 try:

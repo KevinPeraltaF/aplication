@@ -121,6 +121,9 @@
                                                 <li><a class="dropdown-item border-radius-md"
                                                        href="?peticion=ver_factura&id={{ fila.pk }}"  >Factura</a>
                                                 </li>
+                                                <li><a class="dropdown-item border-radius-md"  onclick="enviar_factura('enviar_factura','{{ fila.pk }}','{{ fila | upper }}')"
+                                                       href="javascript:;" >Enviar Factura</a>
+                                                </li>
 
                                                  <li><a class="dropdown-item border-radius-md"
                                                        href="?peticion=descargar_factura&id={{ fila.pk }}"  >Descargar Factura</a>
@@ -252,6 +255,55 @@
     </script>
 
     <script>
+        function enviar_factura(peticion,id,registro){
+         Swal.fire({
+            title: '¿Estás seguro de enviar la factura a esta paciente?',
+            text: registro,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, enviar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ reques.path }}',
+                    async: false,
+                    data: {
+                        peticion: peticion,
+                        id: id,
+                    },
+                    dataType: "json",
+                    beforeSend: function () {
+
+                    }
+                }).done(function (data) {
+                    if (data.respuesta === true) {
+                        Swal.fire(
+                            'Factura Enviada!',
+                            data.mensaje,
+                            'success'
+                        ).then(function () {
+                            location.reload();
+                        });
+                    } else {
+
+                        Swal.fire(data.mensaje);
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    mensaje_alerta('Error al intentar conectar con el servidor', 'Error de conexiòn');
+                }).always(function () {
+                });
+
+
+            }
+
+        })
+
+    }
+
         function ventana_modal(peticion, pk, titulo) {
             $.ajax({
                 type: "GET",
