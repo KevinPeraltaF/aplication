@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 from odontologico.forms import PersonaForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Persona, Doctor, Paciente, Tratamiento, Consulta
+from odontologico.models import Persona, Doctor, Paciente, Tratamiento, Consulta, Asistente
 
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -39,16 +39,36 @@ def view_reportes(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'add_doctor':
+            if peticion == 'reporte_pacientes':
                 try:
-                    data['titulo'] = 'Agregar nuevo doctor'
-                    data['titulo_formulario'] = 'Formulario de registro de doctor'
-                    data['peticion'] = 'add_doctor'
-                    form = PersonaForm()
-                    data['form'] = form
-                    return render(request, "doctor/add_doctor.html", data)
+                    fila = Paciente.objects.filter(status=True)
                 except Exception as ex:
-                    transaction.set_rollback(True)
+                    pass
+
+            if peticion == 'reporte_asistentes':
+                try:
+                    fila = Asistente.objects.filter(status=True)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'reporte_especialistas':
+                try:
+                    fila = Doctor.objects.filter(status=True)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'reporte_tratamiento':
+                try:
+                    fila = Tratamiento.objects.filter(status=True)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'reporte_tratamiento_por_paciente':
+                try:
+                    fila = Consulta.objects.raw(
+                        'SELECT trat.id, trat.nombre, ( SELECT  COUNT(c.consulta_id) AS paciente FROM odontologico_consulta_tratamientos c WHERE c.tratamiento_id=trat.id group by c.tratamiento_id ) AS cantidad_pacientes FROM  odontologico_tratamiento trat ')
+
+                except Exception as ex:
                     pass
 
 
