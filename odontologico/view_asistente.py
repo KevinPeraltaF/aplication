@@ -42,7 +42,7 @@ def view_asistente(request):
                             return JsonResponse(
                                 {"respuesta": False, "mensaje": "registro ya existe.", 'repetidos': campos_repetidos})
 
-                        username = form.cleaned_data['cedula']
+                        username = form.cleaned_data['email']
                         password = form.cleaned_data['cedula']
                         nombre1 = form.cleaned_data['nombre1']
                         nombre2 = form.cleaned_data['nombre2']
@@ -55,7 +55,7 @@ def view_asistente(request):
                         email = form.cleaned_data['email']
                         username = username.strip()  # Eliminar espacios y líneas nuevas
                         password = password.strip()
-                        usuario = User.objects.create_user(username, '', password)
+                        usuario = User.objects.create_user(username,email, password)
                         usuario.save()
                         grupo = Group.objects.get(pk=2)  # ASISTENTE
                         grupo.user_set.add(usuario)

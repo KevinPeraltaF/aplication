@@ -43,7 +43,7 @@ def view_doctor(request):
                             return JsonResponse(
                                 {"respuesta": False, "mensaje": "registro ya existe.", 'repetidos': campos_repetidos})
 
-                        username = form.cleaned_data['cedula']
+                        username = form.cleaned_data['email']
                         password = form.cleaned_data['cedula']
                         nombre1 = form.cleaned_data['nombre1']
                         nombre2 = form.cleaned_data['nombre2']
