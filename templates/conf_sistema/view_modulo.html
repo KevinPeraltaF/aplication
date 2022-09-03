@@ -79,7 +79,9 @@
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
+                                                {% if not fila.pk == 2 %}
                                                 <li><a class="dropdown-item border-radius-md text-danger" href="javascript:;" onclick="eliminar_registro('eliminar_modulo','{{ fila }}','{{ fila.pk }}')" >Eliminar</a></li>
+                                                {% endif %}
                                             </ul>
                                         </div>
                                     </td>
