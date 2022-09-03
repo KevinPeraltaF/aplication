@@ -3,15 +3,32 @@ import sys
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.views import PasswordChangeView
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.urls import reverse_lazy
+
 from aplication import settings
-from odontologico.forms import RegistroUsuarioForm
+from odontologico.forms import RegistroUsuarioForm, CambiarContraseñaForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Modulo, Persona, Paciente, PersonaPerfil, AccesoModulo
+
+
+# cambiar contraseña
+class PasswordChangeView(PasswordChangeView):
+    template_name = 'registration/cambiarcontrasena.html'
+    form_class = CambiarContraseñaForm
+    success_url = reverse_lazy('logout_usuario')
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['titulo'] = "Cambiar Contraseña"
+        return context
 
 
 @transaction.atomic()

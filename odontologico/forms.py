@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 from django.forms import DateTimeInput, ModelChoiceField
@@ -190,3 +190,12 @@ class HorarioHoraForm(forms.Form):
     activo = forms.BooleanField(label='Activo', required=False, widget=forms.CheckboxInput(
         attrs={'class': 'form-check form-switch ms-2 my-auto is-filled', 'checked': 'checked'}))
 
+
+
+class CambiarContraseñaForm(PasswordChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Le añadimos clases CSS a los inputs
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control '
