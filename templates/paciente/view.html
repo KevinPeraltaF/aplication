@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-6 text-end">
                         {% for foo in request.user.groups.all %}
-                            {% if  not foo.pk == 3 %}
+                            {% if   foo.pk == 2 %}
                                   <a class="btn btn-outline-dark btn-sm mb-0" href="?peticion=add_paciente"><i
                                 class="material-icons text-sm">add</i>&nbsp;&nbsp;Agregar</a>
 
