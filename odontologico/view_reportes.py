@@ -1,8 +1,10 @@
 import sys
+import io
+import xlsxwriter
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, response
 from django.shortcuts import render
 
 from odontologico.forms import PersonaForm
@@ -42,24 +44,203 @@ def view_reportes(request):
             if peticion == 'reporte_pacientes':
                 try:
                     fila = Paciente.objects.filter(status=True)
+                    output = io.BytesIO()
+                    # Create an new Excel file and add a worksheet.
+                    workbook = xlsxwriter.Workbook(output)
+                    worksheet = workbook.add_worksheet()
+
+                    # Widen the first column to make the text clearer.
+                    worksheet.set_column('A:A', 50)
+                    worksheet.set_column('B:B', 50)
+                    worksheet.set_column('C:C', 50)
+                    worksheet.set_column('D:D', 50)
+                    worksheet.set_column('E:E', 50)
+                    worksheet.set_column('F:F', 50)
+
+                    # Add a bold format to use to highlight cells.
+
+
+                    # Write some simple text.
+                    worksheet.write('A1', 'Nombres y apellidos')
+                    worksheet.write('B1', 'Correo electrónico')
+                    worksheet.write('C1', 'cédula')
+                    worksheet.write('D1', 'género')
+                    worksheet.write('E1', 'movil')
+
+                    # Text with formatting.
+                    row = 2
+                    for a in fila:
+                        worksheet.write('A%s' % row, a.persona.__str__())
+                        worksheet.write('B%s' % row, a.persona.email.__str__())
+                        worksheet.write('C%s' % row, a.persona.cedula.__str__())
+                        worksheet.write('D%s' % row, a.persona.genero.__str__())
+                        worksheet.write('E%s' % row, '0'+a.persona.telefono_movil.__str__())
+                        row+=1
+                    workbook.close()
+                    # Rewind the buffer.
+                    output.seek(0)
+
+                    # Set up the Http response.
+                    filename = 'reporte_pacientes.xlsx'
+                    response = HttpResponse(
+                        output,
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+                    return response
+
+
                 except Exception as ex:
                     pass
 
             if peticion == 'reporte_asistentes':
                 try:
                     fila = Asistente.objects.filter(status=True)
+
+                    output = io.BytesIO()
+                    # Create an new Excel file and add a worksheet.
+                    workbook = xlsxwriter.Workbook(output)
+                    worksheet = workbook.add_worksheet()
+
+                    # Widen the first column to make the text clearer.
+                    worksheet.set_column('A:A', 50)
+                    worksheet.set_column('B:B', 50)
+                    worksheet.set_column('C:C', 50)
+                    worksheet.set_column('D:D', 50)
+                    worksheet.set_column('E:E', 50)
+                    worksheet.set_column('F:F', 50)
+
+                    # Add a bold format to use to highlight cells.
+
+                    # Write some simple text.
+                    worksheet.write('A1', 'Nombres y apellidos')
+                    worksheet.write('B1', 'Correo electrónico')
+                    worksheet.write('C1', 'cédula')
+                    worksheet.write('D1', 'género')
+                    worksheet.write('E1', 'movil')
+
+                    # Text with formatting.
+                    row = 2
+                    for a in fila:
+                        worksheet.write('A%s' % row, a.persona.__str__())
+                        worksheet.write('B%s' % row, a.persona.email.__str__())
+                        worksheet.write('C%s' % row, a.persona.cedula.__str__())
+                        worksheet.write('D%s' % row, a.persona.genero.__str__())
+                        worksheet.write('E%s' % row, '0' + a.persona.telefono_movil.__str__())
+                        row += 1
+                    workbook.close()
+                    # Rewind the buffer.
+                    output.seek(0)
+
+                    # Set up the Http response.
+                    filename = 'reporte_asistentes.xlsx'
+                    response = HttpResponse(
+                        output,
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+                    return response
+
+
                 except Exception as ex:
                     pass
 
             if peticion == 'reporte_especialistas':
                 try:
                     fila = Doctor.objects.filter(status=True)
+
+                    output = io.BytesIO()
+                    # Create an new Excel file and add a worksheet.
+                    workbook = xlsxwriter.Workbook(output)
+                    worksheet = workbook.add_worksheet()
+
+                    # Widen the first column to make the text clearer.
+                    worksheet.set_column('A:A', 50)
+                    worksheet.set_column('B:B', 50)
+                    worksheet.set_column('C:C', 50)
+                    worksheet.set_column('D:D', 50)
+                    worksheet.set_column('E:E', 50)
+                    worksheet.set_column('F:F', 50)
+
+                    # Add a bold format to use to highlight cells.
+
+                    # Write some simple text.
+                    worksheet.write('A1', 'Nombres y apellidos')
+                    worksheet.write('B1', 'Correo electrónico')
+                    worksheet.write('C1', 'cédula')
+                    worksheet.write('D1', 'género')
+                    worksheet.write('E1', 'movil')
+
+                    # Text with formatting.
+                    row = 2
+                    for a in fila:
+                        worksheet.write('A%s' % row, a.persona.__str__())
+                        worksheet.write('B%s' % row, a.persona.email.__str__())
+                        worksheet.write('C%s' % row, a.persona.cedula.__str__())
+                        worksheet.write('D%s' % row, a.persona.genero.__str__())
+                        worksheet.write('E%s' % row, '0' + a.persona.telefono_movil.__str__())
+                        row += 1
+                    workbook.close()
+                    # Rewind the buffer.
+                    output.seek(0)
+
+                    # Set up the Http response.
+                    filename = 'reporte_especialistas.xlsx'
+                    response = HttpResponse(
+                        output,
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+                    return response
+
                 except Exception as ex:
                     pass
 
             if peticion == 'reporte_tratamiento':
                 try:
                     fila = Tratamiento.objects.filter(status=True)
+
+                    output = io.BytesIO()
+                    # Create an new Excel file and add a worksheet.
+                    workbook = xlsxwriter.Workbook(output)
+                    worksheet = workbook.add_worksheet()
+
+                    # Widen the first column to make the text clearer.
+                    worksheet.set_column('A:A', 60)
+                    worksheet.set_column('B:B', 50)
+
+
+                    # Add a bold format to use to highlight cells.
+
+                    # Write some simple text.
+                    worksheet.write('A1', 'Nombre')
+                    worksheet.write('B1', 'Costo')
+
+
+                    # Text with formatting.
+                    row = 2
+                    for a in fila:
+                        worksheet.write('A%s' % row, a.nombre.__str__())
+                        worksheet.write('B%s' % row, a.costo.__str__())
+
+                        row += 1
+                    workbook.close()
+                    # Rewind the buffer.
+                    output.seek(0)
+
+                    # Set up the Http response.
+                    filename = 'reporte_tratamientos.xlsx'
+                    response = HttpResponse(
+                        output,
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+                    return response
+
                 except Exception as ex:
                     pass
 
@@ -67,6 +248,48 @@ def view_reportes(request):
                 try:
                     fila = Consulta.objects.raw(
                         'SELECT trat.id, trat.nombre, ( SELECT  COUNT(c.consulta_id) AS paciente FROM odontologico_consulta_tratamientos c WHERE c.tratamiento_id=trat.id group by c.tratamiento_id ) AS cantidad_pacientes FROM  odontologico_tratamiento trat ')
+
+                    output = io.BytesIO()
+                    # Create an new Excel file and add a worksheet.
+                    workbook = xlsxwriter.Workbook(output)
+                    worksheet = workbook.add_worksheet()
+
+                    # Widen the first column to make the text clearer.
+                    worksheet.set_column('A:A', 50)
+                    worksheet.set_column('B:B', 60)
+
+
+                    # Add a bold format to use to highlight cells.
+
+                    # Write some simple text.
+                    worksheet.write('A1', 'Tratamiento')
+                    worksheet.write('B1', 'Cantidad de pacientes que se han realizado el tratamiento')
+
+
+                    # Text with formatting.
+                    row = 2
+                    for a in fila:
+                        if a.cantidad_pacientes is None:
+                            valor = '0'
+                        else:
+                            valor = a.cantidad_pacientes.__str__()
+                        worksheet.write('A%s' % row, a.nombre.__str__())
+                        worksheet.write('B%s' % row, valor)
+
+                        row += 1
+                    workbook.close()
+                    # Rewind the buffer.
+                    output.seek(0)
+
+                    # Set up the Http response.
+                    filename = 'reporte_tratamientos_por_pacientes.xlsx'
+                    response = HttpResponse(
+                        output,
+                        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    )
+                    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+                    return response
 
                 except Exception as ex:
                     pass

@@ -8,7 +8,7 @@ django = "*"
 pillow = "*"
 django-crum = "*"
 xhtml2pdf = "*"
-xlsxwriter = "*"
+xlsxwriter = "==2.0.0"
 
 [dev-packages]
 
