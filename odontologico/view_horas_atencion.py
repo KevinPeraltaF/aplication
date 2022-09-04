@@ -60,10 +60,13 @@ def view_horas_atencion(request):
                         horario = Horario_hora.objects.get(pk=request.POST['id'])
                         horario.hora_inicio = request.POST['hora_inicio']
                         horario.hora_fin = request.POST['hora_fin']
-                        if request.POST['activo'] == 'on':
-                            valor =True
-                        else:
-                            valor =False
+                        try:
+                            if request.POST['activo'] == 'on':
+                                valor =True
+                            else:
+                                valor =False
+                        except:
+                            valor = False
                         horario.activo = valor
                         horario.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
