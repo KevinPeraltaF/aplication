@@ -6,8 +6,9 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import JsonResponse, HttpResponse, response
 from django.shortcuts import render
+from django.template.loader import get_template
 
-from odontologico.forms import PersonaForm
+from odontologico.forms import PersonaForm, FiltroForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import Persona, Doctor, Paciente, Tratamiento, Consulta, Asistente
 
@@ -291,6 +292,16 @@ def view_reportes(request):
 
                     return response
 
+                except Exception as ex:
+                    pass
+
+
+            if peticion == 'reporte_filtro':
+                try:
+                    form = FiltroForm()
+                    data['form'] = form
+                    template = get_template("reportes/modal/filtro.html")
+                    return JsonResponse({"respuesta": True, 'data': template.render(data)})
                 except Exception as ex:
                     pass
 

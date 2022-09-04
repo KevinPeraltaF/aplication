@@ -143,7 +143,7 @@ class AccesoModuloForm(forms.Form):
 class AgendarCitaForm(forms.Form):
     paciente = ModelChoiceField(label='Paciente', queryset=Paciente.objects.filter(status=True), widget=forms.Select(attrs={'class': 'form-control', }))
     doctor = ModelChoiceField(label='Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
-    fecha_cita = forms.DateField(label="Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
+    fecha_cita = forms.DateField(label="Fecha de la cita",initial=datetime.now().date(), input_formats=['%Y-%m-%d'], widget=DateTimeInput(format='%Y-%m-%d', attrs={'class': 'form-control','type':'date'}) )
     hora_cita = forms.ModelChoiceField(label="Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
 
     def editar(self):
@@ -160,7 +160,7 @@ class ConsultaForm(forms.Form):
 
 class AgendarCitaOnlineForm(forms.Form):
     doctor = ModelChoiceField(label='Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
-    fecha_cita = forms.DateField(label="Fecha de la cita",initial=datetime.now().date(), input_formats=['%d-%m-%Y'], widget=DateTimeInput(format='%d-%m-%Y', attrs={'class': 'form-control'}) )
+    fecha_cita = forms.DateField(label="Fecha de la cita",initial=datetime.now().date(), input_formats=['%Y-%m-%d'], widget=DateTimeInput(format='%Y-%m-%d', attrs={'class': 'form-control','type':'date'}) )
     hora_cita = forms.ModelChoiceField(label="Hora de la cita", queryset=Horario_hora.objects.filter(status=True, activo=True), widget=forms.Select(attrs={'class': 'form-control', }) )
 
 
@@ -199,3 +199,10 @@ class CambiarContraseñaForm(PasswordChangeForm):
         # Le añadimos clases CSS a los inputs
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control '
+
+
+
+class FiltroForm(forms.Form):
+    fecha_inicio = forms.DateTimeField(input_formats=['%Y-%m-%d'] ,widget= forms.DateInput(format='%Y-%m-%d',attrs={'class': 'form-control','type':'date'}))
+    fecha_fin =forms.DateTimeField(input_formats=['%Y-%m-%d'],widget= forms.DateInput(format='%Y-%m-%d',attrs={'class': 'form-control','type':'date'}))
+    especialista = ModelChoiceField(label='Especialista', queryset=Doctor.objects.filter(status=True),  widget=forms.Select(attrs={'class': 'form-control', }))
