@@ -28,13 +28,13 @@ def view_reportes(request):
     if request.method == 'POST':
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
-            if peticion == 'eliminar_doctor':
+            if peticion == 'filtro_reporte':
                 try:
-                    with transaction.atomic():
-                        registro = Doctor.objects.get(pk=request.POST['id'])
-                        registro.status = False
-                        registro.save(request)
-                        return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
+                    form = FiltroForm(request.GET)
+
+                    if form.is_valid():
+                        pass
+
 
                 except Exception as ex:
                     pass
@@ -42,6 +42,7 @@ def view_reportes(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
+
             if peticion == 'reporte_pacientes':
                 try:
                     fila = Paciente.objects.filter(status=True)
