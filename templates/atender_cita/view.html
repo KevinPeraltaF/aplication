@@ -97,10 +97,19 @@
                                                            href="?peticion=atender_consulta&id={{ fila.pk }}">Atender cita</a>
                                                     </li>
 
-                                                     <li><a class="dropdown-item border-radius-md" onclick="enviar_recordatorio('enviar_correo','{{ fila.pk }}','{{ fila | upper }}')"
-                                                           href="javascript:;">Enviar correo de
-                                                        recordatorio</a>
-                                                    </li>
+
+                                                    {% for foo in request.user.groups.all %}
+                                                        {% if   foo.pk == 2 %}
+                                                            <li><a class="dropdown-item border-radius-md"
+                                                                   onclick="enviar_recordatorio('enviar_correo','{{ fila.pk }}','{{ fila | upper }}')"
+                                                                   href="javascript:;">Enviar correo de
+                                                                recordatorio</a>
+                                                            </li>
+
+                                                        {% endif %}
+                                                    {% endfor %}
+
+
 
                                                 {% endif %}
 
