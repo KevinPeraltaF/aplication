@@ -62,7 +62,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <form action="" method="POST">
+                    {% csrf_token %}
+                        <div class="form_contenido">
 
+                        </div>
+
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -191,7 +197,7 @@
                 },
                 success: function (data) {
                     if (data.respuesta === true) {
-                        $('.modal-body').html(data.data);
+                        $('.modal-body .form_contenido').html(data.data);
                         $('#modalGeneric .modal-title').html(titulo);
                         $("#modalGeneric").modal({backdrop: 'static'}).modal('show');
                     } else {

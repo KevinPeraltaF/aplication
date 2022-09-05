@@ -30,10 +30,64 @@ def view_reportes(request):
             peticion = request.POST['peticion']
             if peticion == 'filtro_reporte':
                 try:
-                    form = FiltroForm(request.GET)
+                    form = FiltroForm(request.POST)
 
                     if form.is_valid():
-                        pass
+                        fecha_inicio = form.cleaned_data['fecha_inicio']
+                        fecha_fin = form.cleaned_data['fecha_fin']
+                        especialista =form.cleaned_data['especialista']
+
+                        filtro = Consulta.objects.filter(status =True,doctor = especialista,fecha__gte=fecha_inicio,fecha__lte=fecha_fin)
+
+                        output = io.BytesIO()
+                        # Create an new Excel file and add a worksheet.
+                        workbook = xlsxwriter.Workbook(output)
+                        worksheet = workbook.add_worksheet()
+
+                        # Widen the first column to make the text clearer.
+                        worksheet.set_column('A:A', 50)
+                        worksheet.set_column('B:B', 50)
+                        worksheet.set_column('C:C', 50)
+                        worksheet.set_column('D:D', 50)
+                        worksheet.set_column('E:E', 50)
+                        worksheet.set_column('F:F', 50)
+                        worksheet.set_column('G:G', 50)
+
+                        # Add a bold format to use to highlight cells.
+
+                        # Write some simple text.
+                        worksheet.write('A1', 'Fecha')
+                        worksheet.write('B1', 'Nombres y apellidos')
+                        worksheet.write('C1', 'Correo electrónico')
+                        worksheet.write('D1', 'cédula')
+                        worksheet.write('E1', 'género')
+                        worksheet.write('F1', 'movil')
+                        worksheet.write('G1', 'Doctor')
+
+                        # Text with formatting.
+                        row = 2
+                        for a in filtro:
+                            worksheet.write('A%s' % row, a.fecha.__str__())
+                            worksheet.write('B%s' % row, a.paciente.persona.__str__())
+                            worksheet.write('C%s' % row, a.paciente.persona.email.__str__())
+                            worksheet.write('D%s' % row, a.paciente.persona.cedula.__str__())
+                            worksheet.write('E%s' % row, a.paciente.persona.genero.__str__())
+                            worksheet.write('F%s' % row, '0' + a.paciente.persona.telefono_movil.__str__())
+                            worksheet.write('G%s' % row, a.doctor.__str__())
+                            row += 1
+                        workbook.close()
+                        # Rewind the buffer.
+                        output.seek(0)
+
+                        # Set up the Http response.
+                        filename = 'reporte.xlsx'
+                        response = HttpResponse(
+                            output,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        )
+                        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+                        return response
 
 
                 except Exception as ex:
