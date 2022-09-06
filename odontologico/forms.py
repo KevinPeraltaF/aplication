@@ -48,7 +48,7 @@ class RegistroUsuarioForm(UserCreationForm):
                              widget=forms.TextInput(attrs={'class': 'form-control','onKeyPress' : 'return solo_numeros(event)',}))
     genero = forms.ModelChoiceField(label=u"Género", queryset=Genero.objects.filter(status=True),
                                     widget=forms.Select(attrs={'class': 'form-control', }))
-    telefono_movil = forms.CharField(label=u"Teléfono móvil", max_length=50,
+    telefono_movil = forms.CharField(label=u"Teléfono móvil", max_length=50, help_text="Ingrese su número de telefono sin el 0",
                                      widget=forms.TextInput(attrs={'class': 'form-control', }))
     telefono_convencional = forms.CharField(label=u"Teléfono Convencional", max_length=50, required=False,
                                             widget=forms.TextInput(attrs={'class': 'form-control', }))
