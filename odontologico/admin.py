@@ -64,8 +64,3 @@ class Horario_horaAdmin(admin.ModelAdmin):
 class AgendarCitaAdmin(admin.ModelAdmin):
     list_display = ('paciente','doctor','fecha','horario','usuario_creacion','fecha_creacion','usuario_modificacion','fecha_modificacion','status',)
     search_fields = ('paciente','doctor','fecha','horario',)
-
-@admin.register(TiempoAntesRecordatorioCorreo)
-class TiempoAntesRecordatorioCorreoAdmin(admin.ModelAdmin):
-    list_display = ( 'dias_antes','horas_antes','minutos_antes',  'usuario_creacion', 'fecha_creacion', 'usuario_modificacion','fecha_modificacion', 'status',)
-    search_fields = ('dias_antes', 'horas_antes', 'minutos_antes',)
