@@ -63,6 +63,25 @@ def view_acceso_modulo(request):
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
+
+            if peticion == 'desactivar_acceso':
+                try:
+                    acceso = AccesoModulo.objects.get(pk= request.GET['id'])
+                    acceso.activo =False
+                    acceso.save(request)
+                    return JsonResponse({"respuesta": True, "mensaje": "desactivado correctamente."})
+                except Exception as ex:
+                    pass
+
+            if peticion == 'activar_acceso':
+                try:
+                    acceso = AccesoModulo.objects.get(pk= request.GET['id'])
+                    acceso.activo =True
+                    acceso.save(request)
+                    return JsonResponse({"respuesta": True, "mensaje": "desactivado correctamente."})
+                except Exception as ex:
+                    pass
+
             if peticion == 'add_acceso_modulo':
                 try:
                     data['titulo'] = 'Agregar nuevo acceso a módulo'
