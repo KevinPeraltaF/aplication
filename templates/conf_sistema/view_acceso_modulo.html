@@ -1,6 +1,61 @@
 {% extends 'baseapp.html' %}
 {% load static %}
 {% block head %}
+
+    <script>
+     function desactivar_registro(peticion, registro, id) {
+
+        Swal.fire({
+            title: '¿Estás seguro de eliminar este registro?',
+            text: "Está acción es irrevesible!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, bórralo!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ reques.path }}',
+                    async: false,
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        peticion: peticion,
+                        id: id,
+                    },
+                    dataType: "json",
+                    beforeSend: function () {
+
+                    }
+                }).done(function (data) {
+                    if (data.respuesta === true) {
+                        Swal.fire(
+                            'Eliminado!',
+                            data.mensaje,
+                            'success'
+                        ).then(function () {
+                            location.reload();
+                        });
+                    } else {
+
+                        Swal.fire(data.mensaje);
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    mensaje_alerta('Error al intentar conectar con el servidor', 'Error de conexiòn');
+                }).always(function () {
+                });
+
+
+            }
+
+        })
+
+
+    }
+
+    </script>
 {% endblock %}
 {% block contenido %}
       <div class="col-md-12 mb-lg-0 mb-4 ">
@@ -72,7 +127,7 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
                                             aria-labelledby="dropdownMarketingCard" style="">
-                                            <li><a class="dropdown-item border-radius-md"  href="#">Desactivar</a></li>
+                                            <li><a class="dropdown-item border-radius-md"  href="?action=desactivar_acceso">Desactivar</a></li>
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>

@@ -469,6 +469,8 @@ class Tratamiento(ModeloBase):
 
     def __str__(self):
         return u'%s - Costo:$%s' % (self.nombre,self.costo)
+    def en_uso(self):
+        return self.consulta_set.filter(status=True).exists()
 
 class Consulta(ModeloBase):
     fecha = models.DateField(verbose_name=u'Fecha' ,auto_now_add=True)
