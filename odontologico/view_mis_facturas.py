@@ -34,7 +34,7 @@ def view_mis_facturas(request):
             peticion = request.GET['peticion']
             if peticion == 'ver_factura':
                 try:
-                    data['titulo'] = 'Ver factura'
+                    data['titulo'] = 'Ver recibo'
                     data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
 
                     return render(request, "paciente/ver_factura.html", data)

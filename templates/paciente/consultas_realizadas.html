@@ -123,19 +123,19 @@
 
                                             {% if fila.cancelado %}
                                                 <li><a class="dropdown-item border-radius-md"
-                                                       href="?peticion=ver_factura&id={{ fila.pk }}"  >Factura</a>
+                                                       href="?peticion=ver_factura&id={{ fila.pk }}"  >Recibo</a>
                                                 </li>
                                                 {% for foo in request.user.groups.all %}
                                                     {% if   foo.pk == 2 %}
                                                         <li><a class="dropdown-item border-radius-md"
                                                                onclick="enviar_factura('enviar_factura','{{ fila.pk }}','{{ fila | upper }}')"
-                                                               href="javascript:;">Enviar Factura</a>
+                                                               href="javascript:;">Enviar Recibo</a>
                                                         </li>
                                                     {% endif %}
                                                 {% endfor %}
 
                                                  <li><a class="dropdown-item border-radius-md"
-                                                       href="?peticion=descargar_factura&id={{ fila.pk }}"  >Descargar Factura</a>
+                                                       href="?peticion=descargar_factura&id={{ fila.pk }}"  >Descargar recibo</a>
                                                 </li>
 
 
