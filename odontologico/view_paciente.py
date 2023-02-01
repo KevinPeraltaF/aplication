@@ -16,9 +16,9 @@ from xhtml2pdf import pisa
 
 from aplication import settings
 from aplication.settings import BASE_DIR
-from odontologico.forms import PersonaForm, ConsultaForm, AbonarCuotaForm
+from odontologico.forms import PersonaForm, ConsultaForm, AbonarCuotaForm, DocumentoForm
 from odontologico.funciones import add_data_aplication
-from odontologico.models import Paciente, PersonaPerfil, Persona, Consulta, AbonoPago
+from odontologico.models import *
 
 def create_mail(user_mail, subject, template_name, context):
     template = get_template(template_name)
@@ -106,7 +106,7 @@ def view_paciente(request):
         if 'peticion' in request.POST:
             peticion = request.POST['peticion']
 
-            if peticion == 'add_paciente':
+            if peticion == 'add_cliente':
                 try:
                     form = PersonaForm(request.POST, request.FILES)
                     if form.is_valid():
@@ -120,20 +120,22 @@ def view_paciente(request):
                         if campos_repetidos:
                             return JsonResponse(
                                 {"respuesta": False, "mensaje": "registro ya existe.", 'repetidos': campos_repetidos})
-
-                        username = form.cleaned_data['email']
-                        password = form.cleaned_data['cedula']
-                        nombre1 = form.cleaned_data['nombre1']
-                        nombre2 = form.cleaned_data['nombre2']
-                        apellido1 = form.cleaned_data['apellido1']
-                        apellido2 = form.cleaned_data['apellido2']
+                        username = form.cleaned_data['nombres']
+                        password = form.cleaned_data['nombres'].replace(' ','')
+                        nombres = form.cleaned_data['nombres']
+                        # nombre2 = form.cleaned_data['nombre2']
+                        apellidos = form.cleaned_data['apellidos']
+                        # apellido2 = form.cleaned_data['apellido2']
                         cedula = form.cleaned_data['cedula']
                         genero = form.cleaned_data['genero']
+                        ciudad = form.cleaned_data['ciudad']
+                        direccion = form.cleaned_data['direccion']
+                        referencia = form.cleaned_data['referencia']
                         telefono_movil = form.cleaned_data['telefono_movil']
                         telefono_convencional = form.cleaned_data['telefono_convencional']
                         email = form.cleaned_data['email']
-                        username = username.strip()  # Eliminar espacios y líneas nuevas
-                        password = password.strip()
+                        username = form.cleaned_data['nombres'].replace(' ','').lower()  # Eliminar espacios y líneas nuevas
+                        password = password.lower()
                         usuario = User.objects.create_user(username, email, password)
                         usuario.save()
 
@@ -142,15 +144,18 @@ def view_paciente(request):
 
                         persona = Persona(
                             usuario=usuario,
-                            nombre1=nombre1,
-                            nombre2=nombre2,
-                            apellido1=apellido1,
-                            apellido2=apellido2,
+                            nombres=nombres,
+                            # nombre2=nombre2,
+                            apellidos=apellidos,
+                            # apellido2=apellido2,
                             email=email,
                             cedula=cedula,
                             genero=genero,
                             telefono_movil=telefono_movil,
-                            telefono_convencional=telefono_convencional
+                            telefono_convencional=telefono_convencional,
+                            ciudad=ciudad,
+                            direccion=direccion,
+                            referencia=referencia
                         )
                         persona.save(request)
 
@@ -187,6 +192,9 @@ def view_paciente(request):
                         persona.email=request.POST['email']
                         persona.cedula=request.POST['cedula']
                         persona.genero_id=request.POST['genero']
+                        persona.ciudad=request.POST['ciudad']
+                        persona.direccion=request.POST['direccion']
+                        persona.referencia=request.POST['referencia']
                         persona.telefono_movil=request.POST['telefono_movil']
                         persona.telefono_convencional=request.POST['telefono_convencional']
                         persona.save(request)
@@ -227,21 +235,39 @@ def view_paciente(request):
                 try:
                     with transaction.atomic():
                         registro = Paciente.objects.get(pk=request.POST['id'])
+                        persona = Persona.objects.get(pk=registro.persona_id)
+                        persona.status = False
+                        persona.save()
                         registro.status = False
                         registro.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Registro eliminado correctamente."})
 
                 except Exception as ex:
                     pass
+
+            if peticion == 'add_documento':
+                try:
+                    form = DocumentoForm(request.POST, request.FILES)
+                    archivo = None
+                    if form.is_valid():
+                        if 'archivo' in request.FILES:
+                            archivo = request.FILES['archivo']
+                        registrodocumento = Documentos(nombre=form.cleaned_data['nombre'],
+                                                       archivo=archivo,
+                                                       paciente_id=int(request.POST['id']))
+                        registrodocumento.save()
+                    return redirect('/pacientes/?peticion=submenu_documentos&id=%s' % request.POST['id'])
+                except Exception as ex:
+                    pass
         return JsonResponse({"respuesta": False, "mensaje": "acción Incorrecta."})
     else:
         if 'peticion' in request.GET:
             peticion = request.GET['peticion']
-            if peticion == 'add_paciente':
+            if peticion == 'add_cliente':
                 try:
-                    data['titulo'] = 'Agregar nuevo paciente'
-                    data['titulo_formulario'] = 'Formulario de registro de paciente'
-                    data['peticion'] = 'add_paciente'
+                    data['titulo'] = 'Agregar nuevo cliente'
+                    data['titulo_formulario'] = 'Formulario de registro de cliente'
+                    data['peticion'] = 'add_cliente'
                     form = PersonaForm()
                     data['form'] = form
                     return render(request, "paciente/add_paciente.html", data)
@@ -264,6 +290,98 @@ def view_paciente(request):
                     transaction.set_rollback(True)
                     pass
 
+            if peticion == 'historial_clinico':
+                try:
+                    data['titulo'] = 'Historial clínico'
+                    data['paciente_id'] = paciente_id = request.GET['id']
+                    data['datos_paciente'] = Paciente.objects.get(id=paciente_id)
+                    return render(request, "paciente/menu_historial_clinico/datos_paciente.html", data)
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    pass
+
+            if peticion == 'submenu_consultasrealizadas':
+                try:
+                    data['titulo'] = 'Historial clínico'
+                    data['titulo_tabla'] = 'Consultas realizadas'
+                    data['paciente_id'] = paciente_id = request.GET['id']
+                    lista = Consulta.objects.filter(status=True, paciente__id=request.GET['id'], odontograma__tipo=2)
+                    paginator = Paginator(lista, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['page_obj'] = page_obj
+                    return render(request, "paciente/menu_historial_clinico/consultas_realizadas.html", data)
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    pass
+
+            if peticion == 'submenu_tratamientos':
+                try:
+                    data['titulo'] = 'Historial clínico'
+                    data['titulo_tabla'] = 'Tratamientos realizados'
+                    data['paciente_id'] = paciente_id = request.GET['id']
+                    lista_consultas = Consulta.objects.filter(status=True, paciente__id=request.GET['id']).values_list('id')
+                    lista_tratamientosrealizados = ConsultaTratamientoPaciente.objects.filter(status=True, consultas_id__in=lista_consultas)
+                    paginator = Paginator(lista_tratamientosrealizados, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['page_obj'] = page_obj
+                    return render(request, "paciente/menu_historial_clinico/tratamientos_realizados.html", data)
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    pass
+
+            if peticion == 'submenu_consulta_odontograma':
+                try:
+                    data['titulo'] = 'Historial clínico'
+                    data['paciente_id'] = paciente_id = request.GET['id']
+                    data['consulta'] = consulta = Consulta.objects.get(pk=request.GET['idconsulta'])
+                    data['histoColores'] = odontograma = consulta.odontograma
+                    return render(request, "paciente/menu_historial_clinico/consulta_odontograma.html", data)
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    pass
+
+            if peticion == 'submenu_odontograma_general':
+                try:
+                    data['titulo'] = 'Historial clínico'
+                    data['paciente_id'] = paciente_id = request.GET['id']
+                    odontograma = Odontograma.objects.filter(paciente_id=paciente_id, tipo=1, status=True)
+                    data['tieneodontogramaprincipal'] = False
+                    if odontograma:
+                        data['histoColores'] = odontograma[0]
+                        data['tieneodontogramaprincipal'] = True
+                    return render(request, "paciente/menu_historial_clinico/odontograma_general.html", data)
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    pass
+
+            if peticion == 'submenu_documentos':
+                try:
+                    data['titulo'] = 'Documentos'
+                    data['titulo_tabla'] = 'Documentos'
+                    data['paciente_id'] = paciente_id = request.GET['id']
+                    lista = Documentos.objects.filter(paciente_id=paciente_id, status=True)
+                    paginator = Paginator(lista, 15)
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+                    data['page_obj'] = page_obj
+                    return render(request, "paciente/menu_historial_clinico/documentos.html", data)
+                except Exception as ex:
+                    transaction.set_rollback(True)
+                    pass
+
+            if peticion == 'add_documento':
+                try:
+                    form = DocumentoForm()
+                    data['paciente_id'] = paciente_id = int(request.GET['paciente_id'])
+                    data['form'] = form
+                    data['peticion'] = 'add_documento'
+                    template = get_template('paciente/menu_historial_clinico/modal/formadddocumento.html')
+                    return JsonResponse({"result": True, 'data': template.render(data)})
+                except Exception as ex:
+                    pass
+
             if peticion == 'edit_paciente':
                 try:
                     data['titulo'] = 'Editar paciente'
@@ -278,6 +396,9 @@ def view_paciente(request):
                         'email': paciente.persona.email,
                         'cedula': paciente.persona.cedula,
                         'genero': paciente.persona.genero,
+                        'ciudad':paciente.persona.ciudad,
+                        'direccion':paciente.persona.direccion,
+                        'referencia':paciente.persona.referencia,
                         'telefono_movil': paciente.persona.telefono_movil,
                         'telefono_convencional': paciente.persona.telefono_convencional
                     })
@@ -313,6 +434,15 @@ def view_paciente(request):
                     data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
 
                     return render_pdf_view('paciente/factura_pdf.html', data)
+                except Exception as ex:
+                    pass
+
+            if peticion == 'generar_certificado':
+                try:
+                    # data['titulo'] = 'factura'
+                    # data['factura'] = factura = Consulta.objects.get(pk=request.GET['id'])
+
+                    return render_pdf_view('paciente/certificado_medico.html', data)
                 except Exception as ex:
                     pass
 
@@ -411,8 +541,8 @@ def view_paciente(request):
 
         else:
             try:
-                data['titulo'] = 'Pacientes'
-                data['titulo_tabla'] = 'Lista  de Pacientes'
+                data['titulo'] = 'Clientes'
+                data['titulo_tabla'] = 'Lista  de Clientes'
                 data['persona_logeado'] = persona_logeado
                 lista = Paciente.objects.filter(status=True).order_by('id')
                 paginator = Paginator(lista, 15)

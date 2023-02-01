@@ -35,12 +35,14 @@ def view_agendar_cita(request):
                         doctor = form.cleaned_data['doctor']
                         fecha_cita = form.cleaned_data['fecha_cita']
                         hora_cita = form.cleaned_data['hora_cita']
+                        descripcion = form.cleaned_data['descripcion']
 
                         cita = AgendarCita(
                             paciente=paciente,
                             doctor=doctor,
                             fecha=fecha_cita,
                             horario=hora_cita,
+                            descripcion=descripcion,
                             estado_cita = 2 #estado pendiente
                         )
                         cita.save(request)
@@ -65,6 +67,7 @@ def view_agendar_cita(request):
                         cita.doctor = form.cleaned_data['doctor']
                         cita.fecha = form.cleaned_data['fecha_cita']
                         cita.horario = form.cleaned_data['hora_cita']
+                        cita.descripcion = form.cleaned_data['descripcion']
                         cita.save(request)
                         return JsonResponse({"respuesta": True, "mensaje": "Registro Modificado correctamente."})
 
@@ -124,6 +127,7 @@ def view_agendar_cita(request):
                         'doctor': cita.doctor,
                         'fecha_cita': cita.fecha,
                         'hora_cita': cita.horario,
+                        'descripcion' : cita.descripcion
 
                     })
                     form.editar()

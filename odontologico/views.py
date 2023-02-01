@@ -203,7 +203,7 @@ def dashboard(request):
 
                 #obtener modulos
                 if usuario_logeado.is_superuser:
-                    modulos = Modulo.objects.filter(status=True,activo=True).exclude(id__in =[5,8,10,12])
+                    modulos = Modulo.objects.filter(status=True,activo=True)
 
                 else:
                     menu = AccesoModulo.objects.values_list('modulo_id').filter(status = True, activo = True ,grupo__in = usuario_logeado.groups.all())

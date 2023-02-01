@@ -32,14 +32,14 @@
                                     Diagnostico Previo
                                 </th>
 
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
-                                    Tratamiento
-                                </th>
+{#                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder">#}
+{#                                    Tratamiento#}
+{#                                </th>#}
 
                                 </th>
 
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
-                                    Abonado
+                                    Pagado
                                 </th>
 
 
@@ -68,23 +68,23 @@
                                     <h6 class="mb-0 text-xs">{{ fila.diagnostico_previo }}</h6>
                                 </td>
 
-                                <td class="text-xs" data-title="Fecha">
-                                    {% for tratamiento in fila.tratamientos.all %}
-                                        <span class="badge badge-sm bg-gradient-success">{{ tratamiento }}</span><br>
-                                        <br>
-                                    {% endfor %}
+{#                                <td class="text-xs" data-title="Fecha">#}
+{#                                    {% for tratamiento in fila.tratamientos.all %}#}
+{#                                        <span class="badge badge-sm bg-gradient-success">{{ tratamiento }}</span><br>#}
+{#                                        <br>#}
+{#                                    {% endfor %}#}
+{##}
+{#                                </td>#}
 
+                                <td class="text-xs text-center" data-title="Fecha">
+                                    <h6 class="mb-0 text-xs">$ {{ fila.obtener_total_pagado }}</h6>
+                                </td>
+                                <td class="text-xs text-center" data-title="Fecha">
+                                    <h6 class="mb-0 text-xs">$ {{ fila.obtener_valor_consulta }}</h6>
                                 </td>
 
                                 <td class="text-xs text-center" data-title="Fecha">
-                                    <h6 class="mb-0 text-xs">$ {{ fila.obtener_total_abonado }}</h6>
-                                </td>
-                                <td class="text-xs text-center" data-title="Fecha">
-                                    <h6 class="mb-0 text-xs">$ {{ fila.obtener_costo_total }}</h6>
-                                </td>
-
-                                <td class="text-xs text-center" data-title="Fecha">
-                                    {% if fila.cancelado %}
+                                    {% if fila.verificar_cancelado %}
                                         <span class="badge badge-sm bg-gradient-success text-center">CANCELADO</span>
                                     {% else %}
                                         <span class="badge badge-sm bg-gradient-danger text-center">ADEUDA</span>

@@ -34,6 +34,10 @@
                                     Cita | Fecha - Hora - Especialista
                                 </th>
 
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
+                                    Descripción
+                                </th>
+
                                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder">
                                     Estado
                                 </th>
@@ -67,6 +71,11 @@
                                         <h6 class="mb-0 text-xs">HORA: {{ fila.horario }}</h6>
                                         <p class="text-xs text-secondary mb-0">
                                             <strong>ESPECIALISTA: {{ fila.doctor| upper}} </strong></p>
+
+                                    </td>
+
+                                    <td class="text-xs" data-title="¿Activo?">
+                                        <h6 class="mb-0 text-xs">{{ fila.descripcion }}</h6>
 
                                     </td>
 

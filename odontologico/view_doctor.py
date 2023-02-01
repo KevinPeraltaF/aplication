@@ -7,7 +7,7 @@ from django.forms import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from odontologico.forms import PersonaForm
+from odontologico.forms import PersonaForm, DoctorForm
 from odontologico.funciones import add_data_aplication
 from odontologico.models import  PersonaPerfil, Persona, Doctor
 
@@ -30,7 +30,7 @@ def view_doctor(request):
 
             if peticion == 'add_doctor':
                 try:
-                    form = PersonaForm(request.POST, request.FILES)
+                    form = DoctorForm(request.POST, request.FILES)
                     if form.is_valid():
 
                         campos_repetidos = list()
@@ -51,6 +51,10 @@ def view_doctor(request):
                         apellido2 = form.cleaned_data['apellido2']
                         cedula = form.cleaned_data['cedula']
                         genero = form.cleaned_data['genero']
+                        ciudad = form.cleaned_data['ciudad']
+                        direccion = form.cleaned_data['direccion']
+                        referencia = form.cleaned_data['referencia']
+                        especialidad = form.cleaned_data['especialidad']
                         telefono_movil = form.cleaned_data['telefono_movil']
                         telefono_convencional = form.cleaned_data['telefono_convencional']
                         email = form.cleaned_data['email']
@@ -71,7 +75,11 @@ def view_doctor(request):
                             cedula=cedula,
                             genero=genero,
                             telefono_movil=telefono_movil,
-                            telefono_convencional=telefono_convencional
+                            telefono_convencional=telefono_convencional,
+                            ciudad=ciudad,
+                            direccion=direccion,
+                            referencia=referencia,
+                            especialidad=especialidad
                         )
                         persona.save(request)
 
@@ -96,7 +104,7 @@ def view_doctor(request):
 
             if peticion == 'edit_doctor':
                 try:
-                    form = PersonaForm(request.POST, request.FILES)
+                    form = DoctorForm(request.POST, request.FILES)
                     if form.is_valid():
                         doctor = Doctor.objects.get(pk=request.POST['id'])
                         persona = Persona.objects.get(pk = doctor.persona_id)
@@ -107,6 +115,10 @@ def view_doctor(request):
                         persona.email=request.POST['email']
                         persona.cedula=request.POST['cedula']
                         persona.genero_id=request.POST['genero']
+                        persona.ciudad = request.POST['ciudad']
+                        persona.direccion = request.POST['direccion']
+                        persona.referencia = request.POST['referencia']
+                        persona.especialidad = request.POST['especialidad']
                         persona.telefono_movil=request.POST['telefono_movil']
                         persona.telefono_convencional=request.POST['telefono_convencional']
                         persona.save(request)
@@ -138,7 +150,7 @@ def view_doctor(request):
                     data['titulo'] = 'Agregar nuevo doctor'
                     data['titulo_formulario'] = 'Formulario de registro de doctor'
                     data['peticion'] = 'add_doctor'
-                    form = PersonaForm()
+                    form = DoctorForm()
                     data['form'] = form
                     return render(request, "doctor/add_doctor.html", data)
                 except Exception as ex:
@@ -151,7 +163,7 @@ def view_doctor(request):
                     data['titulo_formulario'] = 'Formulario de editar doctor'
                     data['peticion'] = 'edit_doctor'
                     data['doctor'] = doctor = Doctor.objects.get(pk=request.GET['id'])
-                    form = PersonaForm(initial={
+                    form = DoctorForm(initial={
                         'nombre1':doctor.persona.nombre1,
                         'nombre2': doctor.persona.nombre2,
                         'apellido1': doctor.persona.apellido1,
@@ -159,6 +171,10 @@ def view_doctor(request):
                         'email': doctor.persona.email,
                         'cedula': doctor.persona.cedula,
                         'genero': doctor.persona.genero,
+                        'ciudad': doctor.persona.ciudad,
+                        'direccion': doctor.persona.direccion,
+                        'referencia': doctor.persona.referencia,
+                        'especialidad':doctor.especialidad,
                         'telefono_movil': doctor.persona.telefono_movil,
                         'telefono_convencional': doctor.persona.telefono_convencional
                     })

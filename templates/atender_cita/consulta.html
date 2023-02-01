@@ -13,6 +13,7 @@
 {% block inputs_extras %}
     <input type="hidden" name="peticion" value="{{ peticion }}"><br>
     <input type="hidden" name="id" value="{{ cita.id }}"><br>
+    <input type="hidden" name="idpaciente" value="{{ cita.paciente.id }}"><br>
     <h5 class="text-xxl-end">PACIENTE : {{ cita.paciente | upper }}</h5>
     <h5 class="text-xxl-end">CI: {{ cita.paciente.persona.cedula }}</h5>
     <h6></h6>
@@ -21,13 +22,71 @@
 {% block news_inputs_form %}
 
     <div class="row">
-     <h5 class="mt-3">DIAGNOSTICO PREVIO</h5>
-        <div class="input-group input-group-static my-3  ">
-            {{ form2.diagnostico_previo.errors }}  {{ form2.diagnostico_previo }}
-            {% if form2.diagnostico_previo.help_text %}
-                <small id="help"
-                       class="form-text text-muted">{{ form2.diagnostico_previo.help_text|safe }}</small> {% endif %}
+    <div class="span6" style="display: flex" >
+        <div class="input-group input-group-static my-3" style="width:70%;margin-right: 6%">
+        <h6 class="mt-3">Motivo consulta</h6>
+            {{ form2.motivoconsulta.errors }}  {{ form2.motivoconsulta }}
         </div>
+
+        <div class="input-group input-group-static my-3" style="width:70%">
+        <h6 class="mt-3">Descripción del problema</h6>
+            {{ form2.motivoconsulta.errors }}  {{ form2.motivoconsulta }}
+        </div>
+    </div>
+    <h5 class="mt-3" style="padding-top: 50px">SIGNOS VITALES</h5><br>
+    <div class="span6" style="display: flex">
+
+        <div class="input-group input-group-static my-3" style="width:70%;margin-right: 6%">
+        <h6 class="mt-3">Temperatura</h6>
+            {{ form2.temperatura.errors }}  {{ form2.temperatura }}
+        </div>
+
+        <div class="input-group input-group-static my-3" style="width:70%">
+        <h6 class="mt-3">Respiración</h6>
+            {{ form2.respiracion.errors }}  {{ form2.respiracion }}
+        </div>
+    </div>
+    <div class="span6" style="display: flex">
+        <div class="input-group input-group-static my-3" style="width:70%;margin-right: 6%">
+        <h6 class="mt-3">Presión arterial</h6>
+            {{ form2.presionarterial.errors }}  {{ form2.presionarterial }}
+        </div>
+
+        <div class="input-group input-group-static my-3" style="width:70%">
+        <h6 class="mt-3">Pulso</h6>
+            {{ form2.pulso.errors }}  {{ form2.pulso }}
+        </div>
+    </div>
+    <div class="span6" style="display: flex">
+{#        <h5 class="mt-3">SIGNOS VITALES</h5>#}
+        <div class="input-group input-group-static my-3" style="width:70%;margin-right: 6%">
+        <h6 class="mt-3">Frec. cardiaca</h6>
+            {{ form2.frecuenciacardiaca.errors }}  {{ form2.frecuenciacardiaca }}
+        </div>
+
+        <div class="input-group input-group-static my-3" style="width:70%">
+        <h6 class="mt-3">Frec. respiratoria</h6>
+            {{ form2.frecuenciarespiratoria.errors }}  {{ form2.frecuenciarespiratoria }}
+        </div>
+    </div>
+     <h5 class="mt-3" style="padding-top: 50px">DIAGNÓSTICO PREVIO</h5>
+    <div class="span6" style="display: flex">
+{#        <h5 class="mt-3">SIGNOS VITALES</h5>#}
+        <div class="input-group input-group-static my-3" style="width:70%;margin-right: 6%">
+        <h6 class="mt-3">Diagnóstico</h6>
+            {{ form2.diagnostico.errors }}  {{ form2.diagnostico }}
+        </div>
+    </div>
+    <div class="input-group input-group-static my-3" style="width:70%">
+        <h6 class="mt-3">Observación</h6>
+            {{ form2.observaciondiagnostico.errors }}  {{ form2.observaciondiagnostico }}
+        </div>
+{#        <div class="input-group input-group-static my-3  ">#}
+{#            {{ form2.diagnostico_previo.errors }}  {{ form2.diagnostico_previo }}#}
+{#            {% if form2.diagnostico_previo.help_text %}#}
+{#                <small id="help"#}
+{#                       class="form-text text-muted">{{ form2.diagnostico_previo.help_text|safe }}</small> {% endif %}#}
+{#        </div>#}
           <h5 class="mt-3">TRATAMIENTOS</h5>
         <div class="input-group input-group-static my-3  ">
             {{ form2.tratamientos.errors }}  {{ form2.tratamientos }}
@@ -808,7 +867,7 @@
                                          fill="white" stroke="navy" stroke-width="0.5" id="BP62" opacity="1"></polygon>
                                 <polygon onclick="obtenerIdPoligono(this)" points="15,5 	20,0 	20,20 	15,15"
                                          fill="white" stroke="navy" stroke-width="0.5" id="RP62" opacity="1"></polygon>
-                                <polygon points="0,0 	5,5 	5,15 	0,20" fill="white" stroke="navy"
+                                <polygon onclick="obtenerIdPoligono(this)" points="0,0 	5,5 	5,15 	0,20" fill="white" stroke="navy"
                                          stroke-width="0.5"
                                          id="LP62" opacity="1"></polygon>
                                 <text x="6" y="30" stroke="navy" fill="navy" stroke-width="0.1"
@@ -1121,14 +1180,14 @@
 
 
 
-    <div class="row">
-        <div class="input-group input-group-static my-3  ">
-            {{ form2.observacion.errors }} {{ form2.observacion.label_tag }} {{ form2.observacion }}
-            {% if form2.observacion.help_text %}
-                <small id="help"
-                       class="form-text text-muted">{{ form2.observacion.help_text|safe }}</small> {% endif %}
-        </div>
-    </div>
+{#    <div class="row">#}
+{#        <div class="input-group input-group-static my-3  ">#}
+{#            {{ form2.observacion.errors }} {{ form2.observacion.label_tag }} {{ form2.observacion }}#}
+{#            {% if form2.observacion.help_text %}#}
+{#                <small id="help"#}
+{#                       class="form-text text-muted">{{ form2.observacion.help_text|safe }}</small> {% endif %}#}
+{#        </div>#}
+{#    </div>#}
 
 
 

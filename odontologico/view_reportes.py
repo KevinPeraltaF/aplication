@@ -302,8 +302,8 @@ def view_reportes(request):
 
             if peticion == 'reporte_tratamiento_por_paciente':
                 try:
-                    fila = Consulta.objects.raw(
-                        'SELECT trat.id, trat.nombre, ( SELECT  COUNT(c.consulta_id) AS paciente FROM odontologico_consulta_tratamientos c WHERE c.tratamiento_id=trat.id group by c.tratamiento_id ) AS cantidad_pacientes FROM  odontologico_tratamiento trat ')
+                    fila = Consulta.objects.raw()
+                        # 'SELECT trat.id, trat.nombre, ( SELECT  COUNT(c.consulta_id) AS paciente FROM odontologico_consulta_tratamientos c WHERE c.tratamiento_id=trat.id group by c.tratamiento_id ) AS cantidad_pacientes FROM  odontologico_tratamiento trat ')
 
                     output = io.BytesIO()
                     # Create an new Excel file and add a worksheet.
@@ -370,7 +370,8 @@ def view_reportes(request):
 
                 #pacientes por tratamientos
                 data['tratamientos'] = tratamientos = Tratamiento.objects.filter(status = True)
-                data['consultas'] =consultas = Consulta.objects.raw('SELECT trat.id, trat.nombre, ( SELECT  COUNT(c.consulta_id) AS paciente FROM odontologico_consulta_tratamientos c WHERE c.tratamiento_id=trat.id group by c.tratamiento_id ) AS cantidad_pacientes FROM  odontologico_tratamiento trat ')
+                # data['consultas'] =consultas = Consulta.objects.raw('SELECT trat.id, trat.nombre, ( SELECT  COUNT(c.consulta_id) AS paciente FROM odontologico_consulta_tratamientos c WHERE c.tratamiento_id=trat.id group by c.tratamiento_id ) AS cantidad_pacientes FROM  odontologico_tratamiento trat ')
+                consultas = []
                 tratamientos = []
                 cantidad_pacientes = []
                 for c in consultas:

@@ -10,6 +10,16 @@ ESTADO_CITA = (
     (3, u"ANULADO"),
 )
 
+TIPO_ODONTOGRAMA = (
+    (1, u"PRINCIPAL"),
+    (2, u"HISTORICO"),
+)
+
+NECESITA_ATENCION = (
+    (1, u"SI"),
+    (2, u"NO"),
+)
+
 class Modulo(ModeloBase):
     nombre = models.CharField(verbose_name="Nombre del módulo", max_length=100, unique=True)
     descripcion = models.CharField(verbose_name="Descripción", default='', max_length=200)
@@ -46,15 +56,18 @@ class Genero(ModeloBase):
 
 class Persona(ModeloBase):
     usuario = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    nombre1 = models.CharField(max_length=100, verbose_name=u'1er Nombre')
-    nombre2 = models.CharField(max_length=100, verbose_name=u'2do Nombre')
-    apellido1 = models.CharField(max_length=100, verbose_name=u"1er Apellido")
-    apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
+    nombres = models.CharField(max_length=100, verbose_name=u'1er Nombre')
+    # nombre2 = models.CharField(max_length=100, verbose_name=u'2do Nombre')
+    apellidos = models.CharField(max_length=100, verbose_name=u"1er Apellido")
+    # apellido2 = models.CharField(max_length=100, verbose_name=u"2do Apellido")
     email = models.CharField(default='', max_length=200, verbose_name=u"Correo electronico personal")
-    cedula = models.CharField( max_length=10, verbose_name=u'Cédula')
-    telefono_movil = models.CharField(max_length=10, verbose_name=u"Teléfono móvil")
+    cedula = models.CharField( max_length=10, verbose_name=u'Cédula', null=True, blank=True)
+    telefono_movil = models.CharField(max_length=10, verbose_name=u"Teléfono móvil", null=True, blank=True)
     telefono_convencional = models.CharField(max_length=10, verbose_name=u"Teléfono convencional", null=True, blank=True)
     genero = models.ForeignKey(Genero, null=True, on_delete=models.CASCADE)
+    direccion = models.CharField(max_length=300, verbose_name=u'Direccion', null=True, blank=True)
+    referencia = models.CharField(max_length=400, verbose_name=u'Referencia', null=True, blank=True)
+    ciudad = models.CharField(max_length=400, verbose_name=u'Referencia', null=True, blank=True)
 
     class Meta:
         verbose_name = "Persona"
@@ -62,7 +75,7 @@ class Persona(ModeloBase):
         ordering = ['id']
 
     def __str__(self):
-        return u'%s %s %s %s' % (self.apellido1, self.apellido2, self.nombre1, self.nombre2)
+        return u'%s %s' % (self.apellidos, self.nombres)
 
 
     def tiene_perfil_persona(self):
@@ -106,6 +119,7 @@ class PersonaPerfil(ModeloBase):
 
 class Paciente(ModeloBase):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    necesita_atencion = models.IntegerField(choices=NECESITA_ATENCION, default=2, verbose_name=u'Necesita atencion')
 
     class Meta:
         verbose_name = "Paciente"
@@ -122,12 +136,33 @@ class Paciente(ModeloBase):
         existe = self.agendarcita_set.exists() | self.consulta_set.exists()
         return existe
 
+    def totalrubros(self):
+        total = Rubro.objects.filter(paciente_id=self.id, status=True).aggregate(total=Sum('valor'))
+        if not total['total']:
+            return 0.00
+        return total['total']
+
+    def totalpagos(self):
+        lista_rubros = Rubro.objects.filter(paciente_id=self.id, status=True).values_list('id')
+        total = Pago.objects.filter(rubro_id__in=lista_rubros, status=True).aggregate(total=Sum('valorfinal'))
+        valorpago = 0.00
+        if total['total']:
+            valorpago = total['total']
+        return ("{0:.0f}".format(valorpago))
+
+    def verificar_estadocuenta(self):
+        lista_rubros = Rubro.objects.filter(paciente_id=self.id, cancelado=False, status=True)
+        tienevalorapagar = False
+        if lista_rubros:
+            tienevalorapagar = True
+        return tienevalorapagar
 
 
 
 
 class Doctor(ModeloBase):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    especialidad = models.CharField(max_length=400, verbose_name=u'Especialidad')
 
     class Meta:
         verbose_name = "Doctor"
@@ -185,6 +220,7 @@ class AgendarCita(ModeloBase):
     fecha = models.DateField(verbose_name=u'Fecha')
     horario = models.ForeignKey(Horario_hora,  on_delete=models.CASCADE)
     estado_cita = models.IntegerField(choices=ESTADO_CITA, null=True, blank=True, verbose_name=u'Estado cita')
+    descripcion = models.CharField(max_length=400, verbose_name=u'Descripcion', default=u'')
 
     class Meta:
         verbose_name = "Agendar cita"
@@ -195,6 +231,9 @@ class AgendarCita(ModeloBase):
         return u'Paciente: %s - Especialista: %s - Fecha: %s - Horario: %s' % (self.paciente,self.doctor, self.fecha,self.horario)
 
 class Odontograma(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
+    tipo = models.IntegerField(choices=TIPO_ODONTOGRAMA, null=True, blank=True, verbose_name=u'Tipo')
+    status = models.BooleanField(verbose_name="Estado del registro", default=True)
     TP18=models.CharField(max_length=50, null=True)
     BP18=models.CharField(max_length=50, null=True)
     RP18=models.CharField(max_length=50, null=True)
@@ -476,10 +515,19 @@ class Consulta(ModeloBase):
     fecha = models.DateField(verbose_name=u'Fecha' ,auto_now_add=True)
     paciente = models.ForeignKey(Paciente,  on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor,  on_delete=models.CASCADE)
+    motivo_consulta = models.TextField(default='', max_length=600, verbose_name='Motivo Consulta')
+    descripcion_problema = models.TextField(default='', max_length=600, verbose_name='Descripción Consulta')
     diagnostico_previo = models.TextField(default='', max_length= 600, verbose_name='Diagnostico Previo')
+    observacion = models.TextField(default='', max_length= 600, verbose_name='Observación Previo')
     odontograma = models.ForeignKey(Odontograma,  on_delete=models.CASCADE)
     observacion = models.TextField(default='', max_length=600, verbose_name='Observación')
-    tratamientos =  models.ManyToManyField(Tratamiento, verbose_name=u'Tratamientos')
+    temperatura = models.FloatField(null=True, blank=True, verbose_name='Temperatura')
+    respiracion = models.FloatField(null=True, blank=True, verbose_name='Respiracion')
+    presion_arterial = models.FloatField(null=True, blank=True, verbose_name='Presion arterial')
+    pulso = models.FloatField(null=True, blank=True, verbose_name='Pulso')
+    frec_cardiaca = models.FloatField(null=True, blank=True, verbose_name='Frecuencia cardiaca')
+    frec_respiratoria = models.FloatField(null=True, blank=True, verbose_name='Frecuencia respiratoria')
+    # tratamientos =  models.ManyToManyField(Tratamiento, verbose_name=u'Tratamientos',null=True, blank=True)
     cancelado = models.BooleanField(default=False)
     def __str__(self):
         return u'Paciente: %s - Fecha: %s ' % (self.paciente, self.fecha)
@@ -518,6 +566,75 @@ class Consulta(ModeloBase):
     def obtener_ultima_fecha_abonada(self):
         return self.abonopago_set.filter(status=True).last()
 
+
+################################
+
+    def obtener_costototal(self):
+        consultaspaciente = ConsultaTratamientoPaciente.objects.filter(consultas_id=self.id, status=True).values_list('tratamientos_id')
+        tratamientos = Tratamiento.objects.filter(id__in=consultaspaciente, status=True).aggregate(total=Sum('costo'))
+        if not tratamientos['total']:
+            return 0.00
+        return tratamientos['total']
+
+    def obtener_total_pagado(self):
+        rubro_consulta = Rubro.objects.filter(consulta_id=self.id, status=True)
+        total_pagos = 0.00
+        if rubro_consulta:
+            pago_consulta = Pago.objects.filter(rubro=rubro_consulta[0], status=True).aggregate(total=Sum('valorfinal'))
+            if pago_consulta['total']:
+                total_pagos = pago_consulta['total']
+        return ("{0:.0f}".format(total_pagos))
+
+    def obtener_valor_consulta(self):
+        rubro_consulta = Rubro.objects.filter(consulta_id=self.id, status=True)
+        valor_rubro = 0.00
+        if rubro_consulta:
+            valor_rubro = rubro_consulta[0].valor
+        return valor_rubro
+
+    def verificar_cancelado(self):
+        rubro_consulta = Rubro.objects.filter(consulta_id=self.id, status=True)
+        valor_rubro = False
+        if rubro_consulta:
+            valor_rubro = rubro_consulta[0].cancelado
+        return valor_rubro
+
+
+class ConsultaTratamientoPaciente(ModeloBase):
+    consultas = models.ForeignKey(Consulta, on_delete=models.CASCADE, blank=True, null=True)
+    tratamientos = models.ForeignKey(Tratamiento, on_delete=models.CASCADE, blank=True, null=True)
+
+
+class historial(models.Model):
+    doctor=models.ForeignKey(Doctor, on_delete=models.CASCADE, blank=True, null=True)
+    odontograma=models.ForeignKey(Odontograma, on_delete=models.CASCADE, blank=True, null=True)
+    paciente=models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    peso=models.CharField(max_length=200, null=True)
+    talla=models.CharField(max_length=200, null=True)
+    imc=models.CharField(max_length=200, null=True)
+    temperatura=models.CharField(max_length=200, null=True)
+    respiracion=models.CharField(max_length=200, null=True)
+    presionArterial=models.CharField(max_length=200, null=True)
+    pulso=models.CharField(max_length=200, null=True)
+    frecuenciaCardiaca=models.CharField(max_length=200, null=True)
+    frecuenciaRespiratoria=models.CharField(max_length=200, null=True)
+    antecedentesPersonales=models.CharField(max_length=400, null=True)
+    tiempoEnfermedad=models.CharField(max_length=150, null=True)
+    motivoConsulta=models.CharField(max_length=300, null=True)
+    signoPrincipal=models.CharField(max_length=300, null=True)
+    antecedentePersonal=models.CharField(max_length=300, null=True)
+    tratamientoOrtodoncia=models.CharField(max_length=10, null=True)
+    descripcionTratamientoOrtodoncia=models.CharField(max_length=150, null=True)
+    medicamento=models.CharField(max_length=10, null=True)
+    descripcionMedicamento=models.CharField(max_length=150, null=True)
+    alergiaMedicamento=models.CharField(max_length=10, null=True)
+    descripcionAlergia=models.CharField(max_length=150, null=True)
+    trastornoNervioso=models.CharField(max_length=10, null=True)
+    descripcionTrastorno=models.CharField(max_length=150, null=True)
+    status=models.BooleanField(null=True)
+
+
+
 class AbonoPago(ModeloBase):
     consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
     abono = models.DecimalField(max_digits=30, decimal_places=2, default=0, verbose_name=u'Abono')
@@ -535,4 +652,52 @@ class TiempoAntesRecordatorioCorreo(ModeloBase):
     def __str__(self):
         return u'Días: %s | Horas: %s | Minutos: %s' % (self.dias_antes,self.horas_antes,self.minutos_antes)
 
+class Rubro(ModeloBase):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=300, null=True)
+    valor = models.DecimalField(max_digits=30, decimal_places=2, default=0, verbose_name=u'Valor')
+    fecha = models.DateField(verbose_name=u'Fecha', auto_now_add=True, null=True)
+    cancelado = models.BooleanField(default=False)
 
+    def __str__(self):
+        return u'%s - Consulta: %s' % (self.nombre, self.consulta.motivo_consulta)
+
+    def totalpagos(self):
+        total = Pago.objects.filter(rubro_id=self.id, status=True).aggregate(total=Sum('valorfinal'))
+        totalpagado = 0.00
+        if total['total']:
+            totalpagado = total['total']
+        return ("{0:.0f}".format(totalpagado))
+
+    def saldorestante(self):
+        totalpagos = Pago.objects.filter(rubro_id=self.id, status=True).aggregate(total=Sum('valorfinal'))
+        saldofinal = self.valor
+        if totalpagos['total']:
+            saldofinal = float(self.valor) - float(totalpagos['total'])
+        return ("{0:.0f}".format(saldofinal))
+
+    def numero_pagos_realizados(self):
+        cantidad_pagos = Pago.objects.filter(rubro_id=self.id, status=True).count()
+        return cantidad_pagos
+
+
+class Pago(ModeloBase):
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE, blank=True, null=True)
+    rubro = models.ForeignKey(Rubro, on_delete=models.CASCADE)
+    valor = models.FloatField(default=0, verbose_name=u'Pago')
+    # iva = models.DecimalField(max_digits=30, decimal_places=2, default=12, verbose_name=u'Iva')
+    # subtotal_iva = models.FloatField(default=0, verbose_name=u'Subtotal iva')
+    valorfinal = models.FloatField(default=0, verbose_name=u'Valor final')
+    fecha = models.DateField(verbose_name=u'Fecha', auto_now_add=True, null=True)
+
+class Factura(ModeloBase):
+    pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE, blank=True, null=True)
+    fecha = models.DateField(verbose_name=u'Fecha', auto_now_add=True, null=True)
+    archivo = models.FileField(upload_to='facturas', blank=True, null=True, verbose_name=u'Facturas')
+
+class Documentos(ModeloBase):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
+    nombre = models.CharField(max_length=500, null=True)
+    archivo = models.FileField(upload_to='documentos', blank=True, null=True, verbose_name=u'Documentos')

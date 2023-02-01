@@ -13,13 +13,8 @@
                         <h6 class="mb-0">{{ titulo_tabla }}</h6>
                     </div>
                     <div class="col-6 text-end">
-                        {% for foo in request.user.groups.all %}
-                            {% if   foo.pk == 2 %}
-                                  <a class="btn btn-outline-dark btn-sm mb-0" href="?peticion=add_paciente"><i
+                        <a class="btn btn-outline-dark btn-sm mb-0" href="?peticion=add_cliente"><i
                                 class="material-icons text-sm">add</i>&nbsp;&nbsp;Agregar</a>
-
-                            {% endif %}
-                        {% endfor %}
 
                     </div>
                 </div>
@@ -74,11 +69,17 @@
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
                                                 aria-labelledby="dropdownMarketingCard" style="">
-                                                {% if fila.tiene_odontograma %}
-                                                    <li><a class="dropdown-item border-radius-md"
-                                                           href="?peticion=consultas_realizadas&id={{ fila.pk }}">Ver
-                                                        consultas</a></li>
-                                                {% endif %}
+                                                <li><a class="dropdown-item border-radius-md"
+                                                       href="?peticion=historial_clinico&id={{ fila.pk }}">Ver
+                                                    historial</a></li>
+                                                {#                                                {% if fila.tiene_odontograma %}#}
+                                                {#                                                    <li><a class="dropdown-item border-radius-md"#}
+                                                {#                                                           href="?peticion=consultas_realizadas&id={{ fila.pk }}">Ver#}
+                                                {#                                                        consultas</a></li>#}
+                                                {#                                                {% endif %}#}
+                                                <li><a class="dropdown-item border-radius-md"
+                                                       href="?peticion=generar_certificado&id={{ fila.pk }}">Generar certificado</a>
+                                                </li>
 
                                                 <li><a class="dropdown-item border-radius-md"
                                                        href="?peticion=edit_paciente&id={{ fila.pk }}">Editar</a></li>
